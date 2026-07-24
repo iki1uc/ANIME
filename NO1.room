@@ -1,5 +1,7 @@
-value
-pulse
-drift
-angle
-0° ≤ angle ≤ 360°
+value: 0
+pulse: 0
+drift: 0
+angle: 0
+range: 0°–360°
+state: raw
+mode: anchor
