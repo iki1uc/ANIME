@@ -5,3 +5,16 @@ ORT: /iki1uc/HDF/
 USE: /iki1uc/HDF/
 USER: /iki1uc/TMP/
 
+LAGE: ANIME
+ROOM: NO1.room
+UROOM: raw
+ROOMC: anchor
+
+ARG: value
+XARG: pulse
+ARG3TE: drift
+ANGLE: 0°–360°
+
+STATE: tmp-active
+MODE: tmp-anchor
+VECTOR-SLOT: anime-01
