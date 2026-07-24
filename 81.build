@@ -1,0 +1,5 @@
+import rom from "./81.rom";
+import { scan9hoch9 } from "./81.scan";
+const result = scan9hoch9();
+console.log("READY:", result.ready);
+console.log("ERRORS:", result.errors);
