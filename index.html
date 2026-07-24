@@ -2,82 +2,46 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ANIME · VECTOR ENGINE (9hoch9/81)</title>
+<title>ANIME · 81-STATION MONITOR</title>
 <style>
 body { background:#000; color:#0f0; font-family:Consolas; padding:20px; }
 pre { background:#111; padding:15px; }
 </style>
+<script type="module">
+import { scan9hoch9 } from "./81.scan";
+
+async function loadROM() {
+    const txt = await fetch("./81.rom").then(r => r.text());
+    const rom = {};
+    txt.split("\n").forEach(line => {
+        const [k, v] = line.split(":").map(s => s.trim());
+        if (k && v !== undefined) rom[k] = v;
+    });
+    return rom;
+}
+
+window.onload = async () => {
+    const rom = await loadROM();
+    const out = document.getElementById("out");
+
+    setInterval(() => {
+        const result = scan9hoch9();
+
+        out.innerText = `
+ANIME · 81-STATION
+
+ROM STATE: ${rom.STATE}
+READY: ${result.ready}/81
+ERRORS: ${result.errors}
+STATE: ${result.ready === 81 ? "FULL READY" : "PARTIAL"}
+`;
+    }, 120);
+};
+</script>
 </head>
 
 <body>
-
-<h1>ANIME · VECTOR ENGINE</h1>
+<h1>ANIME · 81-STATION MONITOR</h1>
 <pre id="out"></pre>
-
-<script>
-async function loadRoom(path) {
-    const txt = await fetch(path).then(r => r.text());
-    const obj = {};
-    txt.split("\n").forEach(line => {
-        const [k, v] = line.split(":").map(s => s.trim());
-        if (k && v !== undefined) obj[k] = v;
-    });
-    return obj;
-}
-
-const TMP = await loadRoom("./TMP.tmp");
-const ROOM = await loadRoom("./NO1.room");
-
-let V = {
-    value: Number(ROOM.value),
-    pulse: Number(ROOM.pulse),
-    drift: Number(ROOM.drift),
-    angle: Number(ROOM.angle),
-
-    update() {
-        this.pulse = Math.sin(Date.now() / 120);
-        this.drift = Math.cos(Date.now() / 240);
-        this.angle = (Date.now() / 10) % 360;
-        this.value = this.pulse + this.drift;
-    }
-};
-
-setInterval(() => {
-    V.update();
-
-    document.getElementById("out").innerText = `
-ANIME · VECTOR ENGINE
-
-BILDUNG: ${TMP.BILDUNG}
-SLOTS: ${TMP.SLOTS}
-VECTOR-SLOT: ${TMP["VECTOR-SLOT"]}
-
-value: ${V.value.toFixed(6)}
-pulse: ${V.pulse.toFixed(6)}
-drift: ${V.drift.toFixed(6)}
-angle: ${V.angle.toFixed(2)}°
-range: ${ROOM.range}
-
-TMP: ${TMP.TMP}
-HDF: ${TMP.HDF}
-HOME: ${TMP.HOME}
-ORT: ${TMP.ORT}
-USE: ${TMP.USE}
-USER: ${TMP.USER}
-
-ROOM: ${TMP.ROOM}
-ROOMC: ${TMP.ROOMC}
-UROOM: ${TMP.UROOM}
-
-ARG: ${TMP.ARG}
-XARG: ${TMP.XARG}
-ARG3TE: ${TMP.ARG3TE}
-
-state: active
-mode: anchor
-`;
-}, 120);
-</script>
-
 </body>
 </html>
