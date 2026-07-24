@@ -1,28 +1,10 @@
-# ANKER – Stabilisationsachse · iki1uc
+# ANIME · iki1uc
+ANKER – Stabilisationsachse
 
-## Zweck
-ANKER ist die Stabilisationsachse des iki1uc‑Systems.
-Es hält die Achsen IQ, QI, EVO, UPD, UPG, BIOS und CALC im korrekten Verhältnis.
-
-## Struktur
-- NAME: ANKER
-- ID: A01
-- Station: S01
-- Dimension: D4
-- Modus: erabel (neutral, operation möglich)
-
-## Rolle
-ANKER stabilisiert, ohne selbst aktiv zu berechnen oder zu steuern.
-Es ist die neutrale Achse zwischen AXI, 6d und API.
-
-## Bindungen
-- AXI
-- 6d
-- 360
-- 100
-- 213 (REAL)
-- API
-
-## Status
-STATE = STABIL  
-READY = 100%
+ANIME ist der Startpunkt eines Vektors.
+ANIME hält die erste Achse.
+ANIME misst value, pulse, drift, angle.
+ANIME stabilisiert 0°–360°.
+ANIME ist die Rohform eines Responder-Systems.
+ANIME ist der Ursprung eines Trioletts.
+ANIME ist die Identitätsachse für TMP, HDF, ROOM, LAGE, TOR.
