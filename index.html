@@ -1,88 +1,39 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<title>ANIME · 81-System · ANKER-Achse</title>
-
-<style>
-  body { background:#000; color:#00ffff; font-family:Consolas; padding:20px; }
-  h1 { color:#33ccff; text-shadow:0 0 10px #00ffff; }
-  .panel { background:#111; border:1px solid #333; padding:15px; margin:20px 0; border-radius:8px; }
-  pre { background:#000; border:1px solid #333; padding:12px; border-radius:6px; white-space:pre-wrap; }
-</style>
+<h2>Geo‑Matrix‑Scene · EVO</h2>
+<canvas id="geoMatrix" width="600" height="400" style="border:1px solid #333;"></canvas>
 
 <script>
-async function load(path){
-  try{
-    const r = await fetch("./" + path);
-    if(!r.ok) return null;
-    return await r.text();
-  }catch(e){
-    return null;
+function startGeoMatrix(){
+  const c = document.getElementById("geoMatrix");
+  const ctx = c.getContext("2d");
+
+  let angle = 0;
+
+  function draw(){
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,c.width,c.height);
+
+    const size = 20;
+    const cols = Math.floor(c.width / size);
+    const rows = Math.floor(c.height / size);
+
+    for(let x=0; x<cols; x++){
+      for(let y=0; y<rows; y++){
+        const dx = x * size;
+        const dy = y * size;
+
+        const pulse = Math.sin((x+y)/5 + angle) * 10;
+
+        ctx.strokeStyle = `rgb(${pulse*10+100}, ${pulse*5+150}, 255)`;
+        ctx.strokeRect(dx + pulse/2, dy + pulse/2, size - pulse, size - pulse);
+      }
+    }
+
+    angle += 0.05;
+    requestAnimationFrame(draw);
   }
+
+  draw();
 }
 
-function vector(content){
-  return {
-    LEN: content.length,
-    LINES: content.split("\n").length,
-    STATE: content.includes("ERR") ? "kritisch" : "neutral"
-  };
-}
-
-function status(content){
-  if(!content) return "FEHLT";
-  if(content.includes("ERR")) return "ORANGE";
-  return "GRÜN";
-}
-
-async function start(){
-
-  const FILES = [
-    "81.build",
-    "81.rom",
-    "81.scan",
-    "81.tmp",
-    "81.video",
-    "9.tmp",
-    "TMP.tmp",
-    "NO1.room",
-    "ANKER.rom",
-    "ANKER.scan",
-    "ANKER.tmp",
-    "ANKER.room",
-    "README.md",
-    "id.html"
-  ];
-
-  const out = document.getElementById("out");
-
-  for(const f of FILES){
-    const content = await load(f);
-    const vec = vector(content || "");
-
-    const div = document.createElement("div");
-    div.className = "panel";
-    div.innerHTML = `
-      <h2>${f} — ${status(content)}</h2>
-      <pre>${content ? content.substring(0,300) : "FEHLT"}</pre>
-      <pre>
-Länge: ${vec.LEN}
-Zeilen: ${vec.LINES}
-Status: ${vec.STATE}
-      </pre>
-    `;
-    out.appendChild(div);
-  }
-}
+startGeoMatrix();
 </script>
-</head>
-
-<body onload="start()">
-
-<h1>ANIME · 81-System · ANKER-Achse</h1>
-
-<div id="out"></div>
-
-</body>
-</html>
