@@ -1,4 +1,4 @@
-<h2>Geo‑Matrix‑Scene · EVO</h2>
+<h2>Geo‑Matrix‑Scene · EVO+</h2>
 <canvas id="geoMatrix" width="600" height="400" style="border:1px solid #333;"></canvas>
 
 <script>
@@ -12,7 +12,7 @@ function startGeoMatrix(){
     ctx.fillStyle = "#000";
     ctx.fillRect(0,0,c.width,c.height);
 
-    const size = 20;
+    const size = 25;
     const cols = Math.floor(c.width / size);
     const rows = Math.floor(c.height / size);
 
@@ -21,14 +21,38 @@ function startGeoMatrix(){
         const dx = x * size;
         const dy = y * size;
 
-        const pulse = Math.sin((x+y)/5 + angle) * 10;
+        // Tiefe + Rotation
+        const depth = Math.sin((x * 0.3) + angle) * 8;
+        const rot = Math.cos((y * 0.3) + angle) * 8;
 
-        ctx.strokeStyle = `rgb(${pulse*10+100}, ${pulse*5+150}, 255)`;
-        ctx.strokeRect(dx + pulse/2, dy + pulse/2, size - pulse, size - pulse);
+        // Anime‑Pulse
+        const pulse = Math.sin((x+y)/4 + angle) * 12;
+
+        // Farbe (Anime‑Glow)
+        const r = 80 + pulse * 2;
+        const g = 120 + depth * 3;
+        const b = 255;
+
+        ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+        ctx.lineWidth = 1.5;
+
+        // Geometrische Form (leicht verzerrtes Quadrat)
+        ctx.strokeRect(
+          dx + depth,
+          dy + rot,
+          size - pulse/2,
+          size - pulse/2
+        );
+
+        // Anime‑Sparkle
+        if(Math.random() > 0.97){
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.8)`;
+          ctx.fillRect(dx + depth + 8, dy + rot + 8, 3, 3);
+        }
       }
     }
 
-    angle += 0.05;
+    angle += 0.04;
     requestAnimationFrame(draw);
   }
 
