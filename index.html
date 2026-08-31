@@ -1,5 +1,24 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ANIME · Geo‑Matrix‑Scene EVO+</title>
+<style>
+  body {
+    background:#111;
+    color:#eee;
+    font-family: monospace;
+  }
+  #geoMatrix {
+    border:1px solid #333;
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+
 <h2>Geo‑Matrix‑Scene · EVO+</h2>
-<canvas id="geoMatrix" width="600" height="400" style="border:1px solid #333;"></canvas>
+<canvas id="geoMatrix" width="600" height="400"></canvas>
 
 <script>
 function startGeoMatrix(){
@@ -21,14 +40,10 @@ function startGeoMatrix(){
         const dx = x * size;
         const dy = y * size;
 
-        // Tiefe + Rotation
         const depth = Math.sin((x * 0.3) + angle) * 8;
-        const rot = Math.cos((y * 0.3) + angle) * 8;
-
-        // Anime‑Pulse
+        const rot   = Math.cos((y * 0.3) + angle) * 8;
         const pulse = Math.sin((x+y)/4 + angle) * 12;
 
-        // Farbe (Anime‑Glow)
         const r = 80 + pulse * 2;
         const g = 120 + depth * 3;
         const b = 255;
@@ -36,7 +51,6 @@ function startGeoMatrix(){
         ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
         ctx.lineWidth = 1.5;
 
-        // Geometrische Form (leicht verzerrtes Quadrat)
         ctx.strokeRect(
           dx + depth,
           dy + rot,
@@ -44,7 +58,6 @@ function startGeoMatrix(){
           size - pulse/2
         );
 
-        // Anime‑Sparkle
         if(Math.random() > 0.97){
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.8)`;
           ctx.fillRect(dx + depth + 8, dy + rot + 8, 3, 3);
@@ -61,3 +74,6 @@ function startGeoMatrix(){
 
 startGeoMatrix();
 </script>
+
+</body>
+</html>
