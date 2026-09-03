@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IKI1UC · ANIME · HISTORY CHESS · WASSEROBERFLÄCHE</title>
+
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -213,10 +214,11 @@
 
     <h1>⭐ ANIME · HISTORY CHESS · WASSEROBERFLÄCHE</h1>
     <h1 style="font-size:11px;margin-top:-2px;background:none;-webkit-text-fill-color:#3d5a70;color:#3d5a70;font-weight:400">
-        81‑SLOT · GEO‑MATRIX · FUSION
+        81‑SLOT · GEO‑MATRIX · FUSION · c+
     </h1>
 
     <div class="grid3">
+
         <!-- LINKES PANEL: General Engine -->
         <div>
             <div class="panel">
@@ -367,6 +369,7 @@
                 <pre id="resultDisplay" style="background:rgba(0,0,0,0.4);padding:8px;border-radius:6px;font-size:9px;line-height:1.3;color:#8ab4c8;max-height:100px;overflow:auto;">⏳ berechne...</pre>
             </div>
         </div>
+
     </div>
 
     <div class="footer"><span>♟️</span> ANIME · HISTORY CHESS · WASSEROBERFLÄCHE · <span>wieimmer4u</span></div>
@@ -388,6 +391,7 @@ class AtmoBoard {
         this.slots = [];
         this.mood = 'anime';
         this.running = true;
+        this.cplus = 1.0;
         this.initSlots();
         this.initLines();
     }
@@ -407,9 +411,9 @@ class AtmoBoard {
     updateSlots(time) {
         for (let i = 0; i < 81; i++) {
             const s = this.slots[i];
-            s.value = Math.sin(i * 0.2 + time * 0.001);
-            s.pulse = Math.sin(time / 120 + i * 0.1);
-            s.drift = Math.cos(time / 240 + i * 0.05);
+            s.value = Math.sin(i * 0.2 + time * 0.001) * this.cplus;
+            s.pulse = Math.sin(time / 120 + i * 0.1) * this.cplus;
+            s.drift = Math.cos(time / 240 + i * 0.05) * this.cplus;
             s.angle = (time / 10 + i * 4) % 360;
         }
     }
@@ -449,22 +453,22 @@ class AtmoBoard {
 
         this.updateSlots(t);
 
-        const pulseGlow = 0.05 + 0.08 * Math.sin(t / 500);
-        ctx.fillStyle = `rgba(0,10,30,${pulseGlow})`;
+        const pulseGlow = 0.05 + 0.08 * Math.sin(t / 500) * this.cplus;
+        ctx.fillStyle = `rgba(0,10,30,${Math.min(pulseGlow, 0.3)})`;
         ctx.fillRect(0, 0, w, h);
 
         for (const line of this.lines) {
             const p = (line.progress + t * line.speed * 0.001) % 1;
-            const waveY = Math.sin(p * Math.PI * 4 + t * 0.002) * 20;
+            const waveY = Math.sin(p * Math.PI * 4 + t * 0.002) * 20 * this.cplus;
             const x1 = line.start.x + (line.end.x - line.start.x) * p;
             const y1 = line.start.y + (line.end.y - line.start.y) * p + waveY;
             const x2 = line.start.x + (line.end.x - line.start.x) * ((p + 0.15) % 1);
-            const y2 = line.start.y + (line.end.y - line.start.y) * ((p + 0.15) % 1) + Math.sin((p + 0.15) * Math.PI * 4 + t * 0.002) * 20;
+            const y2 = line.start.y + (line.end.y - line.start.y) * ((p + 0.15) % 1) + Math.sin((p + 0.15) * Math.PI * 4 + t * 0.002) * 20 * this.cplus;
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.strokeStyle = line.color;
-            ctx.lineWidth = line.width;
+            ctx.lineWidth = line.width * this.cplus;
             ctx.stroke();
         }
 
@@ -482,18 +486,18 @@ class AtmoBoard {
                 const gCol = Math.floor(80 + val * 100 + pulse * 50 * horizontalWave);
                 const bCol = Math.floor(180 + val * 50 + pulse * 30 * horizontalWave);
 
-                ctx.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, 0.12)`;
+                ctx.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, ${0.12 * this.cplus})`;
                 ctx.fillRect(x, y, cs, cs);
 
-                const borderPulse = 0.3 + 0.7 * Math.sin(t / 300 + idx * 0.1 + x * 0.02);
-                const borderColor = `rgba(${rCol+60}, ${gCol+60}, ${bCol+60}, ${0.05 + 0.1 * borderPulse})`;
+                const borderPulse = 0.3 + 0.7 * Math.sin(t / 300 + idx * 0.1 + x * 0.02) * this.cplus;
+                const borderColor = `rgba(${rCol+60}, ${gCol+60}, ${bCol+60}, ${0.05 + 0.1 * Math.min(borderPulse, 1)})`;
                 ctx.strokeStyle = borderColor;
                 ctx.lineWidth = 0.5 + borderPulse * 0.5;
                 ctx.strokeRect(x, y, cs, cs);
 
                 const angleRad = slot.angle * Math.PI / 180;
                 const dotX = x + cs/2 + Math.cos(angleRad) * cs * 0.3;
-                const dotY = y + cs/2 + Math.sin(angleRad) * cs * 0.3 + Math.sin(t * 0.002 + r * 0.5) * 2;
+                const dotY = y + cs/2 + Math.sin(angleRad) * cs * 0.3 + Math.sin(t * 0.002 + r * 0.5) * 2 * this.cplus;
                 ctx.fillStyle = `rgba(255,255,255,${0.05 + 0.1 * borderPulse})`;
                 ctx.beginPath();
                 ctx.arc(dotX, dotY, 1.5 + borderPulse, 0, Math.PI * 2);
@@ -501,21 +505,21 @@ class AtmoBoard {
             }
         }
 
-        if (Math.random() > 0.94) {
+        if (Math.random() > 0.94 / this.cplus) {
             const idx = Math.floor(Math.random() * (this.boardSize * this.boardSize));
             const slot = this.slots[idx] || { value: 0, pulse: 0, drift: 0 };
             const r = Math.floor(idx / this.boardSize);
             const c = idx % this.boardSize;
             const x = c * cs + cs / 2;
-            const y = r * cs + cs / 2 + Math.sin(t * 0.003 + r) * 5;
+            const y = r * cs + cs / 2 + Math.sin(t * 0.003 + r) * 5 * this.cplus;
             const angle = Math.random() * Math.PI * 2;
-            const speed = 0.3 + Math.random() * 1.5;
+            const speed = 0.3 + Math.random() * 1.5 * this.cplus;
             this.particles.push({
                 x, y,
                 vx: Math.cos(angle) * speed + slot.drift * 0.3,
                 vy: Math.sin(angle) * speed + Math.sin(t * 0.002 + idx) * 0.3,
                 life: 1,
-                size: 1 + Math.random() * 3,
+                size: 1 + Math.random() * 3 * this.cplus,
                 color: `rgba(${120 + slot.value * 60}, ${200 + slot.pulse * 40}, 255, ${0.2 + 0.3 * slot.pulse})`
             });
         }
@@ -523,7 +527,7 @@ class AtmoBoard {
         this.particles = this.particles.filter(p => {
             p.x += p.vx;
             p.y += p.vy;
-            p.life -= 0.003;
+            p.life -= 0.003 * this.cplus;
             if (p.life <= 0) return false;
             ctx.fillStyle = p.color;
             ctx.globalAlpha = p.life;
@@ -580,6 +584,7 @@ const engine = {
     prefetch: [[3,9],[27,81],[243,729]],
     liveWindow: [['3','9'],['27','81'],['243','729']],
     memory: { hits:0, misses:0, slides:[], jumps:[] },
+    cplus: 1.0,
 
     log(msg, type='info') {
         const el = document.getElementById('consoleLog');
@@ -794,7 +799,7 @@ PREFETCH:${s.prefetchCount}  PREDICT:${s.predictCount}  CACHE:${s.cacheCount}`;
 };
 
 // ================================================================
-// BAUSTEIN 2: SCHACHLOGIK (korrigiert)
+// BAUSTEIN 2: SCHACHLOGIK (korrigiert – QUEEN FIXED)
 // ================================================================
 function inBounds(r,c){ return r>=0 && r<8 && c>=0 && c<8; }
 
@@ -809,6 +814,7 @@ function getPseudoLegalMoves(board, r, c) {
             if (!target || target.color === enemy) moves.push({r:nr,c:nc});
         }
     };
+
     switch(piece.type) {
         case 'pawn': {
             const dir = piece.color==='white'?-1:1;
@@ -853,9 +859,27 @@ function getPseudoLegalMoves(board, r, c) {
             break;
         }
         case 'queen': {
-            const rookMoves = getPseudoLegalMoves(board,r,c,{type:'rook',color:piece.color});
-            const bishopMoves = getPseudoLegalMoves(board,r,c,{type:'bishop',color:piece.color});
-            return [...rookMoves, ...bishopMoves];
+            // Rook moves
+            for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+                for (let i=1; i<8; i++) {
+                    const nr=r+dr*i, nc=c+dc*i;
+                    if (!inBounds(nr,nc)) break;
+                    const target=board[nr][nc];
+                    if (!target) moves.push({r:nr,c:nc});
+                    else { if (target.color===enemy) moves.push({r:nr,c:nc}); break; }
+                }
+            }
+            // Bishop moves
+            for (const [dr,dc] of [[1,1],[1,-1],[-1,1],[-1,-1]]) {
+                for (let i=1; i<8; i++) {
+                    const nr=r+dr*i, nc=c+dc*i;
+                    if (!inBounds(nr,nc)) break;
+                    const target=board[nr][nc];
+                    if (!target) moves.push({r:nr,c:nc});
+                    else { if (target.color===enemy) moves.push({r:nr,c:nc}); break; }
+                }
+            }
+            break;
         }
         case 'king': {
             for (const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]])
@@ -873,7 +897,7 @@ function isLegalMove(board, from, to, color) {
     return moves.some(m => m.r === to.r && m.c === to.c);
 }
 
-function selectMoveByStyle(moves, style, strength) {
+function selectMoveByStyle(board, moves, style, strength) {
     if (moves.length===0) return null;
     if (style==='random') return moves[Math.floor(Math.random()*moves.length)];
     const scored = moves.map(m => {
@@ -902,6 +926,7 @@ let currentGame = null;
 let autoMode = false;
 let moveSpeed = 700;
 let animations = [];
+let autoTimer = null;
 
 const canvas = document.getElementById('chessCanvas');
 const ctx = canvas.getContext('2d');
@@ -934,6 +959,8 @@ function resizeCanvases() {
     const s = Math.floor(Math.min(rect.width, rect.height));
     canvas.width = s;
     canvas.height = s;
+    atmoCanvas.width = s;
+    atmoCanvas.height = s;
     atmo.resize(s, s);
     renderBoard();
 }
@@ -972,13 +999,13 @@ function animateMove(from, to, piece, callback) {
     const cx=(startX+endX)/2, cy=(startY+endY)/2;
     for (let i=0; i<15; i++) {
         const angle = Math.random()*Math.PI*2;
-        const speed = 0.5+Math.random()*2;
+        const speed = 0.5+Math.random()*2 * atmo.cplus;
         atmo.particles.push({
             x:cx, y:cy,
             vx:Math.cos(angle)*speed,
             vy:Math.sin(angle)*speed,
             life:1,
-            size:2+Math.random()*3,
+            size:2+Math.random()*3 * atmo.cplus,
             color:`rgba(150,220,255,${0.3+Math.random()*0.5})`
         });
     }
@@ -1067,82 +1094,77 @@ function loadGame(game) {
     renderBoard();
 }
 
+// KORRIGIERT: playNextMove mit from-Koordinate
 function playNextMove() {
     if (!currentGame || moveIndex >= currentGameMoves.length) {
         if (autoMode) stopAuto();
         return;
     }
+
     const m = currentGameMoves[moveIndex];
-    // NEU: Suche über from-Koordinate (korrekt)
-    let from = null;
-    let piece = null;
-    const color = moveIndex % 2 === 0 ? 'white' : 'black';
 
-    // Zuerst mit from-Koordinate aus JSON (exakt)
-    const fromR = 8 - parseInt(m.from[1]);
-    const fromC = m.from.charCodeAt(0) - 97;
-    if (board[fromR] && board[fromR][fromC] && board[fromR][fromC].type === m.type && board[fromR][fromC].color === color) {
-        from = { r: fromR, c: fromC };
-        piece = board[from.r][from.c];
-    }
+    // KORREKTE FROM-KOORDINATE aus JSON
+    const from = {
+        r: 8 - parseInt(m.from[1]),
+        c: m.from.charCodeAt(0) - 97
+    };
 
-    // Fallback: Suche über type + color
-    if (!from) {
-        for (let r=0; r<8; r++) {
-            for (let c=0; c<8; c++) {
-                const p = board[r][c];
-                if (p && p.type === m.type && p.color === color) {
-                    from={r,c};
-                    piece=p;
-                    break;
-                }
-            }
-            if (from) break;
-        }
-    }
+    const piece = board[from.r]?.[from.c];
 
-    if (from && piece) {
-        const to = {
-            r: 8 - parseInt(m.to[1]),
-            c: m.to.charCodeAt(0) - 97
-        };
-        if (inBounds(to.r, to.c)) {
-            animateMove(from, to, piece, () => {
-                moveIndex++;
-                document.getElementById('moveCount').textContent = moveIndex;
-                document.getElementById('turnIndicator').textContent = moveIndex%2===0?'Weiß':'Schwarz';
-                document.getElementById('manaIndicator').textContent = moveIndex;
-                if (autoMode) {
-                    clearTimeout(autoTimer);
-                    autoTimer = setTimeout(playNextMove, moveSpeed);
-                }
-                updateUI();
-            });
-        } else {
-            moveIndex++;
-            setTimeout(playNextMove, 100);
-        }
-    } else {
+    if (!piece) {
         moveIndex++;
         setTimeout(playNextMove, 100);
+        return;
     }
+
+    const to = {
+        r: 8 - parseInt(m.to[1]),
+        c: m.to.charCodeAt(0) - 97
+    };
+
+    if (!inBounds(to.r, to.c)) {
+        moveIndex++;
+        setTimeout(playNextMove, 100);
+        return;
+    }
+
+    animateMove(from, to, piece, () => {
+        moveIndex++;
+        document.getElementById('moveCount').textContent = moveIndex;
+        document.getElementById('turnIndicator').textContent = moveIndex%2===0?'Weiß':'Schwarz';
+        document.getElementById('manaIndicator').textContent = moveIndex;
+
+        if (autoMode && moveIndex < currentGameMoves.length) {
+            clearTimeout(autoTimer);
+            autoTimer = setTimeout(playNextMove, moveSpeed);
+        } else if (autoMode) {
+            stopAuto();
+        }
+        updateUI();
+    });
 }
 
-function stopAuto() { autoMode=false; document.getElementById('btnAuto').textContent='▶ Auto'; }
+function stopAuto() {
+    autoMode = false;
+    document.getElementById('btnAuto').textContent = '▶ Auto';
+    clearTimeout(autoTimer);
+}
 
 function updateUI() {
     document.getElementById('moveCount').textContent = moveIndex;
     document.getElementById('turnIndicator').textContent = currentColor === 'white' ? 'Weiß' : 'Schwarz';
-    document.getElementById('cplusIndicator')?.textContent = `c+ = ${atmo.cplus || 1.0}`;
 }
 
+// KORRIGIERT: spawnEffect mit korrekten Viewport-Koordinaten
 function spawnEffect(x, y, type) {
     const rect = canvas.getBoundingClientRect();
-    const fx = rect.left + x;
-    const fy = rect.top + y;
+    const fx = rect.left + x * (atmo.cplus || 1);
+    const fy = rect.top + y * (atmo.cplus || 1);
+
     const el = document.createElement('div');
     const symbols = { ice:'❄️', water:'💧', fire:'🔥' };
     el.textContent = symbols[type] || '✨';
+
     el.style.cssText = `
         position:fixed; pointer-events:none; font-size:32px; z-index:9999;
         left:${fx-16}px; top:${fy-16}px; opacity:0.8;
@@ -1176,7 +1198,12 @@ document.addEventListener('DOMContentLoaded', () => {
     engine.init();
     window.engine = engine;
 
-    // 5. Buttons binden
+    // 5. c+ initialisieren
+    window.cplus = 1.0;
+    atmo.cplus = 1.0;
+    engine.cplus = 1.0;
+
+    // 6. Buttons binden
     document.getElementById('btnGeneral').addEventListener('click', ()=>engine.runGeneral());
     document.getElementById('btnReset').addEventListener('click', ()=>engine.resetAll());
     document.getElementById('btnToggleAll').addEventListener('click', ()=>engine.toggleAll());
@@ -1196,27 +1223,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('btnResetBoard').addEventListener('click', () => { stopAuto(); initBoard(); renderBoard(); });
 
+    // Speed
     document.getElementById('speedSlider').addEventListener('input', function() {
         moveSpeed = parseInt(this.value);
         document.getElementById('speedDisplay').textContent = moveSpeed+'ms';
     });
+
+    // Style -> Mood + c+
     document.getElementById('styleSelect').addEventListener('change', function() {
         const style = this.value;
-        currentStyle = style;
-        // Mood wird in syncChess gesetzt, aber wir setzen es hier für direkte Reaktion
         const moodMap = { random:'anime', aggressive:'warm', defensive:'cool', tactical:'neon' };
         atmo.setMood(moodMap[style] || 'anime');
-        // c+ Integration
-        atmo.cplus = style === 'aggressive' ? 1.3 :
-                     style === 'defensive' ? 0.8 :
-                     style === 'tactical'  ? 1.0 :
-                     1.1;
+
+        // c+ Kopplung an Stil
+        const cplusMap = { random:1.0, aggressive:1.3, defensive:0.8, tactical:1.0 };
+        window.cplus = cplusMap[style] || 1.0;
+        atmo.cplus = window.cplus;
+        engine.cplus = window.cplus;
         updateUI();
     });
+
+    // Strength
     document.getElementById('strengthSlider').addEventListener('input', function() {
         document.getElementById('strengthDisplay').textContent = this.value;
     });
 
+    // Effekte
     const effects = {
         btnIce: { type:'ice', msg:'❄️ ICE · kühle Präzision' },
         btnWater: { type:'water', msg:'💧 WATER · fließende Bewegung' },
@@ -1229,6 +1261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Keyboard
     document.addEventListener('keydown', (e) => {
         if (e.key === ' ' || e.key === 'ArrowRight') { e.preventDefault(); playNextMove(); }
         if (e.key === 'r' || e.key === 'R') document.getElementById('btnResetBoard').click();
