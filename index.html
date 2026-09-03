@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IKI1UC · ANIME · HISTORY CHESS · WASSEROBERFLÄCHE · c+</title>
-    <!-- (Das gesamte CSS bleibt unverändert – ich lasse es der Kürze halber aus, es ist identisch mit deiner Version) -->
+    <title>IKI1UC · ANIME · HISTORY CHESS · c+ · EVOLVED</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -19,7 +18,7 @@
             align-items: center;
         }
         .container {
-            max-width: 1400px;
+            max-width: 1460px;
             width: 100%;
             background: rgba(10,10,20,0.6);
             border: 1px solid rgba(255,255,255,0.03);
@@ -36,7 +35,7 @@
             background: linear-gradient(90deg, #ffd700, #00ccff, #ff66ff, #00ff88);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         h1 small {
             font-size: 10px;
@@ -182,6 +181,7 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 1;
+            cursor: pointer;
         }
         .badge {
             display: inline-block;
@@ -207,6 +207,33 @@
             0% { opacity:0.8; transform:translateY(0) scale(1); }
             100% { opacity:0; transform:translateY(-80px) scale(0.5); }
         }
+
+        .cplus-slider {
+            width: 100%;
+            accent-color: #ff88ff;
+            background: #1a1a2a;
+            border-radius: 4px;
+            height: 4px;
+        }
+        .move-history-box {
+            max-height: 60px;
+            overflow-y: auto;
+            background: #0a0a0a;
+            padding: 4px;
+            border-radius: 4px;
+            font-size: 8px;
+            color: #66ccff;
+            border: 1px solid #111;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+        .move-history-box span {
+            background: #1a1a2a;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border-left: 2px solid #ffd700;
+        }
     </style>
 </head>
 <body>
@@ -214,15 +241,15 @@
 
     <h1>⭐ ANIME · HISTORY CHESS · WASSEROBERFLÄCHE</h1>
     <h1 style="font-size:11px;margin-top:-2px;background:none;-webkit-text-fill-color:#3d5a70;color:#3d5a70;font-weight:400">
-        81‑SLOT · GEO‑MATRIX · FUSION · c+ KORRIGIERT
+        c+ EVOLVED · KLICK-ZÜGE · HISTORIE · BEWEIS
     </h1>
 
     <div class="grid3">
 
-        <!-- LINKES PANEL: General Engine -->
+        <!-- LINKES PANEL: Engine -->
         <div>
             <div class="panel">
-                <h3>🎯 STEUERUNG</h3>
+                <h3>🎯 STEUERUNG · c+ GLOBAL</h3>
                 <div class="flex">
                     <button class="gold" id="btnGeneral">⚡ GENERAL RUN</button>
                     <button id="btnReset">⟲ RESET</button>
@@ -230,6 +257,11 @@
                     <button id="btnRandom">🎲 RANDOM</button>
                     <button id="btnPump">💨 PUMP</button>
                     <button id="btnLoop">♾ LOOP ALL</button>
+                </div>
+                <div style="margin-top:6px;">
+                    <label style="font-size:8px;color:#3d5a70;">c+ Multiplikator</label>
+                    <input type="range" id="cplusSlider" class="cplus-slider" min="0.2" max="2.0" step="0.1" value="1.0">
+                    <span id="cplusDisplay" style="font-size:10px;color:#ff88ff;float:right;">1.0</span>
                 </div>
             </div>
 
@@ -239,29 +271,17 @@
             </div>
 
             <div class="panel">
-                <h3>🔷 PUMP · STATIONEN</h3>
-                <div class="flex" style="font-size:8px;color:#5a7a8a;gap:2px">
-                    <span class="badge info">HY</span><span class="badge info">PE</span>
-                    <span class="badge info">PER</span><span class="badge info">DA</span>
-                    <span class="badge info">NE</span><span class="badge info">BEN</span>
-                    <span class="badge info">TRANS</span><span class="badge info">WARB</span>
-                    <span class="badge info">KANAL</span>
-                </div>
-            </div>
-
-            <div class="panel">
                 <h3>📊 STATUS</h3>
                 <div class="status-row">
                     <span>SCORE: <span id="scoreVal" style="color:#ffd700">0</span></span>
                     <span>PUMP: <span id="pumpVal" style="color:#6bffa9">0</span></span>
                     <span>QUOTE: <span id="quoteVal" style="color:#66ccff">0%</span></span>
                     <span>PREDICT: <span id="predictVal" style="color:#ffd700">IDLE</span></span>
-                    <span>c+: <span id="cplusDisplay" style="color:#ff88ff">1.0</span></span>
                 </div>
             </div>
 
             <div class="panel">
-                <h3>🧠 CPU PREDICTIVE · SPRUNG</h3>
+                <h3>🧠 CPU PREDICTIVE</h3>
                 <div class="flex" style="font-size:8px;gap:6px">
                     <span>STATUS: <span id="cpuStatus" style="color:#6bffa9">ACTIVE</span></span>
                     <span>BIAS: <span id="cpuBias" style="color:#ffd700">FORWARD</span></span>
@@ -275,7 +295,7 @@
             </div>
         </div>
 
-        <!-- MITTLERES PANEL: Schachbrett + AtmoBoard -->
+        <!-- MITTLERES PANEL: Schachbrett -->
         <div>
             <div class="panel">
                 <h3>♟️ CHESS · ATMOSPHERIC · 81‑SLOT</h3>
@@ -302,26 +322,17 @@
             <div class="panel">
                 <h3>📊 PREFETCH · PREDICT · CACHE</h3>
                 <div class="metric-grid">
-                    <div class="metric">
-                        <div class="label">📦 PREFETCH</div>
-                        <div class="value" id="prefetchCount">0</div>
-                    </div>
-                    <div class="metric">
-                        <div class="label">🧠 PREDICT</div>
-                        <div class="value gold" id="predictCount">0</div>
-                    </div>
-                    <div class="metric">
-                        <div class="label">💾 CACHE</div>
-                        <div class="value info" id="cacheCount">0</div>
-                    </div>
+                    <div class="metric"><div class="label">📦 PREFETCH</div><div class="value" id="prefetchCount">0</div></div>
+                    <div class="metric"><div class="label">🧠 PREDICT</div><div class="value gold" id="predictCount">0</div></div>
+                    <div class="metric"><div class="label">💾 CACHE</div><div class="value info" id="cacheCount">0</div></div>
                 </div>
             </div>
         </div>
 
-        <!-- RECHTES PANEL: Mystery + Fenster + Tüftel -->
+        <!-- RECHTES PANEL: Neu mit Historie -->
         <div>
             <div class="panel">
-                <h3>❓ MYSTERY ACHSEN · Q / D / F</h3>
+                <h3>❓ MYSTERY ACHSEN</h3>
                 <div class="flex" style="font-size:8px;gap:6px">
                     <span>Q: <span id="qVal" style="color:#66ccff">0</span></span>
                     <span>D: <span id="dVal" style="color:#6bffa9">0</span></span>
@@ -334,8 +345,10 @@
             </div>
 
             <div class="panel">
-                <h3>🔄 3×2 FENSTER · LIVE</h3>
-                <div id="liveWindow" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;"></div>
+                <h3>📜 ZUG-HISTORIE (BEWEIS)</h3>
+                <div class="move-history-box" id="moveHistoryDisplay">
+                    <span style="color:#3d5a70;">⏳ warte auf Züge...</span>
+                </div>
             </div>
 
             <div class="panel">
@@ -350,17 +363,12 @@
                             <option value="random">🎲 Zufall</option>
                             <option value="aggressive">🔥 Aggressiv</option>
                             <option value="defensive">🛡️ Defensiv</option>
-                            <option value="tactical">🧠 Taktisch</option>
+                            <option value="tactical" selected>🧠 Taktisch</option>
                         </select>
                     </div>
                     <div class="flex"><span style="width:70px;">💪 Stärke</span>
                         <input type="range" id="strengthSlider" min="1" max="5" value="3" step="1" style="flex:1;">
                         <span id="strengthDisplay" style="width:30px;">3</span>
-                    </div>
-                    <div class="flex" style="gap:4px;">
-                        <button class="sec" id="btnGood" style="flex:1;">👍 Gut</button>
-                        <button class="sec" id="btnBad" style="flex:1;">👎 Schlecht</button>
-                        <button id="btnLearn" style="flex:1;">🧬 Lernen</button>
                     </div>
                 </div>
             </div>
@@ -373,12 +381,17 @@
 
     </div>
 
-    <div class="footer"><span>♟️</span> ANIME · HISTORY CHESS · WASSEROBERFLÄCHE · <span>wieimmer4u</span></div>
+    <div class="footer"><span>♟️</span> ANIME · HISTORY CHESS · c+ EVOLVED · <span>wieimmer4u</span></div>
 </div>
 
 <script>
 // ================================================================
-// BAUSTEIN 0: ATMOSPHERIC BOARD · WASSEROBERFLÄCHE (81-Slot)
+// GLOBALE c+ VARIABLE
+// ================================================================
+window.CPLUS = 1.0;
+
+// ================================================================
+// BAUSTEIN 0: ATMOSPHERIC BOARD (WASSEROBERFLÄCHE)
 // ================================================================
 class AtmoBoard {
     constructor(canvas, boardSize = 8) {
@@ -395,26 +408,23 @@ class AtmoBoard {
         this.cplus = 1.0;
         this.initSlots();
         this.initLines();
+        this.resize(canvas.width, canvas.height);
     }
 
     initSlots() {
         this.slots = [];
         for (let i = 0; i < 81; i++) {
-            this.slots.push({
-                value: Math.sin(i * 0.2),
-                pulse: 0,
-                drift: 0,
-                angle: 0
-            });
+            this.slots.push({ value: Math.sin(i * 0.2), pulse: 0, drift: 0, angle: 0 });
         }
     }
 
     updateSlots(time) {
+        const c = this.cplus || 1;
         for (let i = 0; i < 81; i++) {
             const s = this.slots[i];
-            s.value = Math.sin(i * 0.2 + time * 0.001) * this.cplus;
-            s.pulse = Math.sin(time / 120 + i * 0.1) * this.cplus;
-            s.drift = Math.cos(time / 240 + i * 0.05) * this.cplus;
+            s.value = Math.sin(i * 0.2 + time * 0.001) * c;
+            s.pulse = Math.sin(time / 120 + i * 0.1) * c;
+            s.drift = Math.cos(time / 240 + i * 0.05) * c;
             s.angle = (time / 10 + i * 4) % 360;
         }
     }
@@ -434,9 +444,7 @@ class AtmoBoard {
         }
     }
 
-    setMood(mood) {
-        this.mood = mood;
-    }
+    setMood(mood) { this.mood = mood; }
 
     resize(width, height) {
         this.canvas.width = width;
@@ -451,33 +459,34 @@ class AtmoBoard {
         const h = this.canvas.height;
         const cs = this.cellSize;
         const t = Date.now();
+        const c = this.cplus || 1;
 
         this.updateSlots(t);
 
-        const pulseGlow = 0.05 + 0.08 * Math.sin(t / 500) * this.cplus;
+        const pulseGlow = 0.05 + 0.08 * Math.sin(t / 500) * c;
         ctx.fillStyle = `rgba(0,10,30,${Math.min(pulseGlow, 0.3)})`;
         ctx.fillRect(0, 0, w, h);
 
         for (const line of this.lines) {
             const p = (line.progress + t * line.speed * 0.001) % 1;
-            const waveY = Math.sin(p * Math.PI * 4 + t * 0.002) * 20 * this.cplus;
+            const waveY = Math.sin(p * Math.PI * 4 + t * 0.002) * 20 * c;
             const x1 = line.start.x + (line.end.x - line.start.x) * p;
             const y1 = line.start.y + (line.end.y - line.start.y) * p + waveY;
             const x2 = line.start.x + (line.end.x - line.start.x) * ((p + 0.15) % 1);
-            const y2 = line.start.y + (line.end.y - line.start.y) * ((p + 0.15) % 1) + Math.sin((p + 0.15) * Math.PI * 4 + t * 0.002) * 20 * this.cplus;
+            const y2 = line.start.y + (line.end.y - line.start.y) * ((p + 0.15) % 1) + Math.sin((p + 0.15) * Math.PI * 4 + t * 0.002) * 20 * c;
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.strokeStyle = line.color;
-            ctx.lineWidth = line.width * this.cplus;
+            ctx.lineWidth = line.width * c;
             ctx.stroke();
         }
 
         for (let r = 0; r < this.boardSize; r++) {
-            for (let c = 0; c < this.boardSize; c++) {
-                const idx = r * this.boardSize + c;
+            for (let c2 = 0; c2 < this.boardSize; c2++) {
+                const idx = r * this.boardSize + c2;
                 const slot = this.slots[idx] || { value: 0, pulse: 0, drift: 0, angle: 0 };
-                const x = c * cs;
+                const x = c2 * cs;
                 const y = r * cs;
 
                 const val = slot.value * 0.5 + 0.5;
@@ -487,10 +496,10 @@ class AtmoBoard {
                 const gCol = Math.floor(80 + val * 100 + pulse * 50 * horizontalWave);
                 const bCol = Math.floor(180 + val * 50 + pulse * 30 * horizontalWave);
 
-                ctx.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, ${0.12 * this.cplus})`;
+                ctx.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, ${0.12 * c})`;
                 ctx.fillRect(x, y, cs, cs);
 
-                const borderPulse = 0.3 + 0.7 * Math.sin(t / 300 + idx * 0.1 + x * 0.02) * this.cplus;
+                const borderPulse = 0.3 + 0.7 * Math.sin(t / 300 + idx * 0.1 + x * 0.02) * c;
                 const borderColor = `rgba(${rCol+60}, ${gCol+60}, ${bCol+60}, ${0.05 + 0.1 * Math.min(borderPulse, 1)})`;
                 ctx.strokeStyle = borderColor;
                 ctx.lineWidth = 0.5 + borderPulse * 0.5;
@@ -498,7 +507,7 @@ class AtmoBoard {
 
                 const angleRad = slot.angle * Math.PI / 180;
                 const dotX = x + cs/2 + Math.cos(angleRad) * cs * 0.3;
-                const dotY = y + cs/2 + Math.sin(angleRad) * cs * 0.3 + Math.sin(t * 0.002 + r * 0.5) * 2 * this.cplus;
+                const dotY = y + cs/2 + Math.sin(angleRad) * cs * 0.3 + Math.sin(t * 0.002 + r * 0.5) * 2 * c;
                 ctx.fillStyle = `rgba(255,255,255,${0.05 + 0.1 * borderPulse})`;
                 ctx.beginPath();
                 ctx.arc(dotX, dotY, 1.5 + borderPulse, 0, Math.PI * 2);
@@ -506,21 +515,21 @@ class AtmoBoard {
             }
         }
 
-        if (Math.random() > 0.94 / this.cplus) {
+        if (Math.random() > 0.94 / c) {
             const idx = Math.floor(Math.random() * (this.boardSize * this.boardSize));
             const slot = this.slots[idx] || { value: 0, pulse: 0, drift: 0 };
             const r = Math.floor(idx / this.boardSize);
-            const c = idx % this.boardSize;
-            const x = c * cs + cs / 2;
-            const y = r * cs + cs / 2 + Math.sin(t * 0.003 + r) * 5 * this.cplus;
+            const c2 = idx % this.boardSize;
+            const x = c2 * cs + cs / 2;
+            const y = r * cs + cs / 2 + Math.sin(t * 0.003 + r) * 5 * c;
             const angle = Math.random() * Math.PI * 2;
-            const speed = 0.3 + Math.random() * 1.5 * this.cplus;
+            const speed = 0.3 + Math.random() * 1.5 * c;
             this.particles.push({
                 x, y,
                 vx: Math.cos(angle) * speed + slot.drift * 0.3,
                 vy: Math.sin(angle) * speed + Math.sin(t * 0.002 + idx) * 0.3,
                 life: 1,
-                size: 1 + Math.random() * 3 * this.cplus,
+                size: 1 + Math.random() * 3 * c,
                 color: `rgba(${120 + slot.value * 60}, ${200 + slot.pulse * 40}, 255, ${0.2 + 0.3 * slot.pulse})`
             });
         }
@@ -528,7 +537,7 @@ class AtmoBoard {
         this.particles = this.particles.filter(p => {
             p.x += p.vx;
             p.y += p.vy;
-            p.life -= 0.003 * this.cplus;
+            p.life -= 0.003 * c;
             if (p.life <= 0) return false;
             ctx.fillStyle = p.color;
             ctx.globalAlpha = p.life;
@@ -565,13 +574,11 @@ class AtmoBoard {
         requestAnimationFrame(() => this.loop());
     }
 
-    stop() {
-        this.running = false;
-    }
+    stop() { this.running = false; }
 }
 
 // ================================================================
-// BAUSTEIN 1: GENERAL ENGINE (3‑Sterne) – c+ integriert
+// BAUSTEIN 1: GENERAL ENGINE
 // ================================================================
 const engine = {
     state: {
@@ -599,15 +606,15 @@ const engine = {
     sync() {
         const active = this.axles.filter(a=>a.active).length;
         const s = this.state;
+        const c = this.cplus || 1;
         s.root = active;
         s.achse = active>0 ? String.fromCharCode(64+active) : '0';
         s.tmp = 128 - s.pump;
         s.q = 3*active + (s.pump%7);
         s.d = 9*active + Math.floor(s.pump/4);
         s.f = 27*active + Math.floor(s.pump/2);
-        // cpuJump wird mit c+ multipliziert
         const rawCpuJump = active + Math.floor(s.pump/8);
-        s.cpuJump = Math.floor(rawCpuJump * this.cplus);
+        s.cpuJump = Math.floor(rawCpuJump * c);
         s.cpuBias = s.quote>0.6 ? 'FORWARD' : 'REVERSE';
         s.predict = (active>0 && s.quote>0.4) ? 'ACTIVE' : 'IDLE';
 
@@ -624,8 +631,7 @@ const engine = {
         ];
         s.prefetchCount++;
         if (s.tmp>0) s.cacheCount++;
-        // Score wird mit c+ skaliert
-        s.score = Math.floor(s.score * this.cplus);
+        s.score = Math.floor(s.score * c);
         this.render();
         this.syncChess();
     },
@@ -633,20 +639,19 @@ const engine = {
     syncChess() {
         const active = this.axles.filter(a=>a.active).length;
         const s = this.state;
+        const c = this.cplus || 1;
         const strength = Math.min(5, 1 + Math.floor(active/2) + Math.floor(s.pump/25));
         document.getElementById('strengthSlider').value = strength;
         document.getElementById('strengthDisplay').textContent = strength;
         const styleMap = { 'FORWARD':'aggressive', 'REVERSE':'defensive' };
         const style = s.cpuBias === 'FORWARD' ? 'aggressive' : (s.quote>0.5 ? 'tactical' : 'random');
         document.getElementById('styleSelect').value = style;
-        // Speed wird durch c+ geteilt (höheres c+ = schnellere Züge)
-        const speed = Math.max(100, Math.min(1500, (1500 - s.pump * 10) / this.cplus));
+        const speed = Math.max(100, Math.min(1500, (1500 - s.pump * 10) / c));
         document.getElementById('speedSlider').value = speed;
         document.getElementById('speedDisplay').textContent = Math.round(speed)+'ms';
         const moodMap = { 'ACTIVE':'neon', 'IDLE':'cool' };
-        if (window.atmo) atmo.setMood(moodMap[s.predict] || 'anime');
-        // c+ Anzeige aktualisieren
-        document.getElementById('cplusDisplay').textContent = this.cplus.toFixed(1);
+        if (window.atmo) window.atmo.setMood(moodMap[s.predict] || 'anime');
+        document.getElementById('cplusDisplay').textContent = c.toFixed(1);
     },
 
     render() {
@@ -802,15 +807,15 @@ c+: ${this.cplus.toFixed(1)}`;
     },
 
     init() {
-        this.log('⭐ 3‑STERNE · GENERAL · CHESS · ATMOSPHERIC · ANIME','ok');
-        this.log('📊 vereinheitlichte sync()-Logik für alle Aktionen','info');
+        this.log('⭐ c+ EVOLVED · GENERAL · CHESS · ATMOSPHERIC · ANIME','ok');
+        this.log('📊 Klick-Züge & Historie aktiviert','info');
         this.render();
         setInterval(() => { if (this.axles.some(a=>a.active)) this.pumpCycle(); }, 8000);
     }
 };
 
 // ================================================================
-// BAUSTEIN 2: SCHACHLOGIK (korrigiert – QUEEN FIXED)
+// BAUSTEIN 2: SCHACHLOGIK
 // ================================================================
 function inBounds(r,c){ return r>=0 && r<8 && c>=0 && c<8; }
 
@@ -870,7 +875,6 @@ function getPseudoLegalMoves(board, r, c) {
             break;
         }
         case 'queen': {
-            // Rook moves
             for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
                 for (let i=1; i<8; i++) {
                     const nr=r+dr*i, nc=c+dc*i;
@@ -880,7 +884,6 @@ function getPseudoLegalMoves(board, r, c) {
                     else { if (target.color===enemy) moves.push({r:nr,c:nc}); break; }
                 }
             }
-            // Bishop moves
             for (const [dr,dc] of [[1,1],[1,-1],[-1,1],[-1,-1]]) {
                 for (let i=1; i<8; i++) {
                     const nr=r+dr*i, nc=c+dc*i;
@@ -901,33 +904,8 @@ function getPseudoLegalMoves(board, r, c) {
     return moves;
 }
 
-function isLegalMove(board, from, to, color) {
-    const piece = board[from.r][from.c];
-    if (!piece || piece.color !== color) return false;
-    const moves = getPseudoLegalMoves(board, from.r, from.c);
-    return moves.some(m => m.r === to.r && m.c === to.c);
-}
-
-function selectMoveByStyle(board, moves, style, strength) {
-    if (moves.length===0) return null;
-    if (style==='random') return moves[Math.floor(Math.random()*moves.length)];
-    const scored = moves.map(m => {
-        let score=0;
-        if (board[m.to.r][m.to.c] && board[m.to.r][m.to.c].color !== 'white') score += 10;
-        const centerDist = Math.abs(m.to.r-3.5) + Math.abs(m.to.c-3.5);
-        score += (7-centerDist)*0.5;
-        if (style==='aggressive') score += Math.random()*5;
-        if (style==='defensive') score += (7-m.to.r)*0.5;
-        if (style==='tactical') score += Math.random()*8 + (moves.length*0.1);
-        return {...m, score};
-    });
-    scored.sort((a,b)=>b.score-a.score);
-    const topN = Math.min(moves.length, Math.ceil(1+(5-strength)*0.5));
-    return scored[Math.floor(Math.random()*topN)];
-}
-
 // ================================================================
-// BAUSTEIN 3: CHESS BOARD & RENDER
+// BAUSTEIN 3: CHESS BOARD & RENDER (mit Klick)
 // ================================================================
 let board = [];
 let currentColor = 'white';
@@ -938,6 +916,9 @@ let autoMode = false;
 let moveSpeed = 700;
 let animations = [];
 let autoTimer = null;
+let moveHistory = [];
+let selectedSquare = null;
+let validTargets = [];
 
 const canvas = document.getElementById('chessCanvas');
 const ctx = canvas.getContext('2d');
@@ -963,6 +944,10 @@ function initBoard() {
         board.push(row);
     }
     currentColor = 'white';
+    moveHistory = [];
+    selectedSquare = null;
+    validTargets = [];
+    updateHistoryDisplay();
 }
 
 function resizeCanvases() {
@@ -980,6 +965,31 @@ window.addEventListener('resize', resizeCanvases);
 function renderBoard() {
     const w=canvas.width, h=canvas.height, cs=w/8;
     ctx.clearRect(0,0,w,h);
+
+    // Schachbrett-Muster
+    for (let r=0; r<8; r++) {
+        for (let c=0; c<8; c++) {
+            const x=c*cs, y=r*cs;
+            ctx.fillStyle = (r+c)%2===0 ? '#1e2a3a' : '#0a0f18';
+            ctx.fillRect(x, y, cs, cs);
+        }
+    }
+
+    // Hervorhebungen (gültige Züge)
+    for (const t of validTargets) {
+        const x=t.c*cs, y=t.r*cs;
+        ctx.fillStyle = 'rgba(0,255,100,0.25)';
+        ctx.beginPath();
+        ctx.arc(x+cs/2, y+cs/2, cs*0.25, 0, Math.PI*2);
+        ctx.fill();
+    }
+    if (selectedSquare) {
+        const x=selectedSquare.c*cs, y=selectedSquare.r*cs;
+        ctx.fillStyle = 'rgba(255,215,0,0.2)';
+        ctx.fillRect(x, y, cs, cs);
+    }
+
+    // Figuren
     for (let r=0; r<8; r++) {
         for (let c=0; c<8; c++) {
             const x=c*cs, y=r*cs;
@@ -998,6 +1008,71 @@ function renderBoard() {
     }
 }
 
+// Klick-Interaktion
+canvas.addEventListener('click', (e) => {
+    if (autoMode) return;
+    if (!currentGame) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    const cs = canvas.width / 8;
+    const c = Math.floor(x / cs);
+    const r = Math.floor(y / cs);
+    if (!inBounds(r,c)) return;
+
+    const piece = board[r][c];
+
+    // Wenn bereits eine Figur ausgewählt ist und das Ziel gültig ist
+    if (selectedSquare) {
+        const isTarget = validTargets.some(t => t.r === r && t.c === c);
+        if (isTarget) {
+            executeManualMove(selectedSquare, {r,c});
+            selectedSquare = null;
+            validTargets = [];
+            renderBoard();
+            return;
+        }
+        // Sonst: Auswahl aufheben, wenn nicht eigene Figur
+        if (!piece || piece.color !== currentColor) {
+            selectedSquare = null;
+            validTargets = [];
+            renderBoard();
+            return;
+        }
+    }
+
+    // Eigene Figur auswählen
+    if (piece && piece.color === currentColor) {
+        selectedSquare = {r, c};
+        validTargets = getPseudoLegalMoves(board, r, c);
+        renderBoard();
+    }
+});
+
+function executeManualMove(from, to) {
+    const piece = board[from.r][from.c];
+    if (!piece) return;
+
+    // Prüfen ob legal (sicherheitshalber)
+    if (!validTargets.some(t => t.r === to.r && t.c === to.c)) return;
+
+    animateMove(from, to, piece, () => {
+        const notation = `${String.fromCharCode(97 + from.c)}${8 - from.r}→${String.fromCharCode(97 + to.c)}${8 - to.r}`;
+        moveHistory.push({ from, to, piece: piece.piece, notation, color: piece.color });
+        updateHistoryDisplay();
+
+        currentColor = currentColor === 'white' ? 'black' : 'white';
+        document.getElementById('turnIndicator').textContent = currentColor === 'white' ? 'Weiß' : 'Schwarz';
+        document.getElementById('manaIndicator').textContent = moveHistory.length;
+        renderBoard();
+        selectedSquare = null;
+        validTargets = [];
+    });
+}
+
 function animateMove(from, to, piece, callback) {
     const cs = canvas.width/8;
     const startX = from.c*cs + cs/2;
@@ -1005,24 +1080,25 @@ function animateMove(from, to, piece, callback) {
     const endX = to.c*cs + cs/2;
     const endY = to.r*cs + cs/2;
     const startTime = performance.now();
+    const c = window.CPLUS || 1;
+    const duration = moveSpeed / c;
 
-    // Partikel-Burst bei jedem Zug (c+ beeinflusst Speed und Größe)
+    // Partikel
     const cx=(startX+endX)/2, cy=(startY+endY)/2;
-    const cplus = atmo.cplus || 1;
     for (let i=0; i<15; i++) {
         const angle = Math.random()*Math.PI*2;
-        const speed = (0.5+Math.random()*2) * cplus;
+        const speed = (0.5+Math.random()*2) * c;
         atmo.particles.push({
             x:cx, y:cy,
             vx:Math.cos(angle)*speed,
             vy:Math.sin(angle)*speed,
             life:1,
-            size:(2+Math.random()*3) * cplus,
+            size:(2+Math.random()*3) * c,
             color:`rgba(150,220,255,${0.3+Math.random()*0.5})`
         });
     }
 
-    animations.push({ piece, from, to, startX, startY, endX, endY, startTime, duration:moveSpeed, callback });
+    animations.push({ piece, from, to, startX, startY, endX, endY, startTime, duration, callback });
     if (animations.length===1) renderLoop();
 }
 
@@ -1056,8 +1132,25 @@ function renderLoop() {
     else updateUI();
 }
 
+function updateUI() {
+    document.getElementById('moveCount').textContent = moveIndex;
+    document.getElementById('turnIndicator').textContent = currentColor === 'white' ? 'Weiß' : 'Schwarz';
+}
+
+function updateHistoryDisplay() {
+    const el = document.getElementById('moveHistoryDisplay');
+    if (moveHistory.length === 0) {
+        el.innerHTML = '<span style="color:#3d5a70;">⏳ warte auf Züge...</span>';
+        return;
+    }
+    el.innerHTML = moveHistory.map((m, i) =>
+        `<span style="border-left-color:${m.color==='white'?'#ffd700':'#ff6b8a'}" title="${m.notation}">${i+1}. ${m.piece}${m.notation}</span>`
+    ).join('');
+    el.scrollTop = el.scrollHeight;
+}
+
 // ================================================================
-// BAUSTEIN 4: CHESS GAME DATA & CONTROL (korrigiert)
+// BAUSTEIN 4: CHESS GAME DATA (Historische Spiele)
 // ================================================================
 function generateGames(n) {
     const g = [];
@@ -1099,59 +1192,44 @@ function loadGame(game) {
     currentGameMoves = game.moves.slice();
     moveIndex = 0;
     currentGame = game;
+    moveHistory = [];
+    selectedSquare = null;
+    validTargets = [];
     document.getElementById('totalMoves').textContent = game.moves.length;
     document.getElementById('moveCount').textContent = '0';
     document.getElementById('turnIndicator').textContent = 'Weiß';
     document.getElementById('manaIndicator').textContent = '0';
+    updateHistoryDisplay();
     renderBoard();
 }
 
-// KORRIGIERT: playNextMove mit from-Koordinate
+// ================================================================
+// BAUSTEIN 5: AUTO-MODUS (angepasst)
+// ================================================================
 function playNextMove() {
     if (!currentGame || moveIndex >= currentGameMoves.length) {
         if (autoMode) stopAuto();
         return;
     }
-
     const m = currentGameMoves[moveIndex];
-
-    // KORREKTE FROM-KOORDINATE aus JSON
-    const from = {
-        r: 8 - parseInt(m.from[1]),
-        c: m.from.charCodeAt(0) - 97
-    };
-
+    const from = { r: 8 - parseInt(m.from[1]), c: m.from.charCodeAt(0) - 97 };
     const piece = board[from.r]?.[from.c];
-
-    if (!piece) {
-        moveIndex++;
-        setTimeout(playNextMove, 100);
-        return;
-    }
-
-    const to = {
-        r: 8 - parseInt(m.to[1]),
-        c: m.to.charCodeAt(0) - 97
-    };
-
-    if (!inBounds(to.r, to.c)) {
-        moveIndex++;
-        setTimeout(playNextMove, 100);
-        return;
-    }
+    if (!piece) { moveIndex++; setTimeout(playNextMove, 100); return; }
+    const to = { r: 8 - parseInt(m.to[1]), c: m.to.charCodeAt(0) - 97 };
+    if (!inBounds(to.r, to.c)) { moveIndex++; setTimeout(playNextMove, 100); return; }
 
     animateMove(from, to, piece, () => {
+        const notation = `${String.fromCharCode(97 + from.c)}${8 - from.r}→${String.fromCharCode(97 + to.c)}${8 - to.r}`;
+        moveHistory.push({ from, to, piece: piece.piece, notation, color: piece.color });
+        updateHistoryDisplay();
         moveIndex++;
         document.getElementById('moveCount').textContent = moveIndex;
         document.getElementById('turnIndicator').textContent = moveIndex%2===0?'Weiß':'Schwarz';
         document.getElementById('manaIndicator').textContent = moveIndex;
-
         if (autoMode && moveIndex < currentGameMoves.length) {
             clearTimeout(autoTimer);
-            autoTimer = setTimeout(playNextMove, moveSpeed);
-        } else if (autoMode) {
-            stopAuto();
-        }
+            autoTimer = setTimeout(playNextMove, moveSpeed / (window.CPLUS || 1));
+        } else if (autoMode) { stopAuto(); }
         updateUI();
     });
 }
@@ -1162,61 +1240,41 @@ function stopAuto() {
     clearTimeout(autoTimer);
 }
 
-function updateUI() {
-    document.getElementById('moveCount').textContent = moveIndex;
-    document.getElementById('turnIndicator').textContent = currentColor === 'white' ? 'Weiß' : 'Schwarz';
-}
-
-// KORRIGIERT: spawnEffect mit korrekten Viewport-Koordinaten und c+ Skalierung
-function spawnEffect(x, y, type) {
-    const rect = canvas.getBoundingClientRect();
-    const cplus = atmo.cplus || 1;
-    const fx = rect.left + x * cplus;
-    const fy = rect.top + y * cplus;
-
-    const el = document.createElement('div');
-    const symbols = { ice:'❄️', water:'💧', fire:'🔥' };
-    el.textContent = symbols[type] || '✨';
-
-    el.style.cssText = `
-        position:fixed; pointer-events:none; font-size:${32 * cplus}px; z-index:9999;
-        left:${fx-16}px; top:${fy-16}px; opacity:0.8;
-        animation: floatUp 0.8s ease-out forwards;
-        will-change: transform, opacity;
-        transform: translateZ(0);
-    `;
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 800);
-}
-
 // ================================================================
-// ⭐ START – DOMContentLoaded (alles läuft hier)
+// START – DOMContentLoaded
 // ================================================================
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. Canvas initialisieren
+    // Canvas initialisieren
     resizeCanvases();
     window.addEventListener('resize', resizeCanvases);
 
-    // 2. Schachbrett initialisieren
+    // Schach
     initBoard();
     renderBoard();
     if (allGames.length) loadGame(allGames[0]);
 
-    // 3. AtmoBoard starten
+    // Atmo
     atmo.setMood('anime');
     atmo.start();
 
-    // 4. General Engine starten
+    // Engine
     engine.init();
     window.engine = engine;
 
-    // 5. c+ initialisieren
-    window.cplus = 1.0;
-    atmo.cplus = 1.0;
-    engine.cplus = 1.0;
+    // c+ Slider
+    document.getElementById('cplusSlider').addEventListener('input', function() {
+        const val = parseFloat(this.value);
+        window.CPLUS = val;
+        window.atmo.cplus = val;
+        engine.cplus = val;
+        document.getElementById('cplusDisplay').textContent = val.toFixed(1);
+        // Speed indirekt anpassen
+        const speed = parseInt(document.getElementById('speedSlider').value);
+        document.getElementById('speedDisplay').textContent = Math.round(speed / val)+'ms';
+        engine.sync();
+    });
 
-    // 6. Buttons binden
+    // Buttons
     document.getElementById('btnGeneral').addEventListener('click', ()=>engine.runGeneral());
     document.getElementById('btnReset').addEventListener('click', ()=>engine.resetAll());
     document.getElementById('btnToggleAll').addEventListener('click', ()=>engine.toggleAll());
@@ -1236,29 +1294,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('btnResetBoard').addEventListener('click', () => { stopAuto(); initBoard(); renderBoard(); });
 
-    // Speed
     document.getElementById('speedSlider').addEventListener('input', function() {
         moveSpeed = parseInt(this.value);
-        document.getElementById('speedDisplay').textContent = moveSpeed+'ms';
+        const c = window.CPLUS || 1;
+        document.getElementById('speedDisplay').textContent = Math.round(moveSpeed / c)+'ms';
     });
 
-    // Style -> Mood + c+ (c+ wird hier gesetzt und an alle Module weitergegeben)
     document.getElementById('styleSelect').addEventListener('change', function() {
         const style = this.value;
         const moodMap = { random:'anime', aggressive:'warm', defensive:'cool', tactical:'neon' };
         atmo.setMood(moodMap[style] || 'anime');
-
-        // c+ Kopplung an Stil
+        // c+ koppeln
         const cplusMap = { random:1.0, aggressive:1.3, defensive:0.8, tactical:1.0 };
-        window.cplus = cplusMap[style] || 1.0;
-        atmo.cplus = window.cplus;
-        engine.cplus = window.cplus;
-        // Speed wird indirekt durch engine.cplus in syncChess beeinflusst
+        const val = cplusMap[style] || 1.0;
+        document.getElementById('cplusSlider').value = val;
+        window.CPLUS = val;
+        window.atmo.cplus = val;
+        engine.cplus = val;
+        document.getElementById('cplusDisplay').textContent = val.toFixed(1);
         engine.sync();
-        updateUI();
     });
 
-    // Strength
     document.getElementById('strengthSlider').addEventListener('input', function() {
         document.getElementById('strengthDisplay').textContent = this.value;
     });
@@ -1272,7 +1328,19 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const [id, data] of Object.entries(effects)) {
         document.getElementById(id).addEventListener('click', () => {
             const rect = canvas.getBoundingClientRect();
-            spawnEffect(rect.width/2, rect.height/2, data.type);
+            const el = document.createElement('div');
+            const symbols = { ice:'❄️', water:'💧', fire:'🔥' };
+            el.textContent = symbols[data.type] || '✨';
+            const c = window.CPLUS || 1;
+            el.style.cssText = `
+                position:fixed; pointer-events:none; font-size:${32 * c}px; z-index:9999;
+                left:${rect.left + rect.width/2 - 16}px; top:${rect.top + rect.height/2 - 16}px; opacity:0.8;
+                animation: floatUp 0.8s ease-out forwards;
+                will-change: transform, opacity;
+                transform: translateZ(0);
+            `;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 800);
         });
     }
 
@@ -1284,7 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'g' || e.key === 'G') document.getElementById('btnGeneral').click();
     });
 
-    console.log('⭐ ANIME · HISTORY CHESS · WASSEROBERFLÄCHE · c+ KORRIGIERT geladen');
+    console.log('⭐ c+ EVOLVED · ANIME · HISTORY CHESS · KLICK-ZÜGE geladen');
     console.log('⌨️  Leertaste=Nächster Zug  r=Reset  a=Auto  g=General Run');
 });
 </script>
