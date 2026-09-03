@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IKI1UC · ANIME · HISTORY CHESS · WASSEROBERFLÄCHE</title>
-
+    <title>IKI1UC · ANIME · HISTORY CHESS · WASSEROBERFLÄCHE · c+</title>
+    <!-- (Das gesamte CSS bleibt unverändert – ich lasse es der Kürze halber aus, es ist identisch mit deiner Version) -->
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -214,7 +214,7 @@
 
     <h1>⭐ ANIME · HISTORY CHESS · WASSEROBERFLÄCHE</h1>
     <h1 style="font-size:11px;margin-top:-2px;background:none;-webkit-text-fill-color:#3d5a70;color:#3d5a70;font-weight:400">
-        81‑SLOT · GEO‑MATRIX · FUSION · c+
+        81‑SLOT · GEO‑MATRIX · FUSION · c+ KORRIGIERT
     </h1>
 
     <div class="grid3">
@@ -256,6 +256,7 @@
                     <span>PUMP: <span id="pumpVal" style="color:#6bffa9">0</span></span>
                     <span>QUOTE: <span id="quoteVal" style="color:#66ccff">0%</span></span>
                     <span>PREDICT: <span id="predictVal" style="color:#ffd700">IDLE</span></span>
+                    <span>c+: <span id="cplusDisplay" style="color:#ff88ff">1.0</span></span>
                 </div>
             </div>
 
@@ -570,7 +571,7 @@ class AtmoBoard {
 }
 
 // ================================================================
-// BAUSTEIN 1: GENERAL ENGINE (3‑Sterne)
+// BAUSTEIN 1: GENERAL ENGINE (3‑Sterne) – c+ integriert
 // ================================================================
 const engine = {
     state: {
@@ -604,7 +605,9 @@ const engine = {
         s.q = 3*active + (s.pump%7);
         s.d = 9*active + Math.floor(s.pump/4);
         s.f = 27*active + Math.floor(s.pump/2);
-        s.cpuJump = active + Math.floor(s.pump/8);
+        // cpuJump wird mit c+ multipliziert
+        const rawCpuJump = active + Math.floor(s.pump/8);
+        s.cpuJump = Math.floor(rawCpuJump * this.cplus);
         s.cpuBias = s.quote>0.6 ? 'FORWARD' : 'REVERSE';
         s.predict = (active>0 && s.quote>0.4) ? 'ACTIVE' : 'IDLE';
 
@@ -621,6 +624,8 @@ const engine = {
         ];
         s.prefetchCount++;
         if (s.tmp>0) s.cacheCount++;
+        // Score wird mit c+ skaliert
+        s.score = Math.floor(s.score * this.cplus);
         this.render();
         this.syncChess();
     },
@@ -634,11 +639,14 @@ const engine = {
         const styleMap = { 'FORWARD':'aggressive', 'REVERSE':'defensive' };
         const style = s.cpuBias === 'FORWARD' ? 'aggressive' : (s.quote>0.5 ? 'tactical' : 'random');
         document.getElementById('styleSelect').value = style;
-        const speed = Math.max(200, 1500 - s.pump * 10);
+        // Speed wird durch c+ geteilt (höheres c+ = schnellere Züge)
+        const speed = Math.max(100, Math.min(1500, (1500 - s.pump * 10) / this.cplus));
         document.getElementById('speedSlider').value = speed;
-        document.getElementById('speedDisplay').textContent = speed+'ms';
+        document.getElementById('speedDisplay').textContent = Math.round(speed)+'ms';
         const moodMap = { 'ACTIVE':'neon', 'IDLE':'cool' };
         if (window.atmo) atmo.setMood(moodMap[s.predict] || 'anime');
+        // c+ Anzeige aktualisieren
+        document.getElementById('cplusDisplay').textContent = this.cplus.toFixed(1);
     },
 
     render() {
@@ -722,7 +730,8 @@ ROOT          : ${s.root}
 ACHSE         : ${s.achse}
 TMP           : ${s.tmp}
 Q:${s.q}  D:${s.d}  F:${s.f}
-PREFETCH:${s.prefetchCount}  PREDICT:${s.predictCount}  CACHE:${s.cacheCount}`;
+PREFETCH:${s.prefetchCount}  PREDICT:${s.predictCount}  CACHE:${s.cacheCount}
+c+: ${this.cplus.toFixed(1)}`;
     },
 
     toggleAxle(i) {
@@ -785,6 +794,8 @@ PREFETCH:${s.prefetchCount}  PREDICT:${s.predictCount}  CACHE:${s.cacheCount}`;
         });
         this.memory = { hits:0, misses:0, slides:[], jumps:[] };
         this.liveWindow = [['3','9'],['27','81'],['243','729']];
+        this.cplus = 1.0;
+        document.getElementById('cplusDisplay').textContent = '1.0';
         document.getElementById('consoleLog').innerHTML = '⏳ system zurückgesetzt...';
         this.log('⟲ RESET · komplett neu','ok');
         this.render();
@@ -995,17 +1006,18 @@ function animateMove(from, to, piece, callback) {
     const endY = to.r*cs + cs/2;
     const startTime = performance.now();
 
-    // Partikel-Burst bei jedem Zug
+    // Partikel-Burst bei jedem Zug (c+ beeinflusst Speed und Größe)
     const cx=(startX+endX)/2, cy=(startY+endY)/2;
+    const cplus = atmo.cplus || 1;
     for (let i=0; i<15; i++) {
         const angle = Math.random()*Math.PI*2;
-        const speed = 0.5+Math.random()*2 * atmo.cplus;
+        const speed = (0.5+Math.random()*2) * cplus;
         atmo.particles.push({
             x:cx, y:cy,
             vx:Math.cos(angle)*speed,
             vy:Math.sin(angle)*speed,
             life:1,
-            size:2+Math.random()*3 * atmo.cplus,
+            size:(2+Math.random()*3) * cplus,
             color:`rgba(150,220,255,${0.3+Math.random()*0.5})`
         });
     }
@@ -1155,18 +1167,19 @@ function updateUI() {
     document.getElementById('turnIndicator').textContent = currentColor === 'white' ? 'Weiß' : 'Schwarz';
 }
 
-// KORRIGIERT: spawnEffect mit korrekten Viewport-Koordinaten
+// KORRIGIERT: spawnEffect mit korrekten Viewport-Koordinaten und c+ Skalierung
 function spawnEffect(x, y, type) {
     const rect = canvas.getBoundingClientRect();
-    const fx = rect.left + x * (atmo.cplus || 1);
-    const fy = rect.top + y * (atmo.cplus || 1);
+    const cplus = atmo.cplus || 1;
+    const fx = rect.left + x * cplus;
+    const fy = rect.top + y * cplus;
 
     const el = document.createElement('div');
     const symbols = { ice:'❄️', water:'💧', fire:'🔥' };
     el.textContent = symbols[type] || '✨';
 
     el.style.cssText = `
-        position:fixed; pointer-events:none; font-size:32px; z-index:9999;
+        position:fixed; pointer-events:none; font-size:${32 * cplus}px; z-index:9999;
         left:${fx-16}px; top:${fy-16}px; opacity:0.8;
         animation: floatUp 0.8s ease-out forwards;
         will-change: transform, opacity;
@@ -1229,7 +1242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('speedDisplay').textContent = moveSpeed+'ms';
     });
 
-    // Style -> Mood + c+
+    // Style -> Mood + c+ (c+ wird hier gesetzt und an alle Module weitergegeben)
     document.getElementById('styleSelect').addEventListener('change', function() {
         const style = this.value;
         const moodMap = { random:'anime', aggressive:'warm', defensive:'cool', tactical:'neon' };
@@ -1240,6 +1253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.cplus = cplusMap[style] || 1.0;
         atmo.cplus = window.cplus;
         engine.cplus = window.cplus;
+        // Speed wird indirekt durch engine.cplus in syncChess beeinflusst
+        engine.sync();
         updateUI();
     });
 
@@ -1269,7 +1284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'g' || e.key === 'G') document.getElementById('btnGeneral').click();
     });
 
-    console.log('⭐ ANIME · HISTORY CHESS · WASSEROBERFLÄCHE geladen');
+    console.log('⭐ ANIME · HISTORY CHESS · WASSEROBERFLÄCHE · c+ KORRIGIERT geladen');
     console.log('⌨️  Leertaste=Nächster Zug  r=Reset  a=Auto  g=General Run');
 });
 </script>
