@@ -1,196 +1,114 @@
-🧩 1. AtmoBoard‑Initialisierung MUSS in DOMContentLoaded
-Du hast aktuell:
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IKI1UC · ANIME · HISTORY CHESS</title>
+<style>
+body {
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Arial, sans-serif;
+  overflow:hidden;
+}
+#boardWrap {
+  position:relative;
+  width:100vw;
+  height:100vh;
+}
+#atmoCanvas, #chessCanvas {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+}
+#atmoCanvas { z-index:0; pointer-events:none; }
+#chessCanvas { z-index:1; }
+</style>
+</head>
+<body>
+<div id="boardWrap">
+<canvas id="atmoCanvas"></canvas>
+<canvas id="chessCanvas"></canvas>
+</div>
 
-js
-const atmo = new AtmoBoard(document.getElementById('atmoCanvas'), 8);
-atmo.resize(canvas.width, canvas.height);
-atmo.setMood('neon');
+<script>
+// -------------------------------------------------------------
+// 1) CANVAS PIXEL-GRÖSSE SETZEN (WICHTIG!)
+// -------------------------------------------------------------
+const atmoCanvas = document.getElementById("atmoCanvas");
+const chessCanvas = document.getElementById("chessCanvas");
+
+function resizeCanvases() {
+  atmoCanvas.width = atmoCanvas.clientWidth;
+  atmoCanvas.height = atmoCanvas.clientHeight;
+  chessCanvas.width = chessCanvas.clientWidth;
+  chessCanvas.height = chessCanvas.clientHeight;
+}
+resizeCanvases();
+window.addEventListener("resize", resizeCanvases);
+
+// -------------------------------------------------------------
+// 2) MINI-ATMOBOARD (ANIME)
+// -------------------------------------------------------------
+class AtmoBoard {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.running = true;
+    this.t = 0;
+  }
+  draw() {
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    this.t += 0.02;
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,w,h);
+
+    // Neon-Pulse
+    for (let i=0; i<80; i++) {
+      const x = (Math.sin(this.t + i)*0.5+0.5)*w;
+      const y = (Math.cos(this.t*0.7 + i)*0.5+0.5)*h;
+      const r = 2 + Math.sin(this.t+i)*3;
+      ctx.fillStyle = `rgba(0,150,255,0.25)`;
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+  loop() {
+    if (!this.running) return;
+    this.draw();
+    requestAnimationFrame(()=>this.loop());
+  }
+  start() { this.loop(); }
+}
+const atmo = new AtmoBoard(atmoCanvas);
 atmo.start();
-Außerhalb von DOMContentLoaded → ❌
-Das führt zu:
 
-atmoCanvas ist noch nicht im DOM
-
-resizeCanvas ist noch nicht ausgeführt
-
-canvas.width ist 0
-
-AtmoBoard startet mit falscher Größe
-
-Partikel fliegen falsch
-
-Linien sind verzogen
-
-✔ Verbesserung:
-js
-document.addEventListener('DOMContentLoaded', () => {
-    resizeCanvas();
-
-    const atmo = new AtmoBoard(document.getElementById('atmoCanvas'), 8);
-    atmo.resize(canvas.width, canvas.height);
-    atmo.setMood('neon');
-    atmo.start();
-
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        atmo.resize(canvas.width, canvas.height);
-    });
-});
-🧩 2. spawnEffect – Positionierung fixen
-Aktuell:
-
-js
-left:${x-16}px; top:${y-16}px;
-Das ist falsch, weil:
-
-canvas liegt im Container
-
-x,y sind Canvas‑Koordinaten
-
-spawnEffect nutzt Viewport‑Koordinaten
-
-Effekt erscheint verschoben oder außerhalb des Boards
-
-✔ Verbesserung:
-js
-const rect = canvas.getBoundingClientRect();
-const fx = rect.left + x;
-const fy = rect.top + y;
-Dann:
-
-js
-left:${fx-16}px; top:${fy-16}px;
-🧩 3. playNextMove – Figurensuche verbessern
-Aktuell suchst du Figuren so:
-
-js
-if (board[r][c] && board[r][c].piece === m.piece)
-Das ist unsicher, weil:
-
-mehrere Bauern haben „♟“
-
-mehrere Springer haben „♘“
-
-du nimmst den ersten, nicht den richtigen
-
-Replay wird falsch
-
-Züge springen wild
-
-Figuren teleportieren
-
-✔ Verbesserung:
-Nutze from‑Koordinate aus JSON:
-
-js
-const from = {
-    r: 8 - parseInt(m.from[1]),
-    c: m.from.charCodeAt(0) - 97
-};
-const piece = board[from.r][from.c];
-Damit ist jeder Zug 100% korrekt.
-
-🧩 4. updateUI – echte Funktion einbauen
-Aktuell:
-
-js
-function updateUI() { }
-Das ist leer → ❌
-
-✔ Verbesserung:
-js
-function updateUI() {
-    document.getElementById('moveCount').textContent = moveIndex;
-    document.getElementById('turnIndicator').textContent =
-        currentColor === 'white' ? 'Weiß' : 'Schwarz';
+// -------------------------------------------------------------
+// 3) MINI-SCHACHBRETT (sichtbar)
+// -------------------------------------------------------------
+function renderChess() {
+  const ctx = chessCanvas.getContext("2d");
+  const w = chessCanvas.width;
+  const cs = w/8;
+  ctx.clearRect(0,0,w,w);
+  for (let r=0; r<8; r++) {
+    for (let c=0; c<8; c++) {
+      ctx.fillStyle = (r+c)%2===0 ? "#eee" : "#444";
+      ctx.fillRect(c*cs, r*cs, cs, cs);
+    }
+  }
+  ctx.fillStyle = "#000";
+  ctx.font = `${cs*0.7}px Arial`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("♟", cs*4, cs*4);
 }
-🧩 5. Auto‑Modus stabilisieren
-Aktuell:
-
-js
-if (autoMode && moveIndex < currentGameMoves.length) {
-    setTimeout(playNextMove, moveSpeed);
-}
-Wenn der User schnell klickt → Race Condition.
-
-✔ Verbesserung:
-js
-if (autoMode) {
-    clearTimeout(autoTimer);
-    autoTimer = setTimeout(playNextMove, moveSpeed);
-}
-🧩 6. KI‑Stil‑Wechsel mit AtmoBoard verbinden
-Aktuell:
-
-js
-document.getElementById('styleSelect').onchange = function() {
-    currentStyle = this.value;
-};
-✔ Verbesserung:
-js
-document.getElementById('styleSelect').onchange = function() {
-    currentStyle = this.value;
-    atmo.setMood(
-        currentStyle === 'aggressive' ? 'warm' :
-        currentStyle === 'defensive' ? 'cool' :
-        currentStyle === 'tactical'  ? 'neon' :
-        'golden'
-    );
-};
-🧩 7. spawnEffect – GPU‑Optimierung
-Aktuell:
-
-js
-animation: floatUp 0.8s ease-out forwards;
-✔ Verbesserung:
-css
-will-change: transform, opacity;
-transform: translateZ(0);
-→ flüssiger
-→ kein Ruckeln
-→ keine Frame‑Drops
-
-🧩 8. Canvas‑Resize verbessern
-Aktuell:
-
-js
-const s = Math.min(rect.width, rect.height, 480);
-✔ Verbesserung:
-js
-const s = Math.floor(Math.min(rect.width, rect.height));
-→ Pixel‑perfekt
-→ keine Subpixel‑Artefakte
-→ Figuren stehen exakt im Grid
-
-🧩 9. renderBoard – Glow optimieren
-Aktuell:
-
-js
-ctx.shadowBlur = 6;
-✔ Verbesserung:
-js
-ctx.shadowBlur = cs * 0.1;
-→ Glow skaliert mit Brettgröße
-→ sieht auf großen Screens besser aus
-
-🧩 10. animateMove – Partikel‑Burst einbauen
-Aktuell fehlt:
-
-js
-spawnMoveBurst(from, to);
-✔ Verbesserung:
-js
-spawnMoveBurst(from, to);
-animateMove(from, to, piece, callback);
-⭐ run3 · Zusammenfassung (PRO‑Level)
-Bereich	Verbesserung
-AtmoBoard	Start in DOMContentLoaded + Resize‑Sync
-spawnEffect	Canvas‑Koordinaten korrekt
-playNextMove	Figurensuche über from‑Koordinate
-updateUI	echte UI‑Aktualisierung
-Auto‑Modus	Timer‑Fix
-KI‑Stil	Mood‑Wechsel integriert
-spawnEffect	GPU‑Optimierung
-resizeCanvas	Pixel‑perfekt
-renderBoard	Glow skaliert
-animateMove	Partikel‑Burst
+renderChess();
+</script>
+</body>
+</html>
