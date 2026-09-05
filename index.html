@@ -1,250 +1,249 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXIOM · 6D Nano-Atom Hologramm</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #020208;
-            color: #00ffff;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXIOM · 6D Nano-Atom Hologramm</title>
 
-        #hud {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            z-index: 10;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-            letter-spacing: 4px;
-            pointer-events: none;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #020208;
+        color: #00ffff;
+        font-family: 'Courier New', monospace;
+        overflow: hidden;
+    }
 
-        #hud h1 {
-            font-size: 24px;
-            margin: 0;
-            color: #ffcc00;
-            border-bottom: 2px solid #ffcc00;
-            padding-bottom: 10px;
-        }
+    #hud {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        z-index: 10;
+        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        letter-spacing: 4px;
+        pointer-events: none;
+    }
 
-        #hud p {
-            font-size: 12px;
-            margin-top: 5px;
-            color: #00ffff;
-            opacity: 0.8;
-        }
+    #hud h1 {
+        font-size: 24px;
+        margin: 0;
+        color: #ffcc00;
+        border-bottom: 2px solid #ffcc00;
+        padding-bottom: 10px;
+    }
 
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-        }
+    #hud p {
+        font-size: 12px;
+        margin-top: 5px;
+        color: #00ffff;
+        opacity: 0.8;
+    }
 
-        #sidebar {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 15, 15, 0.7);
-            border: 1px solid #00ffff;
-            padding: 15px;
-            font-size: 12px;
-            width: 250px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            z-index: 10;
-        }
+    canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+    }
 
-        #sidebar h3 {
-            margin-top: 0;
-            color: #ffcc00;
-            border-bottom: 1px solid #ffcc00;
-            padding-bottom: 5px;
-        }
+    #sidebar {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 15, 15, 0.7);
+        border: 1px solid #00ffff;
+        padding: 15px;
+        font-size: 12px;
+        width: 250px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+    }
 
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            border-bottom: 1px dashed rgba(0, 255, 255, 0.2);
-            padding-bottom: 4px;
-        }
+    #sidebar h3 {
+        margin-top: 0;
+        color: #ffcc00;
+        border-bottom: 1px solid #ffcc00;
+        padding-bottom: 5px;
+    }
 
-        .stat-label {
-            color: #aaa;
-        }
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        border-bottom: 1px dashed rgba(0, 255, 255, 0.2);
+        padding-bottom: 4px;
+    }
 
-        .stat-value {
-            color: #00ffff;
-        }
-        
-        .aura-text {
-            color: #ffcc00;
-            font-style: italic;
-            margin-top: 15px;
-            font-size: 11px;
-            text-align: justify;
-            animation: pulseText 3s infinite;
-        }
+    .stat-label {
+        color: #aaa;
+    }
 
-        @keyframes pulseText {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-    </style>
+    .stat-value {
+        color: #00ffff;
+    }
+
+    .aura-text {
+        color: #ffcc00;
+        font-style: italic;
+        margin-top: 15px;
+        font-size: 11px;
+        text-align: justify;
+        animation: pulseText 3s infinite;
+    }
+
+    @keyframes pulseText {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+</style>
 </head>
+
 <body>
 
-    <div id="hud">
-        <h1>AXIOM · 6D NANO-ATOM HOLOGRAMM</h1>
-        <p>SYN-CORE AKTIV · QUANTUM FLUKTUIERUNG · MANA AURA: ATMEND</p>
+<div id="hud">
+    <h1>AXIOM · 6D NANO-ATOM HOLOGRAMM</h1>
+    <p>SYN-CORE AKTIV · QUANTUM FLUKTUIERUNG · MANA AURA: ATMEND</p>
+</div>
+
+<div id="sidebar">
+    <h3>SYSTEM TELEMETRIE</h3>
+
+    <div class="stat-row">
+        <span class="stat-label">SYN-Konnektivität:</span>
+        <span class="stat-value" id="syn">98.4%</span>
     </div>
 
-    <div id="sidebar">
-        <h3>SYSTEM TELEMETRIE</h3>
-        <div class="stat-row">
-            <span class="stat-label">SYN-Konnektivität:</span>
-            <span class="stat-value" id="syn">98.4%</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Quanten-Dekohärenz:</span>
-            <span class="stat-value" id="quant">0.02%</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Nano-Index (6D):</span>
-            <span class="stat-value" id="index">Reaktiv</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Mana-Aura-Puls:</span>
-            <span class="stat-value" id="aura">Atmend</span>
-        </div>
-        
-        <div class="aura-text">
-            "Die narrative Mana-Aura verschmilzt mit dem Gasnebel. Synthetische Intelligenz (SYN) interpretiert die Quantenfluktuationen des Kerns. Das Atom atmet im 6D-Index."
-        </div>
+    <div class="stat-row">
+        <span class="stat-label">Quanten-Dekohärenz:</span>
+        <span class="stat-value" id="quant">0.02%</span>
     </div>
 
-    <canvas id="canvas"></canvas>
+    <div class="stat-row">
+        <span class="stat-label">Nano-Index (6D):</span>
+        <span class="stat-value" id="index">Reaktiv</span>
+    </div>
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+    <div class="stat-row">
+        <span class="stat-label">Mana-Aura-Puls:</span>
+        <span class="stat-value" id="aura">Atmend</span>
+    </div>
 
-        let width, height;
-        let particles = [];
-        let nucleus = { x: 0, y: 0, z: 0 };
+    <div class="aura-text">
+        "Die narrative Mana-Aura verschmilzt mit dem Gasnebel. SYN interpretiert die Quantenfluktuationen des Kerns. Das Atom atmet im 6D-Index."
+    </div>
+</div>
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            nucleus.x = width / 2;
-            nucleus.y = height / 2;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+<canvas id="canvas"></canvas>
 
-        // Partikel erstellen (Gasnebel)
-        const PARTICLE_COUNT = 3000;
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            particles.push({
-                // 6D-Koordinaten simulieren wir als 3D-Position im Raum + Farbe/Geschwindigkeit
-                x: (Math.random() - 0.5) * 2,
-                y: (Math.random() - 0.5) * 2,
-                z: (Math.random() - 0.5) * 2,
-                vx: (Math.random() - 0.5) * 0.002,
-                vy: (Math.random() - 0.5) * 0.002,
-                vz: (Math.random() - 0.5) * 0.002,
-                size: Math.random() * 2 + 0.5,
-                color: Math.random() > 0.5 ? 'rgba(0, 255, 255,' : 'rgba(255, 204, 0,'
-            });
-        }
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-        function drawNebula() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // Hintergrund-Verlauf für Tiefe (Gasnebel)
-            let gradient = ctx.createRadialGradient(nucleus.x, nucleus.y, 0, nucleus.x, nucleus.y, 500);
-            gradient.addColorStop(0, 'rgba(0, 50, 100, 0.5)');
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, width, height);
+let width, height;
+let particles = [];
+let nucleus = { x: 0, y: 0, z: 0 };
 
-            // Partikel rendern
-            particles.forEach(p => {
-                // Bewegung (Nano-Atom Simulation)
-                p.x += p.vx;
-                p.y += p.vy;
-                p.z += p.vz;
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    nucleus.x = width / 2;
+    nucleus.y = height / 2;
+}
+window.addEventListener('resize', resize);
+resize();
 
-                // Gravitation zum Kern (Atem-Zyklus)
-                const dx = p.x - nucleus.x;
-                const dy = p.y - nucleus.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                
-                // Sog Richtung Kern
-                const gravity = 0.0005 * Math.sin(Date.now() * 0.001); // Atmender Effekt
-                p.vx -= (dx / dist) * gravity;
-                p.vy -= (dy / dist) * gravity;
+// Partikel erstellen (Gasnebel)
+const PARTICLE_COUNT = 3000;
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+        x: (Math.random() - 0.5) * 2,
+        y: (Math.random() - 0.5) * 2,
+        z: (Math.random() - 0.5) * 2,
+        vx: (Math.random() - 0.5) * 0.002,
+        vy: (Math.random() - 0.5) * 0.002,
+        vz: (Math.random() - 0.5) * 0.002,
+        size: Math.random() * 2 + 0.5,
+        color: Math.random() > 0.5 ? 'rgba(0, 255, 255,' : 'rgba(255, 204, 0,'
+    });
+}
 
-                // Perspektivische Projektion (3D auf 2D)
-                const scale = 400 / (400 + p.z);
-                const screenX = p.x * scale;
-                const screenY = p.y * scale;
+function drawNebula() {
+    ctx.clearRect(0, 0, width, height);
 
-                // Zufällige Partikel entfernen, wenn zu weit weg (um Energie zu sparen)
-                if (dist > 600) {
-                    p.x = nucleus.x + (Math.random() - 0.5) * 600;
-                    p.y = nucleus.y + (Math.random() - 0.5) * 600;
-                }
+    // Hintergrund-Verlauf (tiefer, weicher)
+    let gradient = ctx.createRadialGradient(nucleus.x, nucleus.y, 0, nucleus.x, nucleus.y, 600);
+    gradient.addColorStop(0, 'rgba(0, 80, 120, 0.6)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
 
-                ctx.fillStyle = p.color + (0.2 + (0.8 * scale)) + ')'; // Transparenz variiert mit Tiefe
-                ctx.beginPath();
-                ctx.arc(screenX, screenY, p.size * scale, 0, Math.PI * 2);
-                ctx.fill();
-            });
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
 
-            // Aura-Ringe (Mana-Aura)
-            ctx.strokeStyle = 'rgba(255, 204, 0, 0.3)';
-            ctx.lineWidth = 1;
-            for(let i = 0; i < 3; i++) {
-                ctx.beginPath();
-                let radius = 150 + i * 50 + Math.sin(Date.now() * 0.002 + i) * 20; // Atmen
-                ctx.arc(nucleus.x, nucleus.y, radius, 0, Math.PI * 2);
-                ctx.stroke();
-            }
+        const dx = p.x - nucleus.x;
+        const dy = p.y - nucleus.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-            // Kern (Nano-Atom)
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = "cyan";
-            ctx.fillStyle = "rgba(0, 255, 255, 0.8)";
-            ctx.beginPath();
-            ctx.arc(nucleus.x, nucleus.y, 5 + Math.sin(Date.now() * 0.01) * 2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
+        const gravity = 0.0005 * Math.sin(Date.now() * 0.001);
+        p.vx -= (dx / dist) * gravity;
+        p.vy -= (dy / dist) * gravity;
+
+        const scale = 400 / (400 + p.z);
+        const screenX = p.x * scale;
+        const screenY = p.y * scale;
+
+        if (dist > 600) {
+            p.x = nucleus.x + (Math.random() - 0.5) * 600;
+            p.y = nucleus.y + (Math.random() - 0.5) * 600;
         }
 
-        // UI Werte aktualisieren (Simulation)
-        function updateStats() {
-            const synVal = (98.2 + Math.random() * 0.5).toFixed(1);
-            const quantVal = (0.01 + Math.random() * 0.02).toFixed(2);
-            document.getElementById('syn').innerText = synVal + "%";
-            document.getElementById('quant').innerText = quantVal + "%";
-        }
+        ctx.fillStyle = p.color + (0.2 + (0.8 * scale)) + ')';
+        ctx.beginPath();
+        ctx.arc(screenX, screenY, p.size * scale, 0, Math.PI * 2);
+        ctx.fill();
+    });
 
-        function animate() {
-            drawNebula();
-            updateStats();
-            requestAnimationFrame(animate);
-        }
+    // Mana-Aura Ringe
+    ctx.strokeStyle = 'rgba(255, 204, 0, 0.3)';
+    ctx.lineWidth = 1;
+    for(let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        let radius = 150 + i * 50 + Math.sin(Date.now() * 0.002 + i) * 20;
+        ctx.arc(nucleus.x, nucleus.y, radius, 0, Math.PI * 2);
+        ctx.stroke();
+    }
 
-        animate();
-    </script>
+    // Nano-Atom Kern
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = "cyan";
+    ctx.fillStyle = "rgba(0, 255, 255, 0.8)";
+    ctx.beginPath();
+    ctx.arc(nucleus.x, nucleus.y, 5 + Math.sin(Date.now() * 0.01) * 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+}
+
+function updateStats() {
+    const synVal = (98.2 + Math.random() * 0.5).toFixed(1);
+    const quantVal = (0.01 + Math.random() * 0.02).toFixed(2);
+    document.getElementById('syn').innerText = synVal + "%";
+    document.getElementById('quant').innerText = quantVal + "%";
+}
+
+function animate() {
+    drawNebula();
+    updateStats();
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
 </body>
 </html>
