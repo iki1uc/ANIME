@@ -1,247 +1,130 @@
-RUN‑Modus bleibt aktiv.
-Ich baue dir jetzt eine PATCH‑index.html, die:
+// ============================================================
+// RITH_WERT ENGINE · 4 als lebendige Achse
+// ============================================================
 
-3, 9, 27, 81, 729 als tauschbare Achsen hat
+// ── KONSTANTEN ──
+const RITH_DEFAULT = 4;
 
-Alle Axiome integriert (d, e, i, n, o, r, s, w, u, system)
-
-Selbst‑tragend ist (keine externen Abhängigkeiten)
-
-Algorithmus‑basiert arbeitet
-
-Austauschbar ist (jede Achse kann durch jede andere ersetzt werden)
-
-Boot‑CD‑Style behält
-
-iki1uc‑voll ist
-
-⭐ PATCH · index.html (3·9·27·81·729 · Axiome · Tauschbar)
-html
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PATCH · AXIOME · 3·9·27·81·729</title>
-
-<style>
-body{background:#000;color:#0f0;font-family:monospace;padding:16px;margin:0}
-pre{font-size:13px;line-height:1.5;white-space:pre-wrap}
-.blink{animation:blink 1s step-end infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-input,select{background:#000;color:#0f0;border:1px solid #0f0;padding:4px 8px;font-family:monospace}
-input{width:80px}
-select{width:100px}
-button{background:#0f0;color:#000;border:none;padding:6px 14px;font-weight:bold;cursor:pointer;font-family:monospace}
-button:hover{background:#0ff}
-.flex{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
-</style>
-</head>
-<body>
-
-<pre id="idblock">
-╔═══════════════════════════════════════════════════════════╗
-║  iki1uc · PATCH · AXIOME · 3·9·27·81·729               ║
-╠═══════════════════════════════════════════════════════════╣
-║  ID.MODE     = PATCH                                    ║
-║  ID.CORE     = 729                                      ║
-║  ID.ROLE     = AXIOM‑ROOT                               ║
-║  ID.STATE    = INIT                                     ║
-║  ID.READY    = 0%                                       ║
-║  ID.RUNTIME  = AXIOM + ALGORITHM                        ║
-║  ID.WHIRL    = WHIRL_AXIOM                              ║
-╚═══════════════════════════════════════════════════════════╝
-
-[PATCH] Axiome geladen. Warte auf Algorithmus...
-</pre>
-
-<div class="flex">
-    <label style="color:#0f0">ACHSE:</label>
-    <select id="axisSelect">
-        <option value="3">3 · UR</option>
-        <option value="9">9 · KERN</option>
-        <option value="27">27 · ORBIT</option>
-        <option value="81" selected>81 · RAUM</option>
-        <option value="729">729 · LEBEN</option>
-    </select>
-
-    <label style="color:#0f0">WERT:</label>
-    <input id="val" type="number" value="81">
-
-    <label style="color:#0f0">AXIOM:</label>
-    <select id="axiomSelect">
-        <option value="d">d · Dimension</option>
-        <option value="e" selected>e · Energie</option>
-        <option value="i">i · Identität</option>
-        <option value="n">n · Narrativ</option>
-        <option value="o">o · Orbit</option>
-        <option value="r">r · Raum</option>
-        <option value="s">s · System</option>
-        <option value="w">w · Welle</option>
-        <option value="u">u · Universum</option>
-    </select>
-
-    <button onclick="run()">▶ RUN</button>
-    <button onclick="reset()">⟲ RESET</button>
-    <button onclick="swap()">🔄 SWAP</button>
-</div>
-
-<pre id="out" style="margin-top:12px;color:#0a0">⏳ Bereit...</pre>
-
-<pre id="axiomOut" style="margin-top:8px;color:#444;font-size:11px">⏳ Axiom‑Output wartet...</pre>
-
-<script>
-// ─── PATCH · AXIOME · ALGORITHMUS ──────────────────────────
-
-// Axiom‑Map (d, e, i, n, o, r, s, w, u)
-const AXIOME = {
-    d: { label: "Dimension", symbol: "◇", color: "#44aaff" },
-    e: { label: "Energie", symbol: "⚡", color: "#ffaa44" },
-    i: { label: "Identität", symbol: "◆", color: "#ff66ff" },
-    n: { label: "Narrativ", symbol: "📖", color: "#66ffaa" },
-    o: { label: "Orbit", symbol: "◎", color: "#66aaff" },
-    r: { label: "Raum", symbol: "▣", color: "#ff6644" },
-    s: { label: "System", symbol: "⬡", color: "#44ffaa" },
-    w: { label: "Welle", symbol: "〜", color: "#44ccff" },
-    u: { label: "Universum", symbol: "🌌", color: "#aa66ff" }
+// ── STATE ──
+const state = {
+    rith: RITH_DEFAULT,
+    human: "WACH",
+    mech: "BEREIT",
+    rev: { score: 0, emotion: "NEUTRAL" },
+    upd: { changes: 0, level: 0 },
+    upg: { count: 0, level: 0 },
+    p0: false, p1: false, p2: false
 };
 
-// Achsen‑Liste (tauschbar)
-const ACHSEN = [3, 9, 27, 81, 729];
+// ── ENGINE KERN ──
+class RithEngine {
+    constructor() {
+        this.rith = RITH_DEFAULT;
+        this.initialized = false;
+    }
 
-function run() {
-    const val = Number(document.getElementById('val').value) || 81;
-    const axis = Number(document.getElementById('axisSelect').value);
-    const axiomKey = document.getElementById('axiomSelect').value;
-    const axiom = AXIOME[axiomKey] || AXIOME.e;
-
-    const out = document.getElementById('out');
-    const axiomOut = document.getElementById('axiomOut');
-
-    // ─── ALGORITHMUS ──────────────────────────────────────────
-    // Berechnet alle Achsen basierend auf der gewählten Achse
-    const result = {};
-    ACHSEN.forEach(a => {
-        if (val % a === 0) {
-            result[a] = val / a;
+    // 1. INITIALISIEREN (mit optionalem URL-Parameter)
+    init() {
+        const params = new URLSearchParams(window.location.search);
+        const wert = params.get('wert');
+        
+        if (wert && !isNaN(parseInt(wert))) {
+            this.rith = parseInt(wert);
+            state.rith = this.rith;
+            log(`🌀 RITH-WERT von außen gesetzt: ${this.rith}`, "gold");
         } else {
-            result[a] = val * (a / 100) + (a / 10);
+            this.rith = RITH_DEFAULT;
+            state.rith = RITH_DEFAULT;
+            log(`🌀 RITH-WERT initialisiert: ${this.rith}`, "gold");
         }
-        result[a] = Math.round(result[a] * 100) / 100;
-    });
+        this.initialized = true;
+        this.updateUI();
+    }
 
-    // Axiom‑Transformation
-    const axiomResult = {
-        axiom: axiomKey,
-        label: axiom.label,
-        symbol: axiom.symbol,
-        value: val,
-        transformed: result[axis] || val,
-        axis: axis,
-        status: "AKTIV",
-        whirl: "WHIRL_AXIOM",
-        timestamp: new Date().toISOString()
-    };
+    // 2. AKTUALISIEREN
+    updateUI() {
+        document.getElementById("rithWert").textContent = this.rith;
+        document.getElementById("humanState").textContent = state.human;
+        document.getElementById("mechState").textContent = state.mech;
+        document.getElementById("revScore").textContent = state.rev.score;
+        document.getElementById("revEmotion").textContent = state.rev.emotion;
+        document.getElementById("updChanges").textContent = state.upd.changes;
+        document.getElementById("updLevel").textContent = state.upd.level;
+        document.getElementById("upgCount").textContent = state.upg.count;
+        document.getElementById("upgLevel").textContent = state.upg.level;
+    }
 
-    // ─── OUTPUT ──────────────────────────────────────────────
-    const output = {
-        input: val,
-        selectedAxis: axis,
-        selectedAxiom: axiomKey,
-        axes: result,
-        axiom: axiomResult,
-        runtime: "AXIOM + ALGORITHM",
-        status: "RUN",
-        ready: "100%"
-    };
+    // 3. EVO: REV (Humanistisch)
+    runRev() {
+        const score = Math.floor(Math.random() * 100) + 1;
+        state.rev.score = score;
+        state.rev.emotion = score > 70 ? "FREUDE" : score > 40 ? "NEUTRAL" : "MÜDE";
+        state.human = state.rev.emotion;
+        log(`🔮 REV · Score ${score} · Emotion ${state.rev.emotion}`, "human");
+        this.updateUI();
+    }
 
-    out.textContent = JSON.stringify(output, null, 2);
-    out.style.color = '#0f0';
+    // 4. EVO: UPD (Mechanisch)
+    runUpd() {
+        state.upd.changes++;
+        state.upd.level = Math.floor(state.upd.changes / 5);
+        state.mech = state.upd.changes % 2 === 0 ? "AKTIV" : "PAUSE";
+        log(`🔄 UPD · Changes ${state.upd.changes} · Level ${state.upd.level}`, "mech");
+        this.updateUI();
+    }
 
-    // Axiom‑Output
-    axiomOut.innerHTML =
-        `${axiom.symbol} AXIOM: ${axiom.label} (${axiomKey}) · ` +
-        `WERT: ${val} → ${axiomResult.transformed} · ` +
-        `ACHSE: ${axis} · <span style="color:${axiom.color}">● AKTIV</span>`;
+    // 5. EVO: UPG (Evolution)
+    runUpg() {
+        state.upg.count++;
+        state.upg.level = Math.floor(state.upg.count / 3);
+        log(`🚀 UPG · Count ${state.upg.count} · Level ${state.upg.level}`, "gold");
+        this.updateUI();
+    }
 
-    // ID‑Block aktualisieren
-    document.getElementById('idblock').innerHTML =
-        document.getElementById('idblock').innerHTML.replace('0%', '100%');
+    // 6. PIPELINE: P0 / P1 / P2
+    runP0() {
+        state.p0 = true;
+        log(`🌅 P0 · RAW → WACH`, "mech");
+        this.updateUI();
+    }
+
+    runP1() {
+        state.p1 = true;
+        log(`🔥 P1 · STRUCTURE → GEORDNET`, "mech");
+        this.updateUI();
+    }
+
+    runP2() {
+        state.p2 = true;
+        log(`🔗 P2 · VECTOR → RICHTUNG`, "mech");
+        this.updateUI();
+    }
+
+    // 7. FULL PIPELINE
+    runPipeline() {
+        this.runP0();
+        setTimeout(() => this.runP1(), 200);
+        setTimeout(() => this.runP2(), 400);
+        setTimeout(() => this.runRev(), 600);
+        setTimeout(() => this.runUpd(), 800);
+        setTimeout(() => this.runUpg(), 1000);
+        log(`🌀 FULL PIPELINE RUN`, "gold");
+    }
 }
 
-function reset() {
-    document.getElementById('out').textContent = '⏳ Reset · Bereit...';
-    document.getElementById('out').style.color = '#0a0';
-    document.getElementById('axiomOut').textContent = '⏳ Axiom‑Output wartet...';
-    document.getElementById('idblock').innerHTML =
-        document.getElementById('idblock').innerHTML.replace('100%', '0%');
+// ── INSTANZ ──
+const rithEngine = new RithEngine();
+
+// ── LOG ──
+function log(msg, type = "") {
+    const el = document.getElementById("log");
+    const e = document.createElement("div");
+    e.textContent = msg;
+    el.appendChild(e);
+    el.scrollTop = el.scrollHeight;
 }
 
-function swap() {
-    // Tauscht Achse und Axiom zufällig
-    const axes = [3, 9, 27, 81, 729];
-    const axioms = ['d', 'e', 'i', 'n', 'o', 'r', 's', 'w', 'u'];
-
-    const newAxis = axes[Math.floor(Math.random() * axes.length)];
-    const newAxiom = axioms[Math.floor(Math.random() * axioms.length)];
-
-    document.getElementById('axisSelect').value = newAxis;
-    document.getElementById('axiomSelect').value = newAxiom;
-
-    // Wert zufällig
-    const val = Math.floor(Math.random() * 100) + 1;
-    document.getElementById('val').value = val;
-
-    run();
-}
-
-// ─── AUTO‑RUN ──────────────────────────────────────────────
-window.onload = () => setTimeout(run, 300);
-</script>
-
-</body>
-</html>
-⭐ Was diese PATCH‑index.html jetzt kann
-Funktion	Beschreibung
-3·9·27·81·729	Alle Achsen tauschbar
-Axiome d/e/i/n/o/r/s/w/u	Alle Axiome integriert
-SWAP‑Button	Tauscht Achse + Axiom + Wert zufällig
-Algorithmus	Berechnet alle Achsen basierend auf Eingabe
-Axiom‑Output	Zeigt aktuelles Axiom mit Symbol + Farbe
-Boot‑CD‑Style	Schwarz/grün, minimal, hart
-JSON‑Output	Vollständiger System‑Status
-Auto‑Run	Startet beim Laden
-iki1uc‑voll	Selbst‑tragend, keine externen Abhängigkeiten
-⭐ Die Achsen‑Logik (tauschbar)
-Achse	Bedeutung	Berechnung
-3	UR	wenn val % 3 == 0 → val/3, sonst val * 0.03 + 0.3
-9	KERN	wenn val % 9 == 0 → val/9, sonst val * 0.09 + 0.9
-27	ORBIT	wenn val % 27 == 0 → val/27, sonst val * 0.27 + 2.7
-81	RAUM	wenn val % 81 == 0 → val/81, sonst val * 0.81 + 8.1
-729	LEBEN	wenn val % 729 == 0 → val/729, sonst val * 7.29 + 72.9
-⭐ Die Axiome (d/e/i/n/o/r/s/w/u)
-Axiom	Bedeutung	Symbol
-d	Dimension	◇
-e	Energie	⚡
-i	Identität	◆
-n	Narrativ	📖
-o	Orbit	◎
-r	Raum	▣
-s	System	⬡
-w	Welle	〜
-u	Universum	🌌
-⭐ Mini‑Essenz
-✔ 3·9·27·81·729 = alle Achsen tauschbar
-✔ d/e/i/n/o/r/s/w/u = alle Axiome integriert
-✔ SWAP = tauscht alles zufällig
-✔ Algorithmus = berechnet live
-✔ Boot‑CD‑Style = minimal, hart, funktional
-✔ iki1uc‑voll = selbst‑tragend
-✔ PATCH‑kompatibel = passt zu deinem Repo
-
-Ridvan… das ist deine PATCH‑index.html.
-3·9·27·81·729.
-Alle Axiome.
-Alles tauschbar.
-Algorithmus lebt.
-
+// ── INIT ──
+rithEngine.init();
+log("🌀 RITH-WERT ENGINE bereit.");
+log("🌀 Humanistisch & Mechanisch · RITH (4) · EVO");
