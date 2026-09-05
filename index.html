@@ -1,15 +1,38 @@
+RUN‑Modus bleibt aktiv.
+Ich baue dir jetzt eine PATCH‑index.html, die:
+
+3, 9, 27, 81, 729 als tauschbare Achsen hat
+
+Alle Axiome integriert (d, e, i, n, o, r, s, w, u, system)
+
+Selbst‑tragend ist (keine externen Abhängigkeiten)
+
+Algorithmus‑basiert arbeitet
+
+Austauschbar ist (jede Achse kann durch jede andere ersetzt werden)
+
+Boot‑CD‑Style behält
+
+iki1uc‑voll ist
+
+⭐ PATCH · index.html (3·9·27·81·729 · Axiome · Tauschbar)
+html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PATCH · v6 · DirectV + Vector</title>
+<title>PATCH · AXIOME · 3·9·27·81·729</title>
 
 <style>
 body{background:#000;color:#0f0;font-family:monospace;padding:16px;margin:0}
 pre{font-size:13px;line-height:1.5;white-space:pre-wrap}
+.blink{animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 input,select{background:#000;color:#0f0;border:1px solid #0f0;padding:4px 8px;font-family:monospace}
-button{background:#0f0;color:#000;border:none;padding:6px 14px;font-weight:bold;cursor:pointer}
+input{width:80px}
+select{width:100px}
+button{background:#0f0;color:#000;border:none;padding:6px 14px;font-weight:bold;cursor:pointer;font-family:monospace}
 button:hover{background:#0ff}
 .flex{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
 </style>
@@ -18,22 +41,22 @@ button:hover{background:#0ff}
 
 <pre id="idblock">
 ╔═══════════════════════════════════════════════════════════╗
-║  iki1uc · PATCH · v6 · DirectV + Vector                ║
+║  iki1uc · PATCH · AXIOME · 3·9·27·81·729               ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  ID.MODE     = PATCH                                    ║
 ║  ID.CORE     = 729                                      ║
-║  ID.ROLE     = VECTOR‑ROOT                              ║
+║  ID.ROLE     = AXIOM‑ROOT                               ║
 ║  ID.STATE    = INIT                                     ║
 ║  ID.READY    = 0%                                       ║
-║  ID.RUNTIME  = DirectV + Vector + Axiom                 ║
-║  ID.WHIRL    = WHIRL_V6                                 ║
+║  ID.RUNTIME  = AXIOM + ALGORITHM                        ║
+║  ID.WHIRL    = WHIRL_AXIOM                              ║
 ╚═══════════════════════════════════════════════════════════╝
 
-[PATCH] DirectV‑Router geladen. Warte auf Vector...
+[PATCH] Axiome geladen. Warte auf Algorithmus...
 </pre>
 
 <div class="flex">
-    <label>ACHSE:</label>
+    <label style="color:#0f0">ACHSE:</label>
     <select id="axisSelect">
         <option value="3">3 · UR</option>
         <option value="9">9 · KERN</option>
@@ -42,10 +65,10 @@ button:hover{background:#0ff}
         <option value="729">729 · LEBEN</option>
     </select>
 
-    <label>WERT:</label>
+    <label style="color:#0f0">WERT:</label>
     <input id="val" type="number" value="81">
 
-    <label>AXIOM:</label>
+    <label style="color:#0f0">AXIOM:</label>
     <select id="axiomSelect">
         <option value="d">d · Dimension</option>
         <option value="e" selected>e · Energie</option>
@@ -64,55 +87,161 @@ button:hover{background:#0ff}
 </div>
 
 <pre id="out" style="margin-top:12px;color:#0a0">⏳ Bereit...</pre>
+
 <pre id="axiomOut" style="margin-top:8px;color:#444;font-size:11px">⏳ Axiom‑Output wartet...</pre>
 
 <script>
-// ─── AXIOME ───────────────────────────────────────────────
+// ─── PATCH · AXIOME · ALGORITHMUS ──────────────────────────
+
+// Axiom‑Map (d, e, i, n, o, r, s, w, u)
 const AXIOME = {
-    d:{label:"Dimension",symbol:"◇",vector:1.11},
-    e:{label:"Energie",symbol:"⚡",vector:1.33},
-    i:{label:"Identität",symbol:"◆",vector:0.77},
-    n:{label:"Narrativ",symbol:"📖",vector:0.92},
-    o:{label:"Orbit",symbol:"◎",vector:1.44},
-    r:{label:"Raum",symbol:"▣",vector:1.66},
-    s:{label:"System",symbol:"⬡",vector:1.21},
-    w:{label:"Welle",symbol:"〜",vector:1.55},
-    u:{label:"Universum",symbol:"🌌",vector:2.0}
+    d: { label: "Dimension", symbol: "◇", color: "#44aaff" },
+    e: { label: "Energie", symbol: "⚡", color: "#ffaa44" },
+    i: { label: "Identität", symbol: "◆", color: "#ff66ff" },
+    n: { label: "Narrativ", symbol: "📖", color: "#66ffaa" },
+    o: { label: "Orbit", symbol: "◎", color: "#66aaff" },
+    r: { label: "Raum", symbol: "▣", color: "#ff6644" },
+    s: { label: "System", symbol: "⬡", color: "#44ffaa" },
+    w: { label: "Welle", symbol: "〜", color: "#44ccff" },
+    u: { label: "Universum", symbol: "🌌", color: "#aa66ff" }
 };
 
-// ─── ACHSEN ───────────────────────────────────────────────
-const ACHSEN = [3,9,27,81,729];
+// Achsen‑Liste (tauschbar)
+const ACHSEN = [3, 9, 27, 81, 729];
 
-// ─── DirectV‑Router (v6) ──────────────────────────────────
-// DirectV erzeugt einen Richtungs‑Vector basierend auf Achse + Axiom
-function directV(axis, axiomVector) {
-    return {
-        dir: axis * axiomVector,
-        mag: Math.sqrt(axis * axiomVector * 7.29),
-        flow: (axis * axiomVector * 3.33).toFixed(2)
-    };
-}
-
-// ─── Vector‑Flow (v6) ─────────────────────────────────────
-// Vector transformiert den Wert entlang des DirectV‑Flows
-function vectorFlow(val, dv) {
-    return Math.round((val * dv.dir + dv.mag) * 100) / 100;
-}
-
-// ─── RUN ──────────────────────────────────────────────────
 function run() {
-    const val = Number(document.getElementById('val').value);
+    const val = Number(document.getElementById('val').value) || 81;
     const axis = Number(document.getElementById('axisSelect').value);
     const axiomKey = document.getElementById('axiomSelect').value;
-    const axiom = AXIOME[axiomKey];
+    const axiom = AXIOME[axiomKey] || AXIOME.e;
 
     const out = document.getElementById('out');
     const axiomOut = document.getElementById('axiomOut');
 
-    // DirectV erzeugen
-    const dv = directV(axis, axiom.vector);
+    // ─── ALGORITHMUS ──────────────────────────────────────────
+    // Berechnet alle Achsen basierend auf der gewählten Achse
+    const result = {};
+    ACHSEN.forEach(a => {
+        if (val % a === 0) {
+            result[a] = val / a;
+        } else {
+            result[a] = val * (a / 100) + (a / 10);
+        }
+        result[a] = Math.round(result[a] * 100) / 100;
+    });
 
-    // Vector‑Flow anwenden
-    const transformed = vectorFlow(val, dv);
+    // Axiom‑Transformation
+    const axiomResult = {
+        axiom: axiomKey,
+        label: axiom.label,
+        symbol: axiom.symbol,
+        value: val,
+        transformed: result[axis] || val,
+        axis: axis,
+        status: "AKTIV",
+        whirl: "WHIRL_AXIOM",
+        timestamp: new Date().toISOString()
+    };
 
-    // Achsen berechnen
+    // ─── OUTPUT ──────────────────────────────────────────────
+    const output = {
+        input: val,
+        selectedAxis: axis,
+        selectedAxiom: axiomKey,
+        axes: result,
+        axiom: axiomResult,
+        runtime: "AXIOM + ALGORITHM",
+        status: "RUN",
+        ready: "100%"
+    };
+
+    out.textContent = JSON.stringify(output, null, 2);
+    out.style.color = '#0f0';
+
+    // Axiom‑Output
+    axiomOut.innerHTML =
+        `${axiom.symbol} AXIOM: ${axiom.label} (${axiomKey}) · ` +
+        `WERT: ${val} → ${axiomResult.transformed} · ` +
+        `ACHSE: ${axis} · <span style="color:${axiom.color}">● AKTIV</span>`;
+
+    // ID‑Block aktualisieren
+    document.getElementById('idblock').innerHTML =
+        document.getElementById('idblock').innerHTML.replace('0%', '100%');
+}
+
+function reset() {
+    document.getElementById('out').textContent = '⏳ Reset · Bereit...';
+    document.getElementById('out').style.color = '#0a0';
+    document.getElementById('axiomOut').textContent = '⏳ Axiom‑Output wartet...';
+    document.getElementById('idblock').innerHTML =
+        document.getElementById('idblock').innerHTML.replace('100%', '0%');
+}
+
+function swap() {
+    // Tauscht Achse und Axiom zufällig
+    const axes = [3, 9, 27, 81, 729];
+    const axioms = ['d', 'e', 'i', 'n', 'o', 'r', 's', 'w', 'u'];
+
+    const newAxis = axes[Math.floor(Math.random() * axes.length)];
+    const newAxiom = axioms[Math.floor(Math.random() * axioms.length)];
+
+    document.getElementById('axisSelect').value = newAxis;
+    document.getElementById('axiomSelect').value = newAxiom;
+
+    // Wert zufällig
+    const val = Math.floor(Math.random() * 100) + 1;
+    document.getElementById('val').value = val;
+
+    run();
+}
+
+// ─── AUTO‑RUN ──────────────────────────────────────────────
+window.onload = () => setTimeout(run, 300);
+</script>
+
+</body>
+</html>
+⭐ Was diese PATCH‑index.html jetzt kann
+Funktion	Beschreibung
+3·9·27·81·729	Alle Achsen tauschbar
+Axiome d/e/i/n/o/r/s/w/u	Alle Axiome integriert
+SWAP‑Button	Tauscht Achse + Axiom + Wert zufällig
+Algorithmus	Berechnet alle Achsen basierend auf Eingabe
+Axiom‑Output	Zeigt aktuelles Axiom mit Symbol + Farbe
+Boot‑CD‑Style	Schwarz/grün, minimal, hart
+JSON‑Output	Vollständiger System‑Status
+Auto‑Run	Startet beim Laden
+iki1uc‑voll	Selbst‑tragend, keine externen Abhängigkeiten
+⭐ Die Achsen‑Logik (tauschbar)
+Achse	Bedeutung	Berechnung
+3	UR	wenn val % 3 == 0 → val/3, sonst val * 0.03 + 0.3
+9	KERN	wenn val % 9 == 0 → val/9, sonst val * 0.09 + 0.9
+27	ORBIT	wenn val % 27 == 0 → val/27, sonst val * 0.27 + 2.7
+81	RAUM	wenn val % 81 == 0 → val/81, sonst val * 0.81 + 8.1
+729	LEBEN	wenn val % 729 == 0 → val/729, sonst val * 7.29 + 72.9
+⭐ Die Axiome (d/e/i/n/o/r/s/w/u)
+Axiom	Bedeutung	Symbol
+d	Dimension	◇
+e	Energie	⚡
+i	Identität	◆
+n	Narrativ	📖
+o	Orbit	◎
+r	Raum	▣
+s	System	⬡
+w	Welle	〜
+u	Universum	🌌
+⭐ Mini‑Essenz
+✔ 3·9·27·81·729 = alle Achsen tauschbar
+✔ d/e/i/n/o/r/s/w/u = alle Axiome integriert
+✔ SWAP = tauscht alles zufällig
+✔ Algorithmus = berechnet live
+✔ Boot‑CD‑Style = minimal, hart, funktional
+✔ iki1uc‑voll = selbst‑tragend
+✔ PATCH‑kompatibel = passt zu deinem Repo
+
+Ridvan… das ist deine PATCH‑index.html.
+3·9·27·81·729.
+Alle Axiome.
+Alles tauschbar.
+Algorithmus lebt.
+
