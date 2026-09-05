@@ -1,185 +1,209 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A81 · Nano‑Ability‑Status</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OMNI · 9‑Achsen · A81‑Axis · iki1uc · PFAD‑LOGIK</title>
 
-<style>
-  body {
-    background:#eef2f5;
-    font-family:-apple-system,Segoe UI,Roboto,sans-serif;
-    padding:20px;
-    display:flex;
-    justify-content:center;
-  }
-  .box {
-    width:380px;
-    background:#fff;
-    border:1px solid #d9dde3;
-    border-radius:10px;
-    padding:20px;
-  }
-  h1 { font-size:18px; margin-bottom:10px; }
-  .row {
-    display:flex;
-    justify-content:space-between;
-    padding:6px 0;
-    border-bottom:1px solid #f0f1f4;
-    font-size:14px;
-  }
-  canvas {
-    width:100%;
-    max-width:320px;
-    background:#fafbfc;
-    border:1px solid #e2e5eb;
-    border-radius:8px;
-    margin:14px 0;
-  }
-  button {
-    background:#1c2230;
-    color:#fff;
-    border:none;
-    border-radius:6px;
-    padding:8px 14px;
-    font-size:13px;
-    cursor:pointer;
-    margin-right:6px;
-  }
-  button:hover { background:#333c4f; }
-  .log {
-    height:140px;
-    overflow-y:auto;
-    background:#f9fafb;
-    border:1px solid #e2e5eb;
-    border-radius:8px;
-    padding:10px;
-    font-size:12px;
-    font-family:ui-monospace;
-  }
-</style>
+  <style>
+    body { background:#000; color:#0f0; font-family:Consolas; padding:20px; }
+    h1 { color:#6cf; }
+    canvas { background:#111; border:1px solid #333; margin-top:20px; display:block; }
+    .console { background:#111; border:1px solid #444; padding:10px; white-space:pre-wrap; }
+    button { background:#222; color:#0f0; border:1px solid #0f0; padding:6px 14px; margin:4px; cursor:pointer; }
+    button:hover { background:#0f0; color:#000; }
+    .energy { height:10px; background:#222; margin-top:10px; }
+    .energy-fill { height:10px; background:#0f0; width:0%; transition:0.2s; }
+  </style>
 </head>
+
 <body>
 
-<div class="box">
+<h1>OMNI · 9‑Achsen · A81‑Axis · PFAD‑LOGIK</h1>
 
-  <h1>A81‑Axis · Nano‑Ability</h1>
+<div class="console" id="engineOut">OMNI Engine lädt…</div>
+<div class="energy"><div id="energyFill" class="energy-fill"></div></div>
 
-  <!-- A81 / 9×9 / QI/IQQ/OCTA -->
-  <div class="row"><span>A81‑Slots</span><span id="a81">81</span></div>
-  <div class="row"><span>9×9‑Engine</span><span id="nine">9</span></div>
-  <div class="row"><span>QI/IQQ/OCTA</span><span id="qiocta">Aktiv</span></div>
+<canvas id="orbitCanvas" width="500" height="500"></canvas>
 
-  <!-- 81.build / 81.rom / 81.scan -->
-  <div class="row"><span>81.build</span><span id="build">OK</span></div>
-  <div class="row"><span>81.rom</span><span id="rom">OK</span></div>
-  <div class="row"><span>81.scan</span><span id="scan">READY</span></div>
-
-  <!-- ANKER / ROOM / TMP -->
-  <div class="row"><span>ANKER.room</span><span id="anker">Stabil</span></div>
-  <div class="row"><span>NO1.room</span><span id="no1">Neutral</span></div>
-  <div class="row"><span>TMP.tmp</span><span id="tmp">Live</span></div>
-
-  <!-- Orbit -->
-  <canvas id="orbitCanvas" width="320" height="320"></canvas>
-
-  <!-- Buttons -->
-  <button id="pumpBtn">Pump</button>
-  <button id="scanBtn">Scan</button>
-  <button id="orbitBtn">Orbit+</button>
-
-  <!-- Log -->
-  <div class="log" id="logBox">System bereit.</div>
-
-</div>
+<button id="btnStep">▶ STEP</button>
+<button id="btnLoop">🔁 LOOP</button>
+<button id="btnStop">⏹ STOP</button>
+<button id="btnOMNI">🧠 OMNI</button>
+<button id="btnReset">⟲ RESET</button>
 
 <script>
-  const SYS = {
-    a81: 81,
-    nine: 9,
-    orbit: 0,
-    build: "OK",
-    rom: "OK",
-    scan: "READY",
-    anker: "Stabil",
-    no1: "Neutral",
-    tmp: "Live"
-  };
+// ============================================================
+// PFAD – die einzige Wahrheit: 81 → 9 → 3 → 9 → 81 → …
+// ============================================================
+const PFAD = [81, 9, 3, 9, 81];
+let pfadIndex = 0;
 
-  const logs = [];
+// ============================================================
+// STATE
+// ============================================================
+const STATE = {
+  achsen: PFAD[pfadIndex],
+  mode: "PFAD",
+  omni: false,
+  loop: false,
+  energy: 0,
+  gear: 0,
+  a81: (PFAD[pfadIndex] === 81)
+};
 
-  function log(msg){
-    const t = new Date().toLocaleTimeString('de-DE');
-    logs.push(`[${t}] ${msg}`);
-    document.getElementById("logBox").innerHTML = logs.slice(-30).join("<br>");
+// ============================================================
+// AXIS – skaliert nach aktuellem PFAD-Wert
+// ============================================================
+const AXIS = {
+  base: () => STATE.achsen,
+  x: () => STATE.achsen * 9,
+  y: () => STATE.achsen * 9,
+  z: () => STATE.achsen * 9
+};
+
+// ============================================================
+// CANVAS
+// ============================================================
+const canvas = document.getElementById("orbitCanvas");
+const ctx = canvas.getContext("2d");
+let t = 0;
+
+// ============================================================
+// STEP – PFAD vorwärts bewegen
+// ============================================================
+function step() {
+  // Energie steigt
+  STATE.energy = Math.min(100, STATE.energy + 5);
+
+  // Zahnrad zählt hoch (0–11)
+  STATE.gear = (STATE.gear + 1) % 12;
+
+  // PFAD-Schritt
+  pfadIndex = (pfadIndex + 1) % PFAD.length;
+  STATE.achsen = PFAD[pfadIndex];
+  STATE.a81 = (STATE.achsen === 81);
+
+  // Modus basierend auf PFAD-Wert
+  if (STATE.achsen === 81) STATE.mode = "A81";
+  else if (STATE.achsen === 9) STATE.mode = "UNI‑9";
+  else if (STATE.achsen === 3) STATE.mode = "UR‑3";
+  else STATE.mode = "PFAD";
+
+  // OMNI-Sonderfall: wenn Zahnrad 10, dann OMNI-Modus (zeigt extra Glow)
+  if (STATE.gear === 10) {
+    STATE.omni = true;
+    STATE.mode = "OMNI";
+  } else {
+    STATE.omni = false;
   }
 
-  function update(){
-    document.getElementById("a81").textContent = SYS.a81;
-    document.getElementById("nine").textContent = SYS.nine;
-    document.getElementById("build").textContent = SYS.build;
-    document.getElementById("rom").textContent = SYS.rom;
-    document.getElementById("scan").textContent = SYS.scan;
-    document.getElementById("anker").textContent = SYS.anker;
-    document.getElementById("no1").textContent = SYS.no1;
-    document.getElementById("tmp").textContent = SYS.tmp;
-  }
+  // Energie-Balken aktualisieren
+  document.getElementById("energyFill").style.width = STATE.energy + "%";
 
-  function drawOrbit(){
-    const c = document.getElementById("orbitCanvas");
-    const ctx = c.getContext("2d");
-    const cx = c.width/2, cy = c.height/2;
+  // Konsole aktualisieren
+  document.getElementById("engineOut").innerText =
+    "MODE: " + STATE.mode + "\n" +
+    "ACHSEN: " + STATE.achsen + "\n" +
+    "PFAD-INDEX: " + pfadIndex + "\n" +
+    "GEAR: " + STATE.gear + "\n" +
+    "OMNI: " + STATE.omni + "\n" +
+    "A81: " + STATE.a81 + "\n" +
+    "ENERGIE: " + STATE.energy + "%";
 
-    ctx.clearRect(0,0,c.width,c.height);
+  render();
+}
 
+// ============================================================
+// RENDER – Orbit + Achsen + Pfad + Energie
+// ============================================================
+function render() {
+  t += 0.01;
+  ctx.clearRect(0,0,500,500);
+
+  const cx = 250 + Math.sin(t) * AXIS.x();
+  const cy = 250 + Math.cos(t) * AXIS.y();
+  const radius = AXIS.z() * 0.1 + 10;
+
+  // Orbit-Punkt
+  ctx.fillStyle = STATE.omni ? "#f0f" : "#0f0";
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI*2);
+  ctx.fill();
+
+  // A81-Marker (wenn aktueller Wert 81)
+  if (STATE.a81) {
+    const px = 250 + Math.sin(t*2) * 81;
+    const py = 250 + Math.cos(t*2) * 81;
+    ctx.fillStyle = "#ff0";
     ctx.beginPath();
-    ctx.arc(cx,cy,20,0,2*Math.PI);
-    ctx.fillStyle="#1c2230";
+    ctx.arc(px, py, 8, 0, Math.PI*2);
     ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(cx,cy,80,0,2*Math.PI);
-    ctx.strokeStyle="#9aa3b5";
-    ctx.lineWidth=2;
-    ctx.stroke();
-
-    const angle = SYS.orbit * 0.15;
-    const ex = cx + Math.cos(angle)*80;
-    const ey = cy + Math.sin(angle)*80;
-
-    ctx.beginPath();
-    ctx.arc(ex,ey,10,0,2*Math.PI);
-    ctx.fillStyle="#4da6ff";
-    ctx.fill();
+    ctx.fillStyle = "#ff0";
+    ctx.font = "12px Consolas";
+    ctx.fillText("81", px + 10, py + 4);
   }
 
-  document.getElementById("pumpBtn").onclick = () => {
-    SYS.a81 += 3;
-    SYS.tmp = "Pump";
-    SYS.orbit++;
-    update();
-    drawOrbit();
-    log("Pump ausgeführt.");
-  };
+  // 3-Marker (wenn aktueller Wert 3)
+  if (STATE.achsen === 3) {
+    const px = 250 + Math.sin(t*2 + 1) * 3;
+    const py = 250 + Math.cos(t*2 + 1) * 3;
+    ctx.fillStyle = "#0ff";
+    ctx.beginPath();
+    ctx.arc(px, py, 5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = "#0ff";
+    ctx.font = "12px Consolas";
+    ctx.fillText("3", px + 10, py + 4);
+  }
+}
 
-  document.getElementById("scanBtn").onclick = () => {
-    SYS.scan = "SCAN OK";
-    SYS.orbit += 2;
-    update();
-    drawOrbit();
-    log("Scan durchgeführt.");
-  };
+// ============================================================
+// LOOP
+// ============================================================
+let loopTimer = null;
 
-  document.getElementById("orbitBtn").onclick = () => {
-    SYS.orbit += 1;
-    update();
-    drawOrbit();
-    log("Orbit‑Schritt.");
-  };
+function startLoop() {
+  if (!loopTimer) {
+    loopTimer = setInterval(step, 500);
+    STATE.loop = true;
+  }
+}
 
-  update();
-  drawOrbit();
-  log("A81‑Nano‑Ability geladen.");
+function stopLoop() {
+  clearInterval(loopTimer);
+  loopTimer = null;
+  STATE.loop = false;
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+document.getElementById("btnStep").addEventListener("click", step);
+document.getElementById("btnLoop").addEventListener("click", startLoop);
+document.getElementById("btnStop").addEventListener("click", stopLoop);
+
+document.getElementById("btnOMNI").addEventListener("click", () => {
+  STATE.omni = true;
+  STATE.mode = "OMNI";
+  STATE.gear = 10;
+});
+
+document.getElementById("btnReset").addEventListener("click", () => {
+  pfadIndex = 0;
+  STATE.achsen = PFAD[pfadIndex];
+  STATE.mode = "PFAD";
+  STATE.omni = false;
+  STATE.a81 = (STATE.achsen === 81);
+  STATE.energy = 0;
+  STATE.gear = 0;
+  render();
+});
+
+// ============================================================
+// START
+// ============================================================
+render();
 </script>
 
 </body>
