@@ -99,6 +99,69 @@ export const RAWATOR_LIFE = {
         }
         return frames;
     },
+function drawAtmosWaterMirror() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Hintergrund – tiefes Nachtblau
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, "#02040a");
+    bg.addColorStop(1, "#0a0f1c");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // --- OBERER TEIL (Original) ---
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            const idx = r * COLS + c;
+            const slot = slots[idx];
+
+            const x = c * CELL_W;
+            const y = r * CELL_H;
+
+            const val = slot.value * 0.5 + 0.5;
+            const brightness = 40 + val * 120;
+
+            ctx.fillStyle = `rgba(${brightness}, ${brightness+20}, ${brightness+60}, 0.25)`;
+            ctx.fillRect(x, y, CELL_W, CELL_H);
+        }
+    }
+
+    // --- SPIEGELLINIE ---
+    const mirrorY = H / 2;
+    ctx.fillStyle = "rgba(255,255,255,0.05)";
+    ctx.fillRect(0, mirrorY - 1, W, 2);
+
+    // --- UNTERER TEIL (gespiegeltes Wasser) ---
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            const idx = r * COLS + c;
+const slot = RAWATOR_LIFE.anime[idx];
+
+            const x = c * CELL_W;
+            const y = mirrorY + (ROWS - r - 1) * CELL_H;
+
+            const val = slot.value * 0.5 + 0.5;
+            const brightness = 40 + val * 120;
+
+            // Wasser‑Verzerrung
+            const wave = Math.sin((time * 0.002) + x * 0.03 + r * 0.2) * 4;
+
+            ctx.fillStyle = `rgba(${brightness}, ${brightness+30}, ${brightness+80}, 0.18)`;
+            ctx.fillRect(x, y + wave, CELL_W, CELL_H);
+
+            // Fade nach unten
+            const fade = (r / ROWS) * 0.4;
+            ctx.fillStyle = `rgba(0,0,0,${fade})`;
+            ctx.fillRect(x, y, CELL_W, CELL_H);
+        }
+    }
+
+    // Titel
+    ctx.fillStyle = "rgba(100,200,255,0.08)";
+    ctx.font = "14px Consolas";
+    ctx.textAlign = "center";
+    ctx.fillText("ATMOS · Wasser-Spiegelung (horizontal)", W/2, 12);
+}
 
     // ─── UNIVERSALMESSGERÄT ──────────────────────────────────
     initMessgeraet() {
@@ -185,5 +248,6 @@ export const RAWATOR_LIFE = {
 
 // ─── AUTO-INIT ──────────────────────────────────────────────────
 RAWATOR_LIFE.init();
+this.render = drawAtmosWaterMirror;
 
 export { RAWATOR_LIFE };
