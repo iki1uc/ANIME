@@ -1,253 +1,117 @@
-// ============================================================
-// RAWATOR · LEBENSGEBER · 81-HOLOGRAMM · ANIME · SHUFFLE
-// ============================================================
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ATMOS · Wasser-Spiegelung</title>
+<style>
+    body {
+        background:#000;
+        margin:0;
+        overflow:hidden;
+    }
+    canvas {
+        display:block;
+        width:100vw;
+        height:100vh;
+    }
+</style>
+</head>
+<body>
 
-import { Atom } from './atom.js';
-import { Molecule } from './molecule.js';
-import { RAWATOR_81 } from './rawator-81.js';
-import { BEAM_KERNEL } from './beam.js';
-import { RAWATOR_START } from './rawator.js';
+<canvas id="atmCanvas"></canvas>
 
-export const RAWATOR_LIFE = {
-    name: 'RAWATOR · Lebensgeber',
-    status: 'initialisiert',
-    vital: 0,
-    co2: 0,
-    wasser: 0,
-    sauerstoff: 0,
-    hologramm: [],
-    anime: [],
-    shuffle: [],
-    messgerät: {},
-    editor: {},
+<script>
+const canvas = document.getElementById("atmCanvas");
+const ctx = canvas.getContext("2d");
 
-    // ─── INIT ──────────────────────────────────────────────────
-    init() {
-        this.log('🧬 RAWATOR · Lebensgeber wird aktiviert...');
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.onresize = resize;
 
-        // 1. Moleküle laden
-        const universe = this.getMolecules();
-        this.co2 = universe.co2;
-        this.wasser = universe.water;
-        this.sauerstoff = universe.oxygen;
-        this.vital = (this.co2.vital + this.wasser.vital + this.sauerstoff.vital) / 3;
+const COLS = 9;
+const ROWS = 9;
+let time = 0;
 
-        // 2. 81-Hologramm-Raster laden
-        this.hologramm = RAWATOR_81();
+// 81 Slots (wie früher)
+const slots = Array.from({length:81}, (_,i)=>({
+    value: Math.sin(i*0.2),
+}));
 
-        // 3. Beam-Kernel aktivieren
-        BEAM_KERNEL().then(() => {
-            this.log('🌐 BEAM KERNEL aktiv');
-            RAWATOR_START();
-        });
-
-        // 4. Shuffle Dancer initialisieren
-        this.shuffle = this.initShuffle();
-
-        // 5. Anime-Frames generieren
-        this.anime = this.initAnime();
-
-        // 6. Messgerät einrichten
-        this.messgerät = this.initMessgeraet();
-
-        // 7. Editor einrichten
-        this.editor = this.initEditor();
-
-        this.status = 'lebendig';
-        this.log('✅ RAWATOR · LEBENDIG · 81-HOLOGRAMM BEREIT');
-        return this.status;
-    },
-
-    // ─── MOLEKÜLE ─────────────────────────────────────────────
-    getMolecules() {
-        return {
-            water: Molecule.H2O(),
-            oxygen: Molecule.O2(),
-            co2: Molecule.CO2()
-        };
-    },
-
-    // ─── SHUFFLE DANCER ───────────────────────────────────────
-    initShuffle() {
-        const moves = ['↻', '↺', '↑', '↓', '←', '→', '↗', '↘', '↖', '↙'];
-        const sequence = [];
-        for (let i = 0; i < 81; i++) {
-            sequence.push({
-                step: i + 1,
-                move: moves[i % moves.length],
-                frame: this.hologramm[i]?.id || `RAW-${i+1}`,
-                vital: this.vital * (0.8 + Math.random() * 0.4)
-            });
-        }
-        return sequence;
-    },
-
-    // ─── ANIME ──────────────────────────────────────────────────
-    initAnime() {
-        const frames = [];
-        for (let i = 0; i < 81; i++) {
-            const holo = this.hologramm[i] || { id: `RAW-${i+1}`, neutral: true };
-            frames.push({
-                id: `ANIME-${i+1}`,
-                frame: holo.id,
-                vital: this.vital * (0.7 + Math.random() * 0.6),
-                shuffle: this.shuffle[i]?.move || '●',
-                co2: this.co2.vital * (0.5 + Math.random() * 0.5),
-                wasser: this.wasser.vital * (0.5 + Math.random() * 0.5),
-                sauerstoff: this.sauerstoff.vital * (0.5 + Math.random() * 0.5)
-            });
-        }
-        return frames;
-    },
 function drawAtmosWaterMirror() {
-    ctx.clearRect(0, 0, W, H);
+    const W = canvas.width;
+    const H = canvas.height;
+    const CELL_W = W / COLS;
+    const CELL_H = (H/2) / ROWS;
 
-    // Hintergrund – tiefes Nachtblau
-    const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, "#02040a");
-    bg.addColorStop(1, "#0a0f1c");
+    ctx.clearRect(0,0,W,H);
+
+    // Hintergrund
+    const bg = ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,"#02040a");
+    bg.addColorStop(1,"#0a0f1c");
     ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillRect(0,0,W,H);
 
-    // --- OBERER TEIL (Original) ---
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            const idx = r * COLS + c;
+    // OBERER TEIL
+    for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+            const idx = r*COLS+c;
             const slot = slots[idx];
+            const val = slot.value*0.5+0.5;
+            const brightness = 40 + val*120;
 
-            const x = c * CELL_W;
-            const y = r * CELL_H;
+            const x = c*CELL_W;
+            const y = r*CELL_H;
 
-            const val = slot.value * 0.5 + 0.5;
-            const brightness = 40 + val * 120;
-
-            ctx.fillStyle = `rgba(${brightness}, ${brightness+20}, ${brightness+60}, 0.25)`;
-            ctx.fillRect(x, y, CELL_W, CELL_H);
+            ctx.fillStyle = `rgba(${brightness},${brightness+20},${brightness+60},0.25)`;
+            ctx.fillRect(x,y,CELL_W,CELL_H);
         }
     }
 
-    // --- SPIEGELLINIE ---
-    const mirrorY = H / 2;
+    // Spiegel-Linie
+    const mirrorY = H/2;
     ctx.fillStyle = "rgba(255,255,255,0.05)";
-    ctx.fillRect(0, mirrorY - 1, W, 2);
+    ctx.fillRect(0,mirrorY-1,W,2);
 
-    // --- UNTERER TEIL (gespiegeltes Wasser) ---
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            const idx = r * COLS + c;
-const slot = RAWATOR_LIFE.anime[idx];
+    // UNTERER TEIL (Wasser-Spiegel)
+    for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+            const idx = r*COLS+c;
+            const slot = slots[idx];
+            const val = slot.value*0.5+0.5;
+            const brightness = 40 + val*120;
 
-            const x = c * CELL_W;
-            const y = mirrorY + (ROWS - r - 1) * CELL_H;
+            const x = c*CELL_W;
+            const y = mirrorY + (ROWS-r-1)*CELL_H;
 
-            const val = slot.value * 0.5 + 0.5;
-            const brightness = 40 + val * 120;
+            const wave = Math.sin(time*0.002 + x*0.03 + r*0.2)*4;
 
-            // Wasser‑Verzerrung
-            const wave = Math.sin((time * 0.002) + x * 0.03 + r * 0.2) * 4;
+            ctx.fillStyle = `rgba(${brightness},${brightness+30},${brightness+80},0.18)`;
+            ctx.fillRect(x,y+wave,CELL_W,CELL_H);
 
-            ctx.fillStyle = `rgba(${brightness}, ${brightness+30}, ${brightness+80}, 0.18)`;
-            ctx.fillRect(x, y + wave, CELL_W, CELL_H);
-
-            // Fade nach unten
-            const fade = (r / ROWS) * 0.4;
+            const fade = (r/ROWS)*0.4;
             ctx.fillStyle = `rgba(0,0,0,${fade})`;
-            ctx.fillRect(x, y, CELL_W, CELL_H);
+            ctx.fillRect(x,y,CELL_W,CELL_H);
         }
     }
 
     // Titel
     ctx.fillStyle = "rgba(100,200,255,0.08)";
-    ctx.font = "14px Consolas";
+    ctx.font = "20px Consolas";
     ctx.textAlign = "center";
-    ctx.fillText("ATMOS · Wasser-Spiegelung (horizontal)", W/2, 12);
+    ctx.fillText("ATMOS · Wasser-Spiegelung (horizontal)", W/2, 30);
 }
 
-    // ─── UNIVERSALMESSGERÄT ──────────────────────────────────
-    initMessgeraet() {
-        return {
-            vital: this.vital,
-            co2: this.co2,
-            wasser: this.wasser,
-            sauerstoff: this.sauerstoff,
-            hologramm: this.hologramm.length,
-            anime: this.anime.length,
-            shuffle: this.shuffle.length,
-            status: this.status
-        };
-    },
+function loop(){
+    time += 16;
+    drawAtmosWaterMirror();
+    requestAnimationFrame(loop);
+}
+loop();
+</script>
 
-    // ─── UNIVERSAL EDITOR ──────────────────────────────────────
-    initEditor() {
-        return {
-            edit: (id, newValue) => {
-                const target = this.anime.find(a => a.id === id);
-                if (target) {
-                    target.vital = newValue;
-                    this.log(`✏️ EDIT: ${id} → vital ${newValue.toFixed(2)}`);
-                    return target;
-                }
-                return null;
-            },
-            shuffle: (step, newMove) => {
-                const target = this.shuffle.find(s => s.step === step);
-                if (target) {
-                    target.move = newMove;
-                    this.log(`🔄 SHUFFLE: Step ${step} → ${newMove}`);
-                    return target;
-                }
-                return null;
-            },
-            reset: () => {
-                this.anime = this.initAnime();
-                this.shuffle = this.initShuffle();
-                this.log('⟲ EDITOR RESET');
-                return true;
-            }
-        };
-    },
-
-    // ─── HOLOGRAMM-BEWEIS ──────────────────────────────────────
-    hologramProof() {
-        const proof = {
-            title: '🌀 81-HOLOGRAMM-BEWEIS',
-            total: 81,
-            lebendig: this.anime.filter(a => a.vital > 0.5).length,
-            shuffleCount: this.shuffle.length,
-            co2: this.co2,
-            wasser: this.wasser,
-            sauerstoff: this.sauerstoff,
-            vital: this.vital,
-            frames: this.anime.slice(0, 9) // erste 9 als Beispiel
-        };
-        this.log('🌀 HOLOGRAMM-BEWEIS erstellt');
-        return proof;
-    },
-
-    // ─── LOG ──────────────────────────────────────────────────
-    log(msg) {
-        const zeit = new Date().toISOString();
-        console.log(`[RAWATOR·LIFE] ${msg}`);
-    },
-
-    // ─── STATUS ──────────────────────────────────────────────
-    status() {
-        return {
-            name: this.name,
-            status: this.status,
-            vital: this.vital,
-            co2: this.co2,
-            wasser: this.wasser,
-            sauerstoff: this.sauerstoff,
-            hologramm: this.hologramm.length,
-            anime: this.anime.length,
-            shuffle: this.shuffle.length
-        };
-    }
-};
-
-// ─── AUTO-INIT ──────────────────────────────────────────────────
-RAWATOR_LIFE.init();
-this.render = drawAtmosWaterMirror;
-
-export { RAWATOR_LIFE };
+</body>
+</html>
