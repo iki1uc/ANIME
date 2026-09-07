@@ -1,116 +1,507 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>ATMOS · Wasser-Spiegelung</title>
-<style>
-    body {
-        background:#000;
-        margin:0;
-        overflow:hidden;
-    }
-    canvas {
-        display:block;
-        width:100vw;
-        height:100vh;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="iki1uc (Ridvan)">
+    <meta name="license" content="MIT - Nutzung erlaubt. Logik-Reproduktion verboten.">
+    <title>ATOM · 81‑STATION · WAHRHEIT</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #0a0a12;
+            color: #e0e8f0;
+            font-family: 'Consolas', 'Segoe UI', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(12, 16, 28, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 190, 90, 0.15);
+            padding: 24px 28px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 190, 90, 0.1);
+            padding-bottom: 12px;
+        }
+        header h1 {
+            font-size: 26px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #ffb35a, #ffe3a8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        header .badge {
+            background: rgba(255, 190, 90, 0.08);
+            border: 1px solid rgba(255, 190, 90, 0.15);
+            border-radius: 100px;
+            padding: 4px 16px;
+            font-size: 12px;
+            color: #c0a06a;
+        }
+        .status-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 190, 90, 0.06);
+        }
+        .status-row .item { display: flex; align-items: center; gap: 6px; }
+        .status-row .label { color: #6a7a8a; }
+        .status-row .value { color: #ffcf8c; font-weight: bold; }
+        .status-row .value.err { color: #ff6b6b; }
+        .status-row .value.good { color: #8cf0a0; }
+
+        canvas {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 190, 90, 0.08);
+            margin-bottom: 16px;
+            box-shadow: inset 0 0 60px rgba(80,40,0,0.3);
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .btn {
+            background: rgba(30, 24, 16, 0.6);
+            border: 1px solid rgba(255, 190, 90, 0.12);
+            border-radius: 10px;
+            padding: 8px 6px;
+            color: #d8c0a0;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover {
+            border-color: #ffb35a;
+            background: rgba(200, 130, 40, 0.12);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .btn.primary { border-color: #ffb35a; color: #ffb35a; }
+        .btn.primary:hover { background: rgba(200, 130, 40, 0.18); }
+        .btn.warn { border-color: #f0d080; color: #f0d080; }
+        .btn.warn:hover { background: rgba(200, 180, 80, 0.12); }
+        .btn.danger { border-color: #ff6b6b; color: #ff6b6b; }
+        .btn.danger:hover { background: rgba(200, 60, 60, 0.12); }
+
+        .log-box {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #7a8a9a;
+            height: 100px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 190, 90, 0.04);
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+        .log-box::-webkit-scrollbar { width: 3px; }
+        .log-box::-webkit-scrollbar-thumb { background: #3a2a1a; border-radius: 4px; }
+
+        .footer {
+            text-align: center;
+            color: #3a4a5a;
+            font-size: 10px;
+            margin-top: 12px;
+            border-top: 1px solid rgba(255, 190, 90, 0.04);
+            padding-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            header h1 { font-size: 20px; }
+            .control-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
 </head>
 <body>
 
-<canvas id="atmCanvas"></canvas>
+<div class="container">
+
+    <header>
+        <h1>⚛️ ATOM · 81‑STATION · WAHRHEIT</h1>
+        <span class="badge">● messend · 9hoch9</span>
+    </header>
+
+    <!-- Status -->
+    <div class="status-row" id="statusRow">
+        <span class="item"><span class="label">STATE</span> <span class="value" id="stateDisplay">READY</span></span>
+        <span class="item"><span class="label">READY</span> <span class="value" id="readyDisplay">81/81</span></span>
+        <span class="item"><span class="label">ABWEICHUNG</span> <span class="value" id="errorsDisplay">0</span></span>
+        <span class="item"><span class="label">SLOTS</span> <span class="value" id="slotsDisplay">81</span></span>
+        <span class="item"><span class="label">WAHRHEITSGRAD</span> <span class="value good" id="truthDisplay">100%</span></span>
+        <span class="item"><span class="label">MODE</span> <span class="value" id="modeDisplay">messung</span></span>
+    </div>
+
+    <!-- Canvas -->
+    <canvas id="atomCanvas" width="800" height="450"></canvas>
+
+    <!-- Buttons: Mess-/Wertungssteuerung -->
+    <div class="control-grid">
+        <button class="btn primary" id="btnMiss">🎯 MISS</button>
+        <button class="btn primary" id="btnFasil">⚖️ FASIL</button>
+        <button class="btn primary" id="btnFix">🔧 FIX</button>
+        <button class="btn primary" id="btnFit">📐 FIT</button>
+        <button class="btn warn" id="btnRecall">⏪ RECALL</button>
+        <button class="btn danger" id="btnRefinal">⚡ REFINAL</button>
+        <button class="btn" id="btnReset">⟲ RESET</button>
+        <button class="btn" id="btnPause">⏸ PAUSE</button>
+    </div>
+
+    <!-- Log -->
+    <div class="log-box" id="logBox">[init] ATOM · Wahrheits‑Station geladen …</div>
+
+    <div class="footer">⚖️ iki1uc · ATOM · 81‑STATION · atomare Wahrheit als messbare Instanz</div>
+</div>
 
 <script>
-const canvas = document.getElementById("atmCanvas");
-const ctx = canvas.getContext("2d");
+"use strict";
 
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resize();
-window.onresize = resize;
+// ================================================================
+//  ATOM · 81‑STATION · WAHRHEIT
+//  Umbau der "Wasser"-Edition: statt Ästhetik jetzt Mess-/Wertungsinstanz.
+//  Jeder der 81 Slots trägt einen Messwert (value), der gegen einen
+//  Sollwert (truth, hier 0 = neutraler Nullpunkt) geprüft wird.
+//  Aus der Abweichung |value - truth| entsteht pro Slot ein Score,
+//  aus dem Mittel aller Scores der globale WAHRHEITSGRAD (0..100%).
+// ================================================================
 
-const COLS = 9;
-const ROWS = 9;
+// ─── CANVAS ──────────────────────────────────────────────────────
+const canvas = document.getElementById('atomCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+// ─── STATE ──────────────────────────────────────────────────────
+const TOTAL_SLOTS = 81;
+const COLS = 9, ROWS = 9;
+const CELL_W = W / COLS, CELL_H = H / ROWS;
+const TOLERANCE = 0.15; // Abweichungstoleranz: |value| <= TOLERANZ gilt als "wahr"
+
+let slots = [];
+let running = true;
 let time = 0;
+let logEntries = [];
 
-// 81 Slots (wie früher)
-const slots = Array.from({length:81}, (_,i)=>({
-    value: Math.sin(i*0.2),
-}));
-
-function drawAtmosWaterMirror() {
-    const W = canvas.width;
-    const H = canvas.height;
-    const CELL_W = W / COLS;
-    const CELL_H = (H/2) / ROWS;
-
-    ctx.clearRect(0,0,W,H);
-
-    // Hintergrund
-    const bg = ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,"#02040a");
-    bg.addColorStop(1,"#0a0f1c");
-    ctx.fillStyle = bg;
-    ctx.fillRect(0,0,W,H);
-
-    // OBERER TEIL
-    for(let r=0;r<ROWS;r++){
-        for(let c=0;c<COLS;c++){
-            const idx = r*COLS+c;
-            const slot = slots[idx];
-            const val = slot.value*0.5+0.5;
-            const brightness = 40 + val*120;
-
-            const x = c*CELL_W;
-            const y = r*CELL_H;
-
-            ctx.fillStyle = `rgba(${brightness},${brightness+20},${brightness+60},0.25)`;
-            ctx.fillRect(x,y,CELL_W,CELL_H);
-        }
+// ─── INIT SLOTS ────────────────────────────────────────────────
+// value      = aktueller Messwert des Slots (Soll = 0 → "Wahrheit")
+// truth      = Referenz-/Sollwert (fix bei 0, kann pro Slot variieren)
+// deviation  = |value - truth|, Grundlage für den Score
+// score      = 1 - min(deviation, 1)  → 1 = voll wahr, 0 = maximal abweichend
+function initSlots() {
+    slots = [];
+    for (let i = 0; i < TOTAL_SLOTS; i++) {
+        const v = Math.sin(i * 0.2 + 0.5);
+        slots.push({
+            value: v,
+            truth: 0,
+            pulse: 0,
+            drift: 0,
+            angle: (i * 37) % 360,
+            targetValue: v,
+            deviation: Math.abs(v),
+            score: 1 - Math.min(Math.abs(v), 1)
+        });
     }
+}
+initSlots();
 
-    // Spiegel-Linie
-    const mirrorY = H/2;
-    ctx.fillStyle = "rgba(255,255,255,0.05)";
-    ctx.fillRect(0,mirrorY-1,W,2);
-
-    // UNTERER TEIL (Wasser-Spiegel)
-    for(let r=0;r<ROWS;r++){
-        for(let c=0;c<COLS;c++){
-            const idx = r*COLS+c;
-            const slot = slots[idx];
-            const val = slot.value*0.5+0.5;
-            const brightness = 40 + val*120;
-
-            const x = c*CELL_W;
-            const y = mirrorY + (ROWS-r-1)*CELL_H;
-
-            const wave = Math.sin(time*0.002 + x*0.03 + r*0.2)*4;
-
-            ctx.fillStyle = `rgba(${brightness},${brightness+30},${brightness+80},0.18)`;
-            ctx.fillRect(x,y+wave,CELL_W,CELL_H);
-
-            const fade = (r/ROWS)*0.4;
-            ctx.fillStyle = `rgba(0,0,0,${fade})`;
-            ctx.fillRect(x,y,CELL_W,CELL_H);
-        }
-    }
-
-    // Titel
-    ctx.fillStyle = "rgba(100,200,255,0.08)";
-    ctx.font = "20px Consolas";
-    ctx.textAlign = "center";
-    ctx.fillText("ATMOS · Wasser-Spiegelung (horizontal)", W/2, 30);
+function computeDeviationAndScore(s) {
+    s.deviation = Math.abs(s.value - s.truth);
+    s.score = Math.max(0, 1 - Math.min(s.deviation, 1));
 }
 
-function loop(){
-    time += 16;
-    drawAtmosWaterMirror();
+// ─── STATUS UI ──────────────────────────────────────────────────
+function updateStatus(readyCountOverride) {
+    for (const s of slots) computeDeviationAndScore(s);
+
+    const ready = readyCountOverride !== undefined
+        ? readyCountOverride
+        : slots.filter(s => s.deviation <= TOLERANCE).length;
+    const errors = TOTAL_SLOTS - ready;
+    const avgScore = slots.reduce((sum, s) => sum + s.score, 0) / TOTAL_SLOTS;
+    const truthPercent = Math.round(avgScore * 100);
+
+    document.getElementById('readyDisplay').textContent = `${ready}/${TOTAL_SLOTS}`;
+    document.getElementById('errorsDisplay').textContent = errors;
+    document.getElementById('errorsDisplay').className = errors === 0 ? 'value good' : 'value err';
+    document.getElementById('stateDisplay').textContent = errors === 0 ? 'VOLL WAHR' : 'ABWEICHEND';
+    document.getElementById('slotsDisplay').textContent = TOTAL_SLOTS;
+    document.getElementById('modeDisplay').textContent = 'messung';
+
+    const truthEl = document.getElementById('truthDisplay');
+    truthEl.textContent = `${truthPercent}%`;
+    truthEl.className = truthPercent >= 80 ? 'value good' : (truthPercent >= 40 ? 'value' : 'value err');
+}
+
+// ─── LOG ──────────────────────────────────────────────────────
+function log(msg) {
+    const box = document.getElementById('logBox');
+    const timeStr = new Date().toLocaleTimeString();
+    const entry = document.createElement('div');
+    entry.textContent = `[${timeStr}] ${msg}`;
+    box.appendChild(entry);
+    box.scrollTop = box.scrollHeight;
+    if (box.children.length > 60) box.removeChild(box.firstChild);
+    logEntries.push(msg);
+}
+
+// ─── MESS-/WERTUNGSFUNKTIONEN ─────────────────────────────────
+
+// MISS – Messung: setzt jeden Slot auf seinen aktuellen Rohwert zurück auf Null-Referenz-Check
+function doMiss() {
+    let sumDeviation = 0;
+    for (const s of slots) {
+        computeDeviationAndScore(s);
+        sumDeviation += s.deviation;
+    }
+    const avgDeviation = sumDeviation / TOTAL_SLOTS;
+    log(`🎯 MISS → Messung durchgeführt, Ø Abweichung ${avgDeviation.toFixed(3)}`);
+    updateStatus();
+}
+
+// FASIL – gleicht Werte auf den Mittelwert aus (Kalibrierung)
+function doFasil() {
+    const avg = slots.reduce((sum, s) => sum + s.value, 0) / TOTAL_SLOTS;
+    for (const s of slots) {
+        s.value = s.value * 0.6 + avg * 0.4;
+        s.targetValue = s.value;
+        s.pulse = s.pulse * 0.8;
+        s.drift = s.drift * 0.8;
+    }
+    log('⚖️ FASIL → Messwerte kalibriert/geglättet');
+    updateStatus();
+}
+
+// FIX – korrigiert Ausreißer außerhalb des Toleranzbands (clamp)
+function doFix() {
+    let fixed = 0;
+    for (const s of slots) {
+        if (s.value > 1.5 || s.value < -1.5) {
+            s.value = Math.sign(s.value) * 1.2;
+            s.targetValue = s.value;
+            fixed++;
+        }
+        s.pulse = Math.min(Math.max(s.pulse, -1), 1);
+        s.drift = Math.min(Math.max(s.drift, -1), 1);
+        s.angle = ((s.angle % 360) + 360) % 360;
+    }
+    log(`🔧 FIX → ${fixed} Ausreißer korrigiert`);
+    updateStatus();
+}
+
+// FIT – legt eine Referenzkurve (Sinus) als Soll-Wahrheit über alle Slots
+function doFit() {
+    for (let i = 0; i < TOTAL_SLOTS; i++) {
+        const s = slots[i];
+        const phase = i * 0.2 + time * 0.0003;
+        s.targetValue = Math.sin(phase) * 0.9;
+        s.value = s.value * 0.5 + s.targetValue * 0.5;
+        s.pulse = Math.sin(time / 120 + i * 0.1) * 0.6;
+        s.drift = Math.cos(time / 240 + i * 0.05) * 0.5;
+        s.angle = (time / 10 + i * 4) % 360;
+    }
+    log('📐 FIT → Referenzkurve angelegt, Slots angeglichen');
+    updateStatus();
+}
+
+// RECALL – ruft den ursprünglichen Ausgangszustand der Messreihe ab
+function doRecall() {
+    initSlots();
+    log('⏪ RECALL → Ausgangs-Messreihe wiederhergestellt');
+    updateStatus();
+}
+
+// REFINAL – finale Neukalibrierung aller Slots gegen die Referenz
+function doRefinal() {
+    for (const s of slots) {
+        s.value = Math.sin(s.angle * Math.PI / 180) * 0.5;
+        s.targetValue = s.value;
+        s.pulse = 0;
+        s.drift = 0;
+        s.angle = (s.angle + 10) % 360;
+    }
+    log('⚡ REFINAL → vollständige Neukalibrierung gegen Referenz');
+    updateStatus();
+}
+
+// ─── ANIMATION (Mess-/Wertungsfeld) ────────────────────────────
+function drawField() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Hintergrund – gedämpftes Schwarz/Bernstein
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#0a0a0e');
+    grad.addColorStop(1, '#1a140c');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // 81 Mess-Zellen
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            const idx = r * COLS + c;
+            const slot = slots[idx];
+            computeDeviationAndScore(slot);
+            const x = c * CELL_W;
+            const y = r * CELL_H;
+
+            // score 0..1 → Farbverlauf rot (falsch) bis grün (wahr)
+            const score = slot.score;
+            const heightOffset = (slot.value) * CELL_H * 0.15;
+
+            const rCol = Math.round(220 * (1 - score) + 40 * score);
+            const gCol = Math.round(90 * (1 - score) + 200 * score);
+            const bCol = 60;
+            ctx.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, 0.28)`;
+            ctx.fillRect(x, y + heightOffset * 0.3, CELL_W, CELL_H * 0.7);
+
+            // Umrandung – Toleranzband sichtbar machen
+            const inTolerance = slot.deviation <= TOLERANCE;
+            ctx.strokeStyle = inTolerance
+                ? `rgba(140, 240, 160, ${0.15 + score * 0.2})`
+                : `rgba(255, 120, 90, ${0.15 + (1 - score) * 0.2})`;
+            ctx.lineWidth = 0.6 + (1 - score) * 0.8;
+            ctx.strokeRect(x, y + heightOffset * 0.2, CELL_W, CELL_H * 0.6);
+
+            // Kern-Punkt (Atomkern-Andeutung)
+            const count = Math.floor(score * 3) + 1;
+            for (let p = 0; p < count; p++) {
+                const px = x + Math.random() * CELL_W;
+                const py = y + heightOffset * 0.5 + Math.random() * CELL_H * 0.5;
+                const size = 0.5 + score * 1.5;
+                const alpha = 0.12 + score * 0.2;
+                ctx.fillStyle = `rgba(255, 220, 170, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Messwert + Score‑Anzeige
+            ctx.fillStyle = `rgba(230, 220, 200, ${0.15 + score * 0.15})`;
+            ctx.font = '8px Consolas';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(slot.value.toFixed(2), x + CELL_W/2, y + CELL_H - 4);
+        }
+    }
+
+    // Referenzlinien (horizontale Nulllinien-Andeutung)
+    for (let i = 0; i < 12; i++) {
+        const y = (i / 12) * H;
+        const waveOffset = Math.sin(i * 0.5 + time * 0.0005) * 4;
+        ctx.beginPath();
+        ctx.moveTo(0, y + waveOffset);
+        for (let x = 0; x < W; x += 4) {
+            const val = Math.sin(x * 0.02 + i * 0.3 + time * 0.0008) * 2 + waveOffset;
+            ctx.lineTo(x, y + val);
+        }
+        ctx.strokeStyle = `rgba(255, 190, 90, ${0.015 + 0.025 * (i / 12)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+    }
+
+    // Titel‑Overlay
+    ctx.fillStyle = 'rgba(255, 190, 90, 0.07)';
+    ctx.font = '14px Consolas';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('atomare Wahrheit · 81 Slots · Mess-/Wertungsfeld', W/2, 10);
+}
+
+// ─── UPDATE SLOTS (langsame Annäherung an Sollwert) ────────────
+function updateSlots() {
+    for (const s of slots) {
+        s.value += (s.targetValue - s.value) * 0.008;
+        s.pulse += Math.sin(time * 0.001 + s.angle * 0.01) * 0.001;
+        s.drift += Math.cos(time * 0.002 + s.angle * 0.02) * 0.001;
+        s.pulse = Math.min(Math.max(s.pulse, -1), 1);
+        s.drift = Math.min(Math.max(s.drift, -1), 1);
+        s.angle = (s.angle + 0.02) % 360;
+    }
+}
+
+// ─── LOOP ──────────────────────────────────────────────────────
+function loop() {
+    if (running) {
+        time += 16;
+        updateSlots();
+        drawField();
+        if (Math.floor(time / 2000) % 2 === 0) {
+            updateStatus();
+        }
+    }
     requestAnimationFrame(loop);
 }
+
+// ─── PAUSE ──────────────────────────────────────────────────────
+document.getElementById('btnPause').addEventListener('click', () => {
+    running = !running;
+    document.getElementById('btnPause').textContent = running ? '⏸ PAUSE' : '▶ START';
+    log(running ? '▶ Messung fortgesetzt' : '⏸ Messung pausiert');
+});
+
+// ─── BUTTONS ────────────────────────────────────────────────────
+document.getElementById('btnMiss').addEventListener('click', doMiss);
+document.getElementById('btnFasil').addEventListener('click', doFasil);
+document.getElementById('btnFix').addEventListener('click', doFix);
+document.getElementById('btnFit').addEventListener('click', doFit);
+document.getElementById('btnRecall').addEventListener('click', doRecall);
+document.getElementById('btnRefinal').addEventListener('click', doRefinal);
+document.getElementById('btnReset').addEventListener('click', () => {
+    initSlots();
+    log('⟲ Reset → Messreihe neu initialisiert');
+    updateStatus();
+});
+
+// ─── TASTATUR ──────────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+    if (e.key === ' ') { e.preventDefault(); document.getElementById('btnPause').click(); }
+    if (e.key === 'm') doMiss();
+    if (e.key === 'f') doFasil();
+    if (e.key === 'x') doFix();
+    if (e.key === 't') doFit();
+    if (e.key === 'r') doRecall();
+    if (e.key === 'R') doRefinal();
+});
+
+// ─── INIT ──────────────────────────────────────────────────────
+log('⚛️ ATOM · 81‑STATION · atomare Wahrheit gestartet');
+log('📐 Slots: 81 (9x9) · Modus: messung · Toleranz: ' + TOLERANCE);
+log('⌨️  Leertaste=Pause  m=MISS  f=FASIL  x=FIX  t=FIT  r=RECALL  R=REFINAL');
+updateStatus();
 loop();
+
 </script>
 
 </body>
