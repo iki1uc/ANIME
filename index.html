@@ -465,6 +465,7 @@ const S = {
   speedLines: 0,    // Speed-Lines-Intensität
   emotion: null,    // Aktuelles Emotions-Symbol
   emotionTimer: 0,
+  shake: 0,         // Kamera-Erschütterung bei Szenenwechsel, klingt ab
 };
 
 // ─── ELEMENTE-ZYKLUS ──────────────────────────────────
@@ -632,7 +633,8 @@ function drawEmotion(sym, x, y, alpha, size=52){
   ctx.restore();
 }
 
-// ─── FIGUREN (Anime-Stil) ──────────────────────────────
+// ─── FIGUREN (Anime-Stil, jetzt mit echter Eigenbewegung) ──
+// walk: 0..1 Gehphase (0 = steht still). breathe: true/false → Brust hebt/senkt sich mit ATEM.
 function drawPerson(x, ground, opts){
   opts = opts || {};
   const jacket = opts.jacket || '#356d72';
@@ -640,95 +642,120 @@ function drawPerson(x, ground, opts){
   const hair = opts.hair || '#1a1218';
   const facing = opts.facing || 1;
   const fan = opts.fan;
+  const walk = clamp(opts.walk || 0);
+  const breatheOn = opts.breathe !== false;
+
+  // Eigenbewegung, die nie ganz still steht: Schrittzyklus, Atem-Heben, Blinzeln, Haar-/Armschwung.
+  const walkCycle = Math.sin(S.frame * 0.22) * walk;
+  const idleSway = Math.sin(S.frame * 0.02 + x*0.01) * (1 - walk) * 1.4;
+  const breathe = breatheOn ? (S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2) : 0;
+  const chestLift = breathe * 1.6;
+  const hairSway = Math.sin(S.frame * 0.03 + x*0.02) * (1.5 + S.move*2);
+  const armSwing = walkCycle * 10;
+  // Blinzeln: kurze, unregelmäßige Momente statt Dauer-Loop
+  const blinkCycle = (S.frame + Math.floor(x)) % 210;
+  const blinking = blinkCycle > 200;
 
   ctx.save();
-  ctx.translate(x, ground);
+  ctx.translate(x + idleSway, ground);
   ctx.scale(facing, 1);
 
-  // Schatten
+  // Schatten (leicht atmend mit)
   ctx.fillStyle = 'rgba(0,0,0,0.35)';
   ctx.beginPath();
-  ctx.ellipse(0, 3, 34, 7, 0, 0, Math.PI*2);
+  ctx.ellipse(0, 3, 34 - Math.abs(walkCycle)*3, 7, 0, 0, Math.PI*2);
   ctx.fill();
 
-  // Beine
+  // Beine (Schrittbewegung)
   ctx.fillStyle = '#0a1015';
-  ctx.fillRect(-16, -16, 12, 38);
-  ctx.fillRect(4, -16, 12, 38);
+  ctx.fillRect(-16 - walkCycle*4, -16, 12, 38);
+  ctx.fillRect(4 + walkCycle*4, -16, 12, 38);
 
-  // Körper
+  // Körper (hebt/senkt sich beim Atmen)
   ctx.fillStyle = jacket;
   ctx.beginPath();
-  ctx.moveTo(-22, -70); ctx.lineTo(-25, -16); ctx.lineTo(25, -16); ctx.lineTo(22, -70); ctx.closePath();
+  ctx.moveTo(-22, -70 - chestLift); ctx.lineTo(-25, -16); ctx.lineTo(25, -16); ctx.lineTo(22, -70 - chestLift); ctx.closePath();
   ctx.fill();
 
   // Hals
   ctx.fillStyle = skin;
-  ctx.fillRect(-6, -80, 12, 12);
+  ctx.fillRect(-6, -80 - chestLift, 12, 12);
 
-  // Kopf (Anime-Verhältnis)
+  // Kopf (Anime-Verhältnis, folgt dem Atem minimal)
   ctx.fillStyle = skin;
   ctx.beginPath();
-  ctx.ellipse(0, -100, 17, 21, 0, 0, Math.PI*2);
+  ctx.ellipse(0, -100 - chestLift, 17, 21, 0, 0, Math.PI*2);
   ctx.fill();
 
-  // Haar (Anime-Stil)
+  // Haar (Anime-Stil, schwingt leicht)
+  ctx.save();
+  ctx.translate(0, -100 - chestLift);
+  ctx.rotate(hairSway * 0.01);
   ctx.fillStyle = hair;
   ctx.beginPath();
-  ctx.moveTo(-19, -100);
-  ctx.quadraticCurveTo(-22, -125, 0, -126);
-  ctx.quadraticCurveTo(22, -125, 19, -100);
-  ctx.lineTo(15, -108);
-  ctx.lineTo(8, -100);
-  ctx.lineTo(-8, -104);
-  ctx.lineTo(-15, -100);
+  ctx.moveTo(-19, 0);
+  ctx.quadraticCurveTo(-22 + hairSway*0.3, -25, 0, -26);
+  ctx.quadraticCurveTo(22 + hairSway*0.3, -25, 19, 0);
+  ctx.lineTo(15, -8);
+  ctx.lineTo(8, 0);
+  ctx.lineTo(-8, -4);
+  ctx.lineTo(-15, 0);
   ctx.closePath();
   ctx.fill();
+  ctx.restore();
 
-  // Auge (Anime-groß)
-  ctx.fillStyle = '#fff';
-  ctx.beginPath();
-  ctx.ellipse(5, -99, 5, 6, 0, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#0a2030';
-  ctx.beginPath();
-  ctx.arc(6, -99, 2.5, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#fff';
-  ctx.beginPath();
-  ctx.arc(7, -100, 1, 0, Math.PI*2);
-  ctx.fill();
+  // Auge (Anime-groß, blinzelt gelegentlich)
+  if (blinking){
+    ctx.strokeStyle = '#0a2030';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(1, -99 - chestLift); ctx.lineTo(10, -99 - chestLift);
+    ctx.stroke();
+  } else {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.ellipse(5, -99 - chestLift, 5, 6, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#0a2030';
+    ctx.beginPath();
+    ctx.arc(6, -99 - chestLift, 2.5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(7, -100 - chestLift, 1, 0, Math.PI*2);
+    ctx.fill();
+  }
 
   // Mund
   ctx.strokeStyle = '#7a4530';
   ctx.lineWidth = 1;
   ctx.beginPath();
   if (fan && opts.surprised){
-    ctx.arc(2, -92, 3, 0, Math.PI*2); // O-Mund
+    ctx.arc(2, -92 - chestLift, 3, 0, Math.PI*2); // O-Mund
   } else if (fan) {
-    ctx.moveTo(-1, -92); ctx.lineTo(4, -92);
+    ctx.moveTo(-1, -92 - chestLift); ctx.lineTo(4, -92 - chestLift);
   } else {
-    ctx.moveTo(0, -92); ctx.lineTo(3, -92);
+    ctx.moveTo(0, -92 - chestLift); ctx.lineTo(3, -92 - chestLift);
   }
   ctx.stroke();
 
-  // Arme
+  // Arme (schwingen beim Gehen, sonst leichtes Eigenleben)
   ctx.strokeStyle = jacket;
   ctx.lineWidth = 8;
   ctx.beginPath();
-  ctx.moveTo(-18, -66); ctx.lineTo(-28, -36);
-  ctx.moveTo(18, -66); ctx.lineTo(28, -40);
+  ctx.moveTo(-18, -66 - chestLift); ctx.lineTo(-28 - armSwing, -36 + Math.abs(armSwing)*0.3);
+  ctx.moveTo(18, -66 - chestLift); ctx.lineTo(28 + armSwing, -40 + Math.abs(armSwing)*0.3);
   ctx.stroke();
   // Hände
   ctx.fillStyle = skin;
-  ctx.beginPath(); ctx.arc(-28, -36, 4, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(28, -40, 4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(-28 - armSwing, -36 + Math.abs(armSwing)*0.3, 4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(28 + armSwing, -40 + Math.abs(armSwing)*0.3, 4, 0, Math.PI*2); ctx.fill();
 
-  // Fan: Notizbuch
+  // Fan: Notizbuch (wippt minimal mit)
   if (fan){
     ctx.save();
-    ctx.translate(30, -38);
-    ctx.rotate(-0.2);
+    ctx.translate(30, -38 - chestLift*0.5);
+    ctx.rotate(-0.2 + Math.sin(S.frame*0.05)*0.02);
     ctx.fillStyle = '#d4bc80';
     ctx.fillRect(0, 0, 28, 40);
     ctx.strokeStyle = '#715d43';
@@ -751,8 +778,9 @@ function drawPhone(x, y, scale=1, glow=false, screen='phone'){
   ctx.translate(x, y);
   ctx.scale(scale, scale);
   if (glow){
+    const breathe = S.breathOn ? (S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2) : 0.5;
     ctx.shadowColor = '#68f6c0';
-    ctx.shadowBlur = 28;
+    ctx.shadowBlur = 20 + breathe * 16;
   }
   // Körper
   ctx.fillStyle = '#0a1018';
@@ -934,11 +962,12 @@ function drawAnimeSky(t){
 }
 
 function drawAnimeCity(){
-  // Skyline
+  // Skyline (leichtes Parallax-Driften, angetrieben von MOVE)
+  const drift = Math.sin(S.frame * 0.0015) * S.move * 6;
   const colors = ['#1a1f38', '#232845', '#181c30'];
   const heights = [90, 130, 70, 160, 100, 120, 80, 145, 95, 110, 140, 75, 105];
   for (let i = 0; i < heights.length; i++){
-    const x = i * 78 - 30;
+    const x = i * 78 - 30 + drift;
     const h = heights[i];
     rect(x, 400 - h, 68, h, colors[i%3]);
     // Fenster
@@ -999,8 +1028,24 @@ function drawSC1(t){
   const narratorX = lerp(-90, 290, entry);
   const fanSurprised = t > 0.92;
 
-  drawPerson(narratorX, 415, { jacket:'#356d72', skin:'#d99a73', hair:'#1a1218', facing:1 });
+  drawPerson(narratorX, 415, { jacket:'#356d72', skin:'#d99a73', hair:'#1a1218', facing:1, walk: t < 0.24 ? 1 : 0 });
   drawPerson(690, 415, { jacket:'#6d4d71', skin:'#e5a178', hair:'#5a2a3a', facing:-1, fan:true, surprised:fanSurprised });
+
+  // Fallende Blätter (leben unabhängig von der Story mit)
+  for (let i = 0; i < 6; i++){
+    const fx = ((i * 173 + S.frame * (1.1 + i*0.13)) % (W + 60)) - 30;
+    const fy = 60 + ((i * 240 + S.frame * (0.6 + i*0.1)) % 340);
+    const sway = Math.sin(S.frame*0.05 + i) * 10;
+    ctx.save();
+    ctx.globalAlpha = 0.55;
+    ctx.fillStyle = i%2 ? '#2a6350' : '#ffbd5c';
+    ctx.translate(fx + sway, fy);
+    ctx.rotate(S.frame*0.03 + i);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 4, 2, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
 
   // Wunder-Effekt: der Communicator
   if (reveal > 0){
@@ -1176,6 +1221,24 @@ function drawElementParticles(){
     ctx.shadowBlur = 8;
     ctx.beginPath();
     ctx.ellipse(x, y, 2 + S.h2o*1.5, 4 + S.h2o*2, a, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // MOVE-Bokeh: zusätzliche freie Bewegung, deren Menge direkt vom MOVE-Wert
+  // gesteuert wird — mehr MOVE heißt sichtbar mehr Bewegung im Bild.
+  const bokehCount = Math.round(6 + S.move * 22);
+  for (let i = 0; i < bokehCount; i++){
+    const a = i * 2.399963 + t * (0.006 + (i%5)*0.002);
+    const r = 60 + ((i*53) % 260) + Math.sin(t*0.01+i)*18;
+    const x = cx + Math.cos(a) * r * 1.4;
+    const y = cy + Math.sin(a) * r * 0.75;
+    if (x < -20 || x > W+20 || y < 20 || y > H-20) continue;
+    ctx.save();
+    ctx.globalAlpha = 0.12 + 0.18 * S.move;
+    ctx.fillStyle = ['#68f6c0','#b388ff','#ffbd5c','#ff6d9d'][i%4];
+    ctx.beginPath();
+    ctx.arc(x, y, 1.2 + (i%3), 0, Math.PI*2);
     ctx.fill();
     ctx.restore();
   }
@@ -1505,8 +1568,9 @@ function drawSC6(t){
   g.addColorStop(1, '#040810');
   ctx.fillStyle = g; ctx.fillRect(0, 25, W, H - 25);
 
-  // Glitch-Partikel
-  for (let i = 0; i < 120; i++){
+  // Glitch-Partikel (Dichte reagiert auf MOVE — mehr Bewegung, mehr Glitches)
+  const glitchCount = Math.round(90 + S.move * 90);
+  for (let i = 0; i < glitchCount; i++){
     const a = i * 0.7 + t * 0.6;
     const r = 35 + (i%14) * 26;
     const x = 480 + Math.cos(a) * r;
@@ -1540,10 +1604,36 @@ function drawSC6(t){
   drawElementParticles();
 }
 
+// ─── LEBENDIGE KAMERA (reagiert auf MOVE/ATEM) ────────
+// Die Kamera bewegt sich nie ganz still: ein feines Schweben,
+// das von MOVE (Bewegungs-Achse) und ATEM (Breath-Phase) angetrieben wird.
+function cameraOffset(){
+  const f = S.frame;
+  const moveAmp = 2 + S.move * 7;           // je höher MOVE, desto mehr Schweben
+  const breathAmp = 1 + (S.breathOn ? (S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2) * 3 : 0);
+  let ox = Math.sin(f*0.011) * moveAmp * 0.6 + Math.sin(f*0.003)*breathAmp*0.4;
+  let oy = Math.cos(f*0.014) * moveAmp * 0.4 + Math.sin(f*0.0065)*breathAmp*0.6;
+  const zoom = 1 + Math.sin(f*0.004) * 0.006 * (0.4 + S.move*0.8);
+  if (S.shake > 0){
+    ox += (Math.random()-0.5) * S.shake;
+    oy += (Math.random()-0.5) * S.shake;
+    S.shake *= 0.88;
+    if (S.shake < 0.05) S.shake = 0;
+  }
+  return {ox, oy, zoom};
+}
+
 // ─── RENDER DISPATCH ───────────────────────────────────
 function drawScene(index, local){
   ctx.clearRect(0, 0, W, H);
   if (S.booting){ drawBoot(); return; }
+
+  const cam = cameraOffset();
+  ctx.save();
+  ctx.translate(W/2, H/2);
+  ctx.scale(cam.zoom, cam.zoom);
+  ctx.translate(-W/2 + cam.ox, -H/2 + cam.oy);
+
   switch(scenes[index].id){
     case 'SC1': drawSC1(local); break;
     case 'SC2': drawSC2(local); break;
@@ -1553,6 +1643,7 @@ function drawScene(index, local){
     case 'SC6': drawSC6(local); break;
   }
   drawSparks();
+  ctx.restore();
   drawCRT();
 }
 
@@ -1773,8 +1864,8 @@ function loop(now){
 
   updateSparks(dt);
 
-  // Automatische Anime-Effekte
-  if (Math.random() < 0.02){
+  // Automatische Anime-Effekte (Rate steigt mit MOVE — mehr Bewegungs-Energie im System, mehr Funken)
+  if (Math.random() < 0.015 + S.move * 0.03){
     const scene = scenes[sceneAt(S.time)];
     const colors = ['#ffcc66','#68f6c0','#b388ff','#6cc9ff','#ff6d9d'];
     spawnSpark(
@@ -1799,6 +1890,7 @@ function loop(now){
       const after = sceneAt(S.time);
       if (after !== before){
         beep('scene');
+        S.shake = 10;
         // Anime-Übergangs-Effekt
         for (let i = 0; i < 30; i++){
           spawnSpark(W/2, H/2, ['#68f6c0','#b388ff','#ffbd5c'][i%3], 1, 'star');
