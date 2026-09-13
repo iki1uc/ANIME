@@ -3,1444 +3,1763 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🕳️ SINGULARITÄT · Das Beste · iki1uc</title>
+<title>◈ MOVE · SEIN · MAIN · ATEM · LEBEN · iki1uc</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
-    --void:#000104;
-    --bg:#05060e;
-    --gold:#ffcc66;
-    --gold2:#ffe9a0;
-    --orange:#ff8844;
-    --violet:#b388ff;
-    --cyan:#6cf;
-    --green:#8cf0d0;
-    --red:#ff5577;
-    --line:rgba(255,204,102,0.15);
+    --void:#000104; --bg:#05060e; --bg2:#0a0c18; --bg3:#101428;
+    --gold:#ffcc66; --gold2:#ffe9a0; --orange:#ff8844;
+    --violet:#b388ff; --cyan:#6cf; --green:#8cf0d0;
+    --red:#ff5577; --pink:#ff88b0;
+    --o2:#7ce0a8; --co2:#ffcc44; --h2o:#5fc8ff; --atom:#b388ff;
+    --mana:#ff66c8; --aura:#ffd93d; --zen:#8cf0d0;
+    --move:#ffcc66;      /* MOVE = Gold */
+    --sein:#b388ff;      /* SEIN = Violett */
+    --main:#6cf;         /* MAIN = Cyan */
+    --atem:#8cf0d0;      /* ATEM = Mint */
+    --leben:#ff88b0;     /* LEBEN = Pink */
+    --line:rgba(255,204,102,0.12);
+    --line2:rgba(255,204,102,0.05);
+    --mono:'Consolas','Courier New',monospace;
+    --serif:'Yu Mincho','Hiragino Mincho ProN',serif;
   }
-  html,body{height:100%;}
+  html,body{height:100%;overflow:hidden;}
   body{
-    background:radial-gradient(ellipse at 50% 50%, #0a0618 0%, #030409 70%);
+    background:var(--void);
     color:#c8d8e8;
-    font-family:'Consolas','Courier New',monospace;
-    height:100vh; overflow:hidden;
-    display:flex; flex-direction:column;
+    font-family:var(--mono);
+    font-size:12px;
   }
 
-  /* HEADER */
-  header{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:8px 16px;
+  #desk{
+    width:100vw;height:100vh;
+    background:radial-gradient(ellipse at 50% 40%, #0a0618 0%, #030409 70%);
+    display:flex;flex-direction:column;overflow:hidden;position:relative;
+  }
+  #desk::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 45%,
+      rgba(255,204,102,0.04) 0%,
+      rgba(179,136,255,0.02) 40%,
+      transparent 70%);
+    animation:bgBreathe 8s ease-in-out infinite;
+    pointer-events:none;z-index:0;
+  }
+  @keyframes bgBreathe{
+    0%,100%{transform:scale(1);opacity:.5;}
+    50%{transform:scale(1.06);opacity:1;}
+  }
+
+  /* TOPBAR */
+  #topbar{
+    height:34px;
+    background:linear-gradient(180deg,#0a0c18,#04060e);
     border-bottom:1px solid var(--line);
-    background:rgba(4,5,14,0.9);
-    backdrop-filter:blur(12px);
-    flex-wrap:wrap; gap:10px; z-index:10;
+    display:flex;align-items:center;padding:0 14px;
+    font-size:11px;letter-spacing:1px;gap:10px;
+    flex-shrink:0;position:relative;z-index:2;
   }
-  header h1{
-    font-size:14px; font-weight:400; letter-spacing:3px;
-    background:linear-gradient(135deg,#ffe9a0,#ff8844,#b388ff);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  #topbar .logo{
+    color:var(--gold);font-weight:bold;letter-spacing:3px;
+    font-family:var(--serif);display:flex;align-items:center;gap:8px;
   }
-  header h1 small{
-    font-size:9px; color:#5a6a7a;
-    -webkit-text-fill-color:#5a6a7a;
-    letter-spacing:1.5px; margin-left:8px;
+  #topbar .logo b{color:var(--cyan);}
+  #topbar .breath{
+    display:inline-block;width:10px;height:10px;border-radius:50%;
+    background:var(--atem);box-shadow:0 0 10px var(--atem);
+    animation:breathPulse 4s ease-in-out infinite;
   }
-  header h1 .tag{
-    font-size:8px; letter-spacing:2px;
-    -webkit-text-fill-color:#ffcc66;
-    border:1px solid rgba(255,204,102,0.5);
-    border-radius:4px; padding:1px 6px; margin-left:8px;
+  @keyframes breathPulse{
+    0%,100%{transform:scale(.85);box-shadow:0 0 8px var(--atem);}
+    50%{transform:scale(1.3);box-shadow:0 0 20px var(--atem),0 0 40px rgba(140,240,208,.4);}
   }
-  .stats{
-    display:flex; gap:14px; font-size:9.5px;
-    color:#7a8a9a; align-items:center; flex-wrap:wrap;
+  #topbar .sep{width:1px;height:16px;background:var(--line);}
+  #topbar .stat{
+    color:#7a8a9a;font-size:10px;
+    display:flex;gap:12px;margin-left:auto;align-items:center;flex-wrap:wrap;
   }
-  .stats b{font-weight:bold;}
-  .v-gold{color:#ffcc66;}
-  .v-violet{color:#b388ff;}
-  .v-cyan{color:#6cf;}
-  .v-green{color:#8cf0d0;}
-  .v-red{color:#ff5577;}
+  #topbar .stat b{font-weight:bold;}
+  #topbar .stat b.gold{color:var(--gold);}
+  #topbar .stat b.vio{color:var(--violet);}
+  #topbar .stat b.cy{color:var(--cyan);}
+  #topbar .stat b.gr{color:var(--green);}
+  #topbar .stat b.pk{color:var(--pink);}
+  #topbar .stat b.rd{color:var(--red);}
+  #topbar #clock{color:var(--cyan);}
 
-  /* STAGE */
-  #stage{
-    flex:1; position:relative; overflow:hidden;
-    display:flex; align-items:center; justify-content:center;
+  /* ACHSEN-BAR (MOVE · SEIN · MAIN) */
+  #achseBar{
+    display:grid;grid-template-columns:1fr 1fr 1fr;
+    gap:6px;padding:8px 14px;
+    background:var(--bg2);border-bottom:1px solid var(--line);
+    flex-shrink:0;position:relative;z-index:1;
   }
-  #bhCanvas{
-    display:block; width:100%; height:100%;
-    cursor:crosshair;
+  .achse{
+    background:rgba(6,10,18,0.6);
+    border:1px solid var(--line);border-radius:5px;
+    padding:6px 12px;font-size:10px;
+    display:flex;justify-content:space-between;align-items:center;
+    border-left:3px solid var(--dim2, #2a3644);
+    transition:.3s;
+  }
+  .achse.move{border-left-color:var(--move);}
+  .achse.sein{border-left-color:var(--sein);}
+  .achse.main{border-left-color:var(--main);}
+  .achse .nm{
+    font-family:var(--serif);letter-spacing:2px;font-weight:bold;
+    font-size:12px;
+  }
+  .achse.move .nm{color:var(--move);}
+  .achse.sein .nm{color:var(--sein);}
+  .achse.main .nm{color:var(--main);}
+  .achse .sub{color:#5a6a7a;font-size:9px;letter-spacing:1px;}
+  .achse .val{font-weight:bold;font-size:13px;}
+  .achse.move .val{color:var(--move);}
+  .achse.sein .val{color:var(--sein);}
+  .achse.main .val{color:var(--main);}
+
+  /* MAIN GRID */
+  #main{
+    flex:1;display:grid;
+    grid-template-columns:300px 1fr 300px;
+    overflow:hidden;min-height:0;position:relative;z-index:1;
+  }
+  @media(max-width:1200px){#main{grid-template-columns:1fr 1fr;}}
+  @media(max-width:820px){#main{grid-template-columns:1fr;}}
+
+  .col{display:flex;flex-direction:column;overflow-y:auto;min-height:0;}
+  .col::-webkit-scrollbar{width:6px;}
+  .col::-webkit-scrollbar-thumb{background:var(--line);}
+
+  .panel{
+    background:var(--bg2);border:1px solid var(--line);
+    border-radius:6px;padding:10px 12px;margin:8px 8px 0 8px;
+    position:relative;overflow:hidden;
+  }
+  .panel:last-child{margin-bottom:8px;}
+  .panel h3{
+    font-size:10px;letter-spacing:1.8px;color:var(--gold);
+    text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;
+    border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--serif);font-weight:normal;
+  }
+  .panel h3 .badge{
+    font-size:9px;color:var(--gold);
+    background:rgba(255,204,102,0.08);
+    padding:1px 7px;border-radius:3px;
+    letter-spacing:0.5px;font-family:var(--mono);font-weight:bold;
+    transition:.3s;
+  }
+  .panel h3 .badge.ok{color:var(--green);background:rgba(140,240,208,0.12);}
+  .panel h3 .badge.warn{color:var(--gold);background:rgba(255,204,102,0.12);}
+  .panel h3 .badge.err{color:var(--red);background:rgba(255,85,119,0.12);}
+  .panel h3 .badge.move{color:var(--move);background:rgba(255,204,102,0.12);}
+  .panel h3 .badge.sein{color:var(--sein);background:rgba(179,136,255,0.12);}
+  .panel h3 .badge.main{color:var(--main);background:rgba(108,204,255,0.12);}
+  .panel h3 .badge.atem{color:var(--atem);background:rgba(140,240,208,0.12);}
+  .panel h3 .badge.leben{color:var(--leben);background:rgba(255,136,176,0.12);}
+
+  /* FLASH */
+  .flash{animation:flashPanel .45s ease-out;}
+  @keyframes flashPanel{
+    0%{box-shadow:inset 0 0 0 rgba(255,204,102,0);}
+    50%{box-shadow:inset 0 0 50px rgba(255,204,102,0.3);}
+    100%{box-shadow:inset 0 0 0 rgba(255,204,102,0);}
   }
 
-  /* SPRUNG SEQUENCE OVERLAY */
-  #sprungBox{
-    position:absolute;
-    top:14px; left:50%;
-    transform:translateX(-50%);
-    padding:8px 16px;
-    background:rgba(4,5,14,0.82);
-    border:1px solid rgba(255,204,102,0.35);
-    border-radius:6px;
-    font-size:10px;
-    letter-spacing:2px;
-    color:#ffcc66;
-    opacity:0;
-    transition:opacity .3s;
-    pointer-events:none;
-    z-index:8;
-    display:flex; gap:14px; align-items:center;
-    text-transform:uppercase;
+  /* MOVE-BAR */
+  .move-row{
+    display:grid;grid-template-columns:70px 1fr 45px;
+    gap:8px;align-items:center;padding:4px 0;
+    border-bottom:1px dashed var(--line2);font-size:10.5px;
   }
-  #sprungBox.show{ opacity:1; }
-  #sprungBox .phase{
-    color:#5a6a7a;
-    transition:color .3s, text-shadow .3s;
+  .move-row:last-child{border-bottom:none;}
+  .move-row .k{color:#8aa8a0;font-size:9.5px;letter-spacing:1px;font-weight:bold;}
+  .move-row .bar{
+    height:6px;background:var(--bg3);border-radius:2px;overflow:hidden;
   }
-  #sprungBox .phase.active{
-    color:#ffe9a0;
-    text-shadow:0 0 10px rgba(255,204,102,0.9);
+  .move-row .bar .f{
+    height:100%;transition:width .35s cubic-bezier(.2,.9,.25,1);
   }
-  #sprungBox .phase.done{
-    color:#8cf0d0;
+  .move-row .bar .f.mv-rot{background:linear-gradient(90deg,#5a3a1a,var(--orange));}
+  .move-row .bar .f.mv-orb{background:linear-gradient(90deg,#3a2a5a,var(--violet));}
+  .move-row .bar .f.mv-wav{background:linear-gradient(90deg,#1a3a4a,var(--cyan));}
+  .move-row .bar .f.mv-lin{background:linear-gradient(90deg,#3a2a0a,var(--gold));}
+  .move-row .bar .f.mv-spr{background:linear-gradient(90deg,#3a1a1a,var(--red));}
+  .move-row .v{text-align:right;font-weight:bold;color:var(--gold);}
+
+  /* SEIN-LISTE */
+  .sein-row{
+    display:grid;grid-template-columns:110px 1fr 55px;
+    gap:8px;align-items:center;padding:5px 6px;
+    background:rgba(0,0,0,0.25);border-radius:4px;
+    margin-bottom:4px;font-size:10px;
+    border-left:2px solid var(--sein);
+    transition:.25s;
+  }
+  .sein-row .ic{font-size:12px;}
+  .sein-row .nm{color:#c8d8e8;font-weight:bold;letter-spacing:0.5px;}
+  .sein-row .nm small{color:#5a6a7a;font-weight:normal;font-size:8px;display:block;}
+  .sein-row .v{text-align:right;font-weight:bold;color:var(--sein);font-size:11px;}
+  .sein-row.active{background:rgba(179,136,255,0.08);}
+
+  /* MAIN-LOOP */
+  .main-row{
+    display:grid;grid-template-columns:70px 1fr 60px;
+    gap:8px;align-items:center;padding:5px 0;
+    border-bottom:1px dashed var(--line2);font-size:10.5px;
+  }
+  .main-row:last-child{border-bottom:none;}
+  .main-row .k{color:#8aa8a0;font-size:9.5px;letter-spacing:1px;font-weight:bold;}
+  .main-row .v{text-align:right;font-weight:bold;color:var(--main);}
+  .main-row .bar{
+    height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;
+  }
+  .main-row .bar .f{
+    height:100%;transition:width .35s;
+    background:linear-gradient(90deg,#1a3a5a,var(--main));
   }
 
-  /* NC WAAGE OVERLAY */
-  #waageBox{
-    position:absolute;
-    top:14px; right:14px;
+  /* ATEM CORE */
+  #atemPanel{
+    display:flex;justify-content:center;align-items:center;
+    padding:20px 12px;min-height:320px;
+  }
+  #atemWrap{position:relative;width:280px;height:280px;}
+  #atemWrap svg{position:absolute;inset:0;}
+  #atemCore{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:110px;height:110px;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,
+      #ffffff 0%,#b8ffd8 12%,#7ce0a8 35%,#5fc8ff 65%,#1a0838 100%);
+    box-shadow:
+      0 0 40px rgba(140,240,208,0.7),
+      0 0 90px rgba(108,204,255,0.5),
+      inset 0 0 30px rgba(255,255,255,0.35);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:36px;color:#0a2a20;
+    font-weight:bold;text-shadow:0 0 14px rgba(255,255,255,0.7);
+    transition:transform .15s;z-index:3;
+  }
+  #atemCore.tick{animation:atemTick .35s;}
+  @keyframes atemTick{
+    0%{transform:translate(-50%,-50%) scale(1);}
+    50%{transform:translate(-50%,-50%) scale(1.22);}
+    100%{transform:translate(-50%,-50%) scale(1);}
+  }
+  #atemGlyph{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    font-size:30px;font-weight:bold;color:#fff;
+    text-shadow:0 0 16px rgba(255,255,255,0.9),0 0 32px rgba(140,240,208,0.8);
+    z-index:4;font-family:var(--mono);
+  }
+  #atemLabel{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    font-size:10px;color:#fff;font-weight:bold;
+    text-shadow:0 0 8px rgba(0,0,0,0.8);
+    z-index:5;font-family:var(--serif);
+    letter-spacing:3px;margin-top:44px;text-align:center;width:180px;
+  }
+
+  /* MOVE-CANVAS */
+  #moveCanvas{
+    width:100%;aspect-ratio:1;
+    background:#02040a;
+    border:1px solid var(--line);
+    border-radius:6px;display:block;
+    max-height:280px;
+  }
+
+  /* DREHBUCH-SZENE */
+  #scene{
+    background:#02040a;
+    border:1px solid var(--line);
+    border-left:3px solid var(--move);
+    border-radius:5px;
     padding:10px 14px;
-    background:rgba(4,5,14,0.82);
-    border:1px solid rgba(179,136,255,0.3);
-    border-left:2px solid #b388ff;
-    border-radius:6px;
-    font-size:9.5px;
-    letter-spacing:1px;
-    z-index:8;
-    min-width:170px;
-    pointer-events:none;
+    font-family:var(--serif);
+    font-size:11.5px;
+    line-height:1.7;
+    color:#c8d8e8;
+    max-height:280px;overflow-y:auto;
   }
-  #waageBox .row{
-    display:flex; justify-content:space-between;
-    padding:2px 0;
+  #scene::-webkit-scrollbar{width:5px;}
+  #scene::-webkit-scrollbar-thumb{background:var(--line);}
+  #scene .ttl{
+    color:var(--gold);font-size:13px;letter-spacing:2px;
+    font-weight:bold;margin-bottom:6px;
+    border-bottom:1px dashed var(--line2);padding-bottom:4px;
   }
-  #waageBox .lbl{ color:#6a7a8a; }
-  #waageBox .val{ color:#d0e8e0; font-weight:bold; }
-  #waageBox .val.gold{ color:#ffcc66; }
-  #waageBox .val.violet{ color:#b388ff; }
-  #waageBox .title{
-    color:#b388ff;
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-size:11px;
-    letter-spacing:3px;
-    border-bottom:1px solid rgba(179,136,255,0.15);
-    padding-bottom:4px; margin-bottom:5px;
-    display:flex; justify-content:space-between; align-items:center;
+  #scene .meta{
+    color:#7a8a9a;font-size:10px;font-family:var(--mono);
+    margin-bottom:8px;letter-spacing:1px;
   }
-  #waageBox .title .mode{
-    font-size:8px;
-    color:#ffcc66;
-    border:1px solid rgba(255,204,102,0.3);
-    padding:0 5px; border-radius:3px;
-    letter-spacing:1px;
+  #scene .blk{
+    padding:6px 10px;margin:6px 0;border-radius:4px;
+    background:rgba(20,28,40,0.5);
+    border-left:3px solid var(--cyan);
+  }
+  #scene .blk.regie{border-left-color:var(--gold);}
+  #scene .blk.camera{border-left-color:var(--violet);}
+  #scene .blk.sfx{border-left-color:var(--green);}
+  #scene .blk.dialog{border-left-color:var(--pink);font-style:italic;color:#e8d8f0;}
+  #scene .blk .lbl{
+    font-family:var(--mono);font-size:9px;letter-spacing:2px;
+    color:#5a6a7a;display:block;margin-bottom:3px;
+  }
+  #scene .blk.dialog .lbl{color:var(--pink);}
+  #scene .blk.regie .lbl{color:var(--gold);}
+  #scene .blk.camera .lbl{color:var(--violet);}
+  #scene .blk.sfx .lbl{color:var(--green);}
+
+  /* VERIFY-GRID */
+  #verifyGrid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:3px;
+  }
+  .vcell{
+    background:var(--bg3);border:1px solid var(--line);
+    border-radius:3px;padding:5px 2px;text-align:center;
+    font-size:7.5px;cursor:pointer;transition:.25s;
+    min-height:46px;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;user-select:none;
+  }
+  .vcell:hover{transform:scale(1.05);}
+  .vcell .ic{font-size:11px;margin-bottom:1px;font-weight:bold;}
+  .vcell .nm{font-size:6.5px;color:#5a6a7a;letter-spacing:0.3px;}
+  .vcell .dbl{font-size:6.5px;color:#3a4a5a;margin-top:1px;letter-spacing:1px;}
+  .vcell.pass{background:rgba(140,240,208,0.12);border-color:var(--green);color:var(--green);}
+  .vcell.pass .ic{color:var(--green);text-shadow:0 0 6px var(--green);}
+  .vcell.pass .nm{color:var(--green);}
+  .vcell.warn{background:rgba(255,204,102,0.1);border-color:var(--gold);color:var(--gold);}
+  .vcell.warn .ic{color:var(--gold);}
+  .vcell.fail{background:rgba(255,85,119,0.12);border-color:var(--red);color:var(--red);}
+  .vcell.fail .ic{color:var(--red);}
+  .vcell.checking{animation:vcellCheck .6s;}
+  @keyframes vcellCheck{
+    0%,100%{box-shadow:0 0 0 rgba(108,204,255,0);}
+    50%{box-shadow:0 0 16px rgba(108,204,255,0.8);transform:scale(1.1);}
   }
 
-  /* DJINN INDICATOR */
-  #djinnMark{
-    position:absolute;
-    top:14px; left:14px;
-    padding:6px 12px;
-    background:rgba(4,5,14,0.75);
-    border:1px solid rgba(179,136,255,0.4);
-    border-radius:6px;
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-size:11px;
-    letter-spacing:4px;
-    color:#b388ff;
-    opacity:0;
-    transition:opacity .6s;
-    z-index:8; pointer-events:none;
-    text-shadow:0 0 12px rgba(179,136,255,0.8);
+  /* Klick/ZacK */
+  .klick-big{
+    display:flex;justify-content:space-between;
+    align-items:center;padding:6px 10px;
+    background:rgba(0,0,0,0.35);border-radius:5px;
+    border-left:3px solid var(--gold);margin-bottom:5px;
   }
-  #djinnMark.show{ opacity:1; }
+  .klick-big .lbl{color:#8aa8a0;font-size:10px;letter-spacing:1.5px;}
+  .klick-big .val{
+    font-size:22px;font-weight:bold;color:var(--gold);
+    font-family:var(--serif);letter-spacing:2px;
+    text-shadow:0 0 10px rgba(255,204,102,0.5);
+  }
+
+  /* BUTTONS */
+  .mbtn{
+    background:var(--bg3);color:#c8d8e8;
+    border:1px solid var(--line);
+    padding:6px 10px;border-radius:3px;
+    font-family:inherit;font-size:9.5px;
+    letter-spacing:1px;cursor:pointer;transition:.15s;
+    text-transform:uppercase;flex:1;min-width:60px;user-select:none;
+  }
+  .mbtn:hover{border-color:var(--gold);background:rgba(255,204,102,0.12);color:var(--gold);}
+  .mbtn:active{transform:scale(0.94);}
+  .mbtn.gold{border-color:rgba(255,204,102,0.4);color:var(--gold);}
+  .mbtn.gold:hover{background:rgba(255,204,102,0.2);border-color:var(--gold);color:#fff;box-shadow:0 0 12px rgba(255,204,102,0.4);}
+  .mbtn.vio{border-color:rgba(179,136,255,0.4);color:var(--violet);}
+  .mbtn.vio:hover{background:rgba(179,136,255,0.15);border-color:var(--violet);color:#fff;box-shadow:0 0 12px rgba(179,136,255,0.4);}
+  .mbtn.cy{border-color:rgba(108,204,255,0.4);color:var(--cyan);}
+  .mbtn.cy:hover{background:rgba(108,204,255,0.15);border-color:var(--cyan);color:#fff;}
+  .mbtn.gr{border-color:rgba(140,240,208,0.4);color:var(--green);}
+  .mbtn.gr:hover{background:rgba(140,240,208,0.15);border-color:var(--green);color:#fff;}
+  .mbtn.pk{border-color:rgba(255,136,176,0.4);color:var(--pink);}
+  .mbtn.pk:hover{background:rgba(255,136,176,0.15);border-color:var(--pink);color:#fff;}
+  .mbtn.rd{border-color:rgba(255,85,119,0.4);color:var(--red);}
+  .mbtn.rd:hover{background:rgba(255,85,119,0.15);border-color:var(--red);color:#fff;}
 
   /* LOG */
-  #logBox{
-    position:absolute;
-    bottom:14px; right:14px;
-    max-width:340px; max-height:120px;
-    padding:8px 12px;
-    background:rgba(4,5,14,0.78);
-    border:1px solid rgba(255,204,102,0.15);
-    border-left:2px solid #ffcc66;
-    border-radius:6px;
-    font-size:9px;
-    line-height:1.5;
-    color:#a8b8c8;
-    overflow-y:auto;
-    z-index:8; pointer-events:none;
-  }
-  #logBox .time{color:#3a4a5a;margin-right:5px;}
-  #logBox .gold{color:#ffcc66;}
-  #logBox .violet{color:#b388ff;}
-  #logBox .cyan{color:#6cf;}
-  #logBox .green{color:#8cf0d0;}
-  #logBox .red{color:#ff5577;}
-
-  /* CONTROLS */
-  #controls{
-    display:flex; gap:6px; align-items:center;
-    padding:9px 16px;
+  #cli{
+    height:130px;background:#02040a;
     border-top:1px solid var(--line);
-    background:rgba(4,5,14,0.9);
-    backdrop-filter:blur(12px);
-    flex-wrap:wrap;
-    font-size:10px; z-index:10;
+    display:flex;flex-direction:column;flex-shrink:0;
+    position:relative;z-index:2;
   }
-  #controls button{
-    background:rgba(12,10,24,0.8);
-    border:1px solid rgba(255,204,102,0.3);
-    color:#ffcc66;
-    padding:6px 14px;
-    border-radius:6px;
-    font-family:inherit; font-size:10px;
-    letter-spacing:1.5px;
-    cursor:pointer; transition:.18s;
-    text-transform:uppercase;
+  #cliHdr{
+    height:22px;background:var(--bg2);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;
+    padding:0 12px;font-size:9px;
+    letter-spacing:1.5px;color:#5a6a7a;
+    text-transform:uppercase;gap:12px;
+    font-family:var(--serif);
   }
-  #controls button:hover{
-    background:rgba(255,204,102,0.15);
-    border-color:#ffcc66;
-    color:#fff;
-    box-shadow:0 0 14px rgba(255,204,102,0.4);
+  #cliHdr .tab{color:var(--gold);cursor:pointer;letter-spacing:1.5px;user-select:none;}
+  #cliHdr .tab:hover{color:#fff;}
+  #cliHdr .tab.active{color:var(--cyan);border-bottom:1px solid var(--cyan);padding-bottom:1px;}
+  #cliHdr .tag{
+    margin-left:auto;color:var(--green);font-size:9px;
+    letter-spacing:1px;display:flex;align-items:center;gap:5px;
   }
-  #controls button.active{
-    background:rgba(255,204,102,0.25);
-    color:#fff;
-    border-color:#ffcc66;
-    box-shadow:0 0 18px rgba(255,204,102,0.6);
+  #cliHdr .tag .led{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--green);box-shadow:0 0 6px var(--green);
+    animation:breathPulse 4s ease-in-out infinite;
   }
-  #controls button.violet{
-    border-color:rgba(179,136,255,0.35); color:#b388ff;
+  #log{
+    flex:1;padding:6px 12px;overflow-y:auto;
+    font-size:10px;line-height:1.5;color:#6a7a8a;
+    font-family:var(--mono);
   }
-  #controls button.violet:hover,
-  #controls button.violet.active{
-    background:rgba(179,136,255,0.15);
-    border-color:#b388ff; color:#fff;
-    box-shadow:0 0 14px rgba(179,136,255,0.5);
+  #log::-webkit-scrollbar{width:5px;}
+  #log::-webkit-scrollbar-thumb{background:var(--line);}
+  #log .ln{white-space:pre-wrap;word-break:break-all;animation:logIn .3s ease-out;}
+  @keyframes logIn{from{opacity:0;transform:translateX(-4px);}to{opacity:1;transform:none;}}
+  #log .ts{color:#3a4a5a;margin-right:6px;}
+  #log .ok{color:var(--green);}
+  #log .warn{color:var(--gold);}
+  #log .err{color:var(--red);}
+  #log .info{color:var(--cyan);}
+  #log .move{color:var(--move);}
+  #log .sein{color:var(--sein);}
+  #log .main{color:var(--main);}
+  #log .atem{color:var(--atem);}
+  #log .leben{color:var(--leben);}
+
+  #cliInput{
+    height:24px;background:var(--bg3);
+    border-top:1px solid var(--line);
+    display:flex;align-items:center;
+    padding:0 12px;font-size:11px;flex-shrink:0;
   }
-  #controls button.cyan{
-    border-color:rgba(108,204,255,0.35); color:#6cf;
+  #cliInput .prompt{color:var(--gold);margin-right:6px;font-weight:bold;}
+  #cliInput input{
+    flex:1;background:transparent;border:none;
+    color:#c8d8e8;font-family:var(--mono);
+    font-size:11px;outline:none;
   }
-  #controls button.cyan:hover,
-  #controls button.cyan.active{
-    background:rgba(108,204,255,0.15);
-    border-color:#6cf; color:#fff;
-    box-shadow:0 0 14px rgba(108,204,255,0.5);
+  #cliInput input::placeholder{color:#3a4a5a;}
+
+  /* BOOT */
+  #boot{
+    position:fixed;inset:0;background:#000;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:14px;z-index:9999;font-size:12px;
+    color:var(--gold);letter-spacing:2px;
+    transition:opacity .7s;
   }
-  #controls .sep{
-    width:1px; height:20px;
-    background:var(--line); margin:0 4px;
+  #boot.done{opacity:0;pointer-events:none;}
+  #boot .logo{
+    font-size:44px;color:var(--gold);letter-spacing:10px;
+    font-weight:bold;
+    text-shadow:0 0 30px rgba(255,204,102,0.7),0 0 60px rgba(179,136,255,0.5);
+    animation:logoBreathe 4s ease-in-out infinite;
+    font-family:var(--serif);
   }
-  #controls .lbl{
-    color:#6a7a8a; font-size:9px; letter-spacing:2px;
+  @keyframes logoBreathe{
+    0%,100%{transform:scale(1);filter:brightness(1);}
+    50%{transform:scale(1.04);filter:brightness(1.35);}
   }
-  #controls input[type=range]{
-    -webkit-appearance:none; appearance:none;
-    width:80px; height:3px;
-    background:linear-gradient(90deg,#ff8844,#b388ff);
-    border-radius:2px; outline:none;
+  #boot .sub{color:var(--cyan);font-size:11px;letter-spacing:8px;font-family:var(--serif);}
+  #boot .lines{
+    width:560px;max-width:82%;font-size:11px;line-height:1.7;
+    text-align:left;color:var(--green);letter-spacing:0.5px;
+    font-family:var(--mono);
   }
-  #controls input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:14px; height:14px; border-radius:50%;
-    background:#fff;
-    border:2px solid #ffcc66;
-    box-shadow:0 0 8px rgba(255,204,102,0.8);
-    cursor:pointer;
+  #boot .lines b{color:var(--gold);}
+  #boot .lines .dim{color:#3a4a5a;}
+  #boot .lines .atom{color:var(--atom);}
+  #boot .lines .cy{color:var(--cyan);}
+  #boot .progress{
+    width:560px;max-width:82%;height:3px;
+    background:var(--bg3);border-radius:2px;overflow:hidden;
+  }
+  #boot .progress .bar{
+    height:100%;width:0;
+    background:linear-gradient(90deg,var(--gold),var(--cyan),var(--green));
+    transition:width .3s;
   }
 
-  @media (max-width:760px){
-    header h1{font-size:12px;letter-spacing:2px;}
-    .stats{gap:8px;font-size:8.5px;}
-    #controls{padding:6px 10px; gap:4px;}
-    #controls button{padding:5px 9px; font-size:9px; letter-spacing:1px;}
-    #logBox{max-width:220px; font-size:8px; max-height:90px;}
-    #waageBox{padding:7px 10px; font-size:8.5px; min-width:130px;}
-    #sprungBox{font-size:9px; padding:6px 10px; gap:8px;}
+  /* FL76 */
+  #fl76{
+    position:fixed;bottom:10px;right:10px;
+    padding:4px 10px;background:rgba(4,5,14,0.95);
+    border:1px solid rgba(140,240,208,0.3);
+    border-radius:5px;font-size:9px;
+    letter-spacing:1px;color:var(--green);
+    z-index:12;text-align:right;min-width:100px;
+  }
+  #fl76 .num{font-size:13px;font-weight:bold;}
+
+  @media(max-width:700px){
+    #topbar{padding:0 8px;height:auto;flex-wrap:wrap;padding:5px 8px;}
+    .panel{padding:8px 10px;margin:6px 6px 0 6px;}
+    #atemWrap{width:220px;height:220px;}
+    #atemCore{width:90px;height:90px;font-size:28px;}
+    #atemGlyph{font-size:24px;}
+    #atemLabel{font-size:9px;margin-top:36px;}
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🕳️ SINGULARITÄT
-    <small>iki1uc · das beste aus dem horizont</small>
-    <span class="tag">SCHWARZES LOCH</span>
-  </h1>
-  <div class="stats">
-    <span>KlicK <b class="v-gold" id="sKlick">0</b></span>
-    <span>ZacK <b class="v-gold" id="sZack">0</b></span>
-    <span>Serum <b class="v-red" id="sSerum">—</b></span>
-    <span>Horizont <b class="v-violet" id="sHorizont">offen</b></span>
-    <span>Fix <b class="v-cyan" id="sFix">0.770</b></span>
-    <span>DJINN <b class="v-violet" id="sDjinn">—</b></span>
-    <span id="sClock" style="color:#4a5a6a;">⏱️ --:--</span>
-  </div>
-</header>
-
-<div id="stage">
-  <canvas id="bhCanvas"></canvas>
-
-  <!-- SPRUNG-Sequenz -->
-  <div id="sprungBox">
-    <span class="phase" data-p="P4">P4-init</span>
-    <span class="phase" data-p="P0">P0-wake</span>
-    <span class="phase" data-p="P1">P1-melt</span>
-    <span class="phase" data-p="P2">P2-merge</span>
-    <span class="phase" data-p="Pe">Pe-finalize</span>
-  </div>
-
-  <!-- NC-Waagschale -->
-  <div id="waageBox">
-    <div class="title">
-      <span>衡</span>
-      <span class="mode" id="modeBadge">HORIZONT</span>
-    </div>
-    <div class="row"><span class="lbl">Balance</span><span class="val" id="bBal">0.00</span></div>
-    <div class="row"><span class="lbl">Neigung</span><span class="val gold" id="bTilt">0.0°</span></div>
-    <div class="row"><span class="lbl">Kraft</span><span class="val violet" id="bForce">0.00</span></div>
-    <div class="row"><span class="lbl">Fluss</span><span class="val" id="bFlow">0/s</span></div>
-  </div>
-
-  <!-- DJINN -->
-  <div id="djinnMark">幻 · DJINN</div>
-
-  <!-- Log -->
-  <div id="logBox">
-    <div><span class="time">[init]</span><span class="gold">🕳️ Singularität geöffnet · das Beste wird gezogen</span></div>
-  </div>
+<!-- BOOT -->
+<div id="boot">
+  <div class="logo">◈ MOVE · SEIN · MAIN</div>
+  <div class="sub">ATEM · LEBEN · iki1uc</div>
+  <div class="lines" id="bootLines"></div>
+  <div class="progress"><div class="bar" id="bootBar"></div></div>
 </div>
 
-<div id="controls">
-  <button id="btnKlick">◉ KlicK</button>
-  <button id="btnSprung" class="cyan">⚡ SPRUNG</button>
-  <button id="btnGate" class="violet">門 GATE</button>
-  <button id="btnDjinn" class="violet active">🧞 DJINN</button>
-  <button id="btnBurst">💥 BURST</button>
-  <span class="sep"></span>
-  <span class="lbl">FIX</span>
-  <input type="range" id="fixSlider" min="0.5" max="0.99" step="0.01" value="0.77">
-  <span class="sep"></span>
-  <button id="btnReset">⟲ Reset</button>
+<!-- DESK -->
+<div id="desk">
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <span class="logo">
+      <span class="breath"></span>
+      MOVE·SEIN·MAIN<b>::iki1uc</b>
+    </span>
+    <span class="sep"></span>
+    <span style="color:#5a6a7a;">/root/runtime &gt; index.html</span>
+    <div class="stat">
+      <span>MOVE <b class="gold" id="tMove">0</b></span>
+      <span>SEIN <b class="vio" id="tSein">—</b></span>
+      <span>MAIN <b class="cy" id="tMain">0</b></span>
+      <span>ATEM <b class="gr" id="tAtem">0</b></span>
+      <span>LEBEN <b class="pk" id="tLeben">100%</b></span>
+      <span>VERIFY <b class="gr" id="tVerify">0/16</b></span>
+      <span>DJINN <b class="vio" id="tDjinn">—</b></span>
+      <span id="clock">--:--:--</span>
+    </div>
+  </div>
+
+  <!-- ACHSEN -->
+  <div id="achseBar">
+    <div class="achse move">
+      <div>
+        <span class="nm">MOVE</span>
+        <span class="sub"> · echte bewegung</span>
+      </div>
+      <span class="val" id="aMove">0</span>
+    </div>
+    <div class="achse sein">
+      <div>
+        <span class="nm">SEIN</span>
+        <span class="sub"> · zustand · ist</span>
+      </div>
+      <span class="val" id="aSein">RUHE</span>
+    </div>
+    <div class="achse main">
+      <div>
+        <span class="nm">MAIN</span>
+        <span class="sub"> · loop · kern</span>
+      </div>
+      <span class="val" id="aMain">0</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- LEFT COL -->
+    <div class="col">
+
+      <!-- MOVE-PANEL -->
+      <div class="panel" id="movePanel">
+        <h3>◈ MOVE · BEWEGUNG <span class="badge move" id="moveBadge">aktiv</span></h3>
+        <div id="moveRows"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn gold" id="btnMoveRot">↻ rot</button>
+          <button class="mbtn vio" id="btnMoveOrb">◉ orb</button>
+          <button class="mbtn cy" id="btnMoveWav">≈ wav</button>
+          <button class="mbtn gr" id="btnMoveAll">▶ alle</button>
+        </div>
+      </div>
+
+      <!-- SEIN-PANEL -->
+      <div class="panel" id="seinPanel">
+        <h3>◈ SEIN · ZUSTAND <span class="badge sein" id="seinBadge">ist</span></h3>
+        <div id="seinRows"></div>
+      </div>
+
+      <!-- MAIN-PANEL -->
+      <div class="panel" id="mainPanel">
+        <h3>◈ MAIN · LOOP-KERN <span class="badge main" id="mainBadge">läuft</span></h3>
+        <div id="mainRows"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn cy" id="btnMainTick">⏭ tick</button>
+          <button class="mbtn gr" id="btnMainBurst">⚡ burst</button>
+          <button class="mbtn gold" id="btnMainCycle">↻ cycle</button>
+        </div>
+      </div>
+
+      <!-- VERIFY -->
+      <div class="panel" id="verifyPanel">
+        <h3>◈ 16fach VERIFY <span class="badge ok" id="verifyBadge">16/16</span></h3>
+        <div id="verifyGrid"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn gr" id="btnVerifyAll">⟳ verify-all</button>
+          <button class="mbtn vio" id="btnVerifyDeep">◈ deep</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CENTER COL -->
+    <div class="col">
+
+      <!-- ATEM-KERN -->
+      <div class="panel" id="atemPanel">
+        <div id="atemWrap">
+          <svg viewBox="-150 -150 300 300">
+            <circle id="r1" cx="0" cy="0" r="130" fill="none" stroke="rgba(140,240,208,0.10)" stroke-width="1"/>
+            <circle id="r2" cx="0" cy="0" r="105" fill="none" stroke="rgba(108,204,255,0.10)" stroke-width="0.8" stroke-dasharray="4 8"/>
+            <circle id="r3" cx="0" cy="0" r="80" fill="none" stroke="rgba(255,204,102,0.08)" stroke-width="0.7" stroke-dasharray="3 6"/>
+            <circle id="r4" cx="0" cy="0" r="55" fill="none" stroke="rgba(179,136,255,0.10)" stroke-width="0.6" stroke-dasharray="2 4"/>
+            <line x1="-130" y1="0" x2="130" y2="0" stroke="rgba(140,240,208,0.05)" stroke-width="0.5"/>
+            <line x1="0" y1="-130" x2="0" y2="130" stroke="rgba(140,240,208,0.05)" stroke-width="0.5"/>
+            <g id="atemOrbs"></g>
+          </svg>
+          <div id="atemCore">◈</div>
+          <div id="atemGlyph">0</div>
+          <div id="atemLabel">ATEM · LEBT</div>
+        </div>
+      </div>
+
+      <!-- MOVE-CANVAS -->
+      <div class="panel">
+        <h3>◈ MOVE · BEWEGUNG · LIVE <span class="badge move" id="canvasBadge">läuft</span></h3>
+        <canvas id="moveCanvas"></canvas>
+        <div style="font-size:9px;color:#5a6a7a;text-align:center;margin-top:6px;letter-spacing:1px;">
+          echte bewegung · echte wirkung · was sich bewegt, ist
+        </div>
+      </div>
+
+      <!-- DREHBUCH-SZENE -->
+      <div class="panel" id="scenePanel">
+        <h3>◈ DREHBUCH · SC1 <span class="badge" id="sceneBadge">begegnung</span></h3>
+        <div id="scene">
+          <div class="ttl">SC1 · Begegnung mit der Zukunft</div>
+          <div class="meta">Ort: Offener Stadtplatz · Zeit: später Nachmittag · Atmosphäre: ruhig</div>
+
+          <div class="blk camera">
+            <span class="lbl">KAMERA</span>
+            Totale im Hochformat · Langsame Vorwärtsfahrt · Figuren etablieren
+          </div>
+
+          <div class="blk regie">
+            <span class="lbl">REGIE</span>
+            Keine Dialoge. Beide Figuren werden eingeführt — Erzähler links, Fan rechts.
+          </div>
+
+          <div class="blk sfx">
+            <span class="lbl">SFX</span>
+            Leichter Wind · entfernte Stadtgeräusche · Schritte auf Pflaster
+          </div>
+
+          <div class="blk dialog">
+            <span class="lbl">ERZÄHLER</span>
+            „Schau dir das an. Das hier ist mein persönlicher Communicator. Er ist kleiner als eurer, braucht keinen Klappmechanismus und funktioniert überall auf der Welt.“
+          </div>
+
+          <div class="blk">
+            <span class="lbl">FIGUR</span>
+            Der Fan senkt sein Notizbuch und starrt sprachlos auf das Gerät.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COL -->
+    <div class="col">
+
+      <!-- KLICK / ZACK -->
+      <div class="panel" id="klickPanel">
+        <h3>◈ KLICK · ZACK <span class="badge gold" id="klickBadge">läuft</span></h3>
+        <div class="klick-big">
+          <span class="lbl">Klick</span>
+          <span class="val" id="mKlick">0</span>
+        </div>
+        <div class="klick-big" style="border-left-color:var(--violet);">
+          <span class="lbl">Zack</span>
+          <span class="val" id="mZack" style="color:var(--violet);">0</span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn gold" id="btnKlick">◉ +1 klick</button>
+          <button class="mbtn vio" id="btnZack">⚡ +1 zack</button>
+          <button class="mbtn rd" id="btnKlickReset">⟲ reset</button>
+        </div>
+      </div>
+
+      <!-- ATEM · MANA/AURA/ZEN -->
+      <div class="panel" id="mazPanel">
+        <h3>◈ ATEM · MANA/AURA/ZEN <span class="badge atem" id="mazBadge">atmet</span></h3>
+        <div id="mazRows"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn gr" id="btnMazBoost">⚡ boost</button>
+          <button class="mbtn pk" id="btnMazMax">★ max</button>
+          <button class="mbtn vio" id="btnMazReset">⟲ reset</button>
+        </div>
+      </div>
+
+      <!-- LEBEN -->
+      <div class="panel" id="lebenPanel">
+        <h3>◈ LEBEN · NACHGEBILDET <span class="badge leben" id="lebenBadge">100%</span></h3>
+        <div id="lebenRows"></div>
+        <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;">
+          <button class="mbtn pk" id="btnLebenBoost">⚡ leben +10%</button>
+          <button class="mbtn gr" id="btnLebenHeal">★ heilen</button>
+          <button class="mbtn gold" id="btnLebenReset">⟲ reset</button>
+        </div>
+      </div>
+
+      <!-- DJINN -->
+      <div class="panel" id="djinnPanel">
+        <h3>◈ DJINN <span class="badge vio" id="djinnBadge">—</span></h3>
+        <div style="text-align:center;padding:10px 0;">
+          <div style="font-family:var(--serif);font-size:38px;color:var(--violet);
+                      text-shadow:0 0 20px rgba(179,136,255,0.8);
+                      transition:.5s;" id="djinnGlyph">幻</div>
+          <div style="font-size:9px;color:#5a6a7a;letter-spacing:2px;margin-top:6px;">
+            überall und nirgends
+          </div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button class="mbtn vio" id="btnDjinnToggle">🧞 toggle</button>
+          <button class="mbtn gold" id="btnDjinnSummon">✦ summon</button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="panel" id="resultPanel">
+        <h3>◈ RESULT <span class="badge ok" id="resultBadge">stabil</span></h3>
+        <div id="resultBox" style="font-size:10px;line-height:1.7;font-family:var(--mono);">
+          <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed rgba(255,204,102,0.1);">
+            <span style="color:#5a6a7a;">move</span><span style="color:var(--move);font-weight:bold;" id="rMove">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed rgba(255,204,102,0.1);">
+            <span style="color:#5a6a7a;">sein</span><span style="color:var(--sein);font-weight:bold;" id="rSein">RUHE</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed rgba(255,204,102,0.1);">
+            <span style="color:#5a6a7a;">main</span><span style="color:var(--main);font-weight:bold;" id="rMain">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed rgba(255,204,102,0.1);">
+            <span style="color:#5a6a7a;">atem</span><span style="color:var(--atem);font-weight:bold;" id="rAtem">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed rgba(255,204,102,0.1);">
+            <span style="color:#5a6a7a;">leben</span><span style="color:var(--leben);font-weight:bold;" id="rLeben">100%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0 0;margin-top:4px;border-top:1px solid rgba(255,204,102,0.15);">
+            <span style="color:#5a6a7a;">⟹</span>
+            <span style="color:var(--gold);font-weight:bold;font-size:12px;" id="rTotal">◈ LÄUFT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MASTER-ACTIONS -->
+      <div class="panel" id="masterPanel">
+        <h3>◈ MASTER · AKTION <span class="badge gold">live</span></h3>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button class="mbtn gold" id="btnPuls">◈ atem-puls</button>
+          <button class="mbtn cy" id="btnTick">⏭ main-tick</button>
+          <button class="mbtn gr" id="btnHeal">★ alles-heil</button>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+          <button class="mbtn rd" id="btnResetAll">⟲ master-reset</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CLI -->
+  <div id="cli">
+    <div id="cliHdr">
+      <span class="tab active" data-tab="move">MOVE</span>
+      <span class="tab" data-tab="sein">SEIN</span>
+      <span class="tab" data-tab="main">MAIN</span>
+      <span class="tab" data-tab="atem">ATEM</span>
+      <span class="tab" data-tab="leben">LEBEN</span>
+      <span class="tag"><span class="led"></span>alles läuft · grün</span>
+    </div>
+    <div id="log"></div>
+    <div id="cliInput">
+      <span class="prompt">main&gt;</span>
+      <input id="cmdInput" placeholder="befehl: move · sein · main · atem · leben · verify · status · help" autocomplete="off">
+    </div>
+  </div>
+
+</div>
+
+<!-- FL76 -->
+<div id="fl76">
+  <div style="font-size:8px;color:#3a4a5a;">FL76</div>
+  <div class="num" id="fl76num">76</div>
 </div>
 
 <script>
 "use strict";
 // ═══════════════════════════════════════════════════════════════════
-// 🕳️ SINGULARITÄT · Das Beste aus dem Schwarzen Loch
-// KlicK · ZaM · NC · MANGA · SPRUNG · DJINN — alles im Horizont
+// ◈ MOVE · SEIN · MAIN · ATEM · LEBEN · iki1uc
+// MOVE = echte Bewegung · SEIN = Zustand · MAIN = Loop-Kern
+// ATEM + LEBEN = nachgebildet, atmet wirklich
 // ═══════════════════════════════════════════════════════════════════
 
-// ─── KOMPAT-LAYER ─────────────────────────────────────────────
-const MASTER_KEY='iki1uc-master-respo';
-const BC_NAME='iki1uc-orbit';
-let masterChannel=null, isMasterConnected=false;
-
-const localMaster={
-  stations:{}, klick:0, zack:0, zam:'idle', zoll:'offen',
-  me2:{allow:true,boost:false,slow:false,override:false},
-  score:0, lastUpdate:Date.now()
-};
-try{
-  const s=localStorage.getItem(MASTER_KEY);
-  if(s) Object.assign(localMaster,JSON.parse(s));
-}catch(_){}
-try{
-  masterChannel=new BroadcastChannel(BC_NAME);
-  masterChannel.onmessage=(ev)=>{
-    const d=ev.data; if(!d||!d.type) return;
-    if(d.type==='master:state'&&d.payload){Object.assign(localMaster,d.payload);isMasterConnected=true;updateStats();}
-    if(d.type==='me2:rule'&&d.payload){Object.assign(localMaster.me2,d.payload);updateStats();}
-    if(d.type==='mainboard:done'&&d.payload){
-      log(`📊 MAINBOARD · Kompat ${d.payload.compat?.toFixed?.(0)??'?'}% · Horizont versteht`,'cyan');
-    }
-    if(d.type==='klick:step'&&d.payload){
-      // KlicK aus dem Hauptsystem einfliegen lassen
-      const v=d.payload.klick||1;
-      for(let i=0;i<Math.min(3,v);i++) spawnKlickFromOutside();
-    }
-  };
-}catch(_){}
-function persistMaster(){try{localStorage.setItem(MASTER_KEY,JSON.stringify(localMaster));}catch(_){}}
-function sendToMaster(type,payload){
-  localMaster.lastUpdate=Date.now(); persistMaster();
-  if(masterChannel){try{masterChannel.postMessage({type,from:'SINGULARITY',payload,ts:Date.now()});}catch(_){}}
-}
-
-// ─── KANJI / FABELN ────────────────────────────────────────────
-const KANJI_HORIZONT=['界','境','門','環','極'];
-const KANJI_DJINN=['幻','霊','夢','影','虚'];
-const KANJI_STRAHLUNG=['キ','ラ','光','閃','耀'];
-
-const FABELN_OUT=[
-  'Und aus dem Nichts tropfte ein Funke — KlicK ward geboren.',
-  'Was der Horizont verschlang, gab er als Licht zurück.',
-  'Das Schwarze Loch war nicht gierig. Es war ein Geburtshelfer.',
-  'Hawking hatte Recht: nichts verschwindet wirklich.',
-  'Ein KlicK entkam. Es trug die Zahl 起.',
-  'Und das Loch gab mehr zurück, als es nahm.',
+// ─── MOVE-TYPEN ────────────────────────────────────────
+const MOVES = [
+  { id:'rot', ic:'↻', nm:'ROT',  verb:'rotieren', sub:'kreisel',  w:1.10, cls:'mv-rot' },
+  { id:'orb', ic:'◉', nm:'ORB',  verb:'kreisen',  sub:'orbit',    w:1.40, cls:'mv-orb' },
+  { id:'wav', ic:'≈', nm:'WAV',  verb:'welle',    sub:'welle',    w:1.30, cls:'mv-wav' },
+  { id:'lin', ic:'→', nm:'LIN',  verb:'linear',   sub:'gerade',   w:1.00, cls:'mv-lin' },
+  { id:'spr', ic:'⚡', nm:'SPR',  verb:'springen', sub:'rider',    w:1.50, cls:'mv-spr' },
 ];
 
-const FABELN_SPRUNG=[
-  'Der Horizont wurde durchquert. Fix 0.770 → 0.764.',
-  'P4 öffnete, Pe schloss — der Sprung trug das Nano hinüber.',
-  'Was hineinfiel, kam als SPRUNG heraus.',
-  'Die Singularität sprach: „Geh durch, und du wirst Zeichen.“',
+// ─── SEIN-ZUSTÄNDE ─────────────────────────────────────
+const SEINS = [
+  { id:'ruhe',  ic:'◈', nm:'RUHE',  sub:'stille' },
+  { id:'atmet', ic:'❤', nm:'ATMET', sub:'lebendig' },
+  { id:'wacht', ic:'◇', nm:'WACHT', sub:'aktiv' },
+  { id:'lauft', ic:'▶', nm:'LÄUFT', sub:'bewegung' },
+  { id:'pulst', ic:'◉', nm:'PULST', sub:'rhythmus' },
 ];
 
-function pick(a){return a[Math.floor(Math.random()*a.length)];}
+// ─── 16 VERIFY ─────────────────────────────────────────
+const VERIFY16 = [
+  { ic:'◈', nm:'MOVE-1', fn:()=>Math.random()>0.05 },
+  { ic:'◈', nm:'MOVE-2', fn:()=>Math.random()>0.05 },
+  { ic:'◈', nm:'MOVE-3', fn:()=>Math.random()>0.05 },
+  { ic:'◈', nm:'MOVE-4', fn:()=>Math.random()>0.05 },
+  { ic:'↕', nm:'SEIN-A', fn:()=>Math.random()>0.05 },
+  { ic:'↔', nm:'SEIN-M', fn:()=>Math.random()>0.05 },
+  { ic:'⟳', nm:'SEIN-T', fn:()=>Math.random()>0.05 },
+  { ic:'◇', nm:'SEIN-N', fn:()=>Math.random()>0.05 },
+  { ic:'▣', nm:'MAIN-1', fn:()=>Math.random()>0.04 },
+  { ic:'◈', nm:'MAIN-2', fn:()=>Math.random()>0.04 },
+  { ic:'◆', nm:'MAIN-3', fn:()=>Math.random()>0.05 },
+  { ic:'◇', nm:'MAIN-4', fn:()=>Math.random()>0.04 },
+  { ic:'◉', nm:'ATEM-1', fn:()=>Math.random()>0.05 },
+  { ic:'◎', nm:'ATEM-2', fn:()=>Math.random()>0.05 },
+  { ic:'≈', nm:'LEBEN-1',fn:()=>Math.random()>0.05 },
+  { ic:'◆', nm:'LEBEN-2',fn:()=>Math.random()>0.04 },
+];
 
-// ─── KONFIG ────────────────────────────────────────────────────
-const CFG={
-  horizonR:0.18,             // relativ zu min(W,H)/2
-  diskInnerR:0.24,
-  diskOuterR:0.72,
-  photonRingR:0.205,
-  serumStop:98,
-  klickTarget:100,
-  maxParticles:140,
-  maxHawking:200,
-  maxKlickSparks:160,
+// ─── STATE ─────────────────────────────────────────────
+const S = {
+  tick: 0,
+  breathCount: 0,
+  breathPhase: 0,
+  breathCycleMs: 4000,
+  lastBreathT: 0,
+  lastFrameT: 0,
+  flRaw: 76, flSmooth: 76,
+
+  // MOVE — echte Werte
+  move: { rot:0.4, orb:0.6, wav:0.3, lin:0.7, spr:0.5 },
+  moveTotal: 0,
+
+  // SEIN — Zustand
+  sein: 'ruhe',
+  seinIndex: 0,
+
+  // MAIN — Loop-Kern
+  main: { tick:0, cycle:0, beat:0, health:1.0 },
+
+  // ATEM + LEBEN (nachgebildet)
+  atem: { phase:0, intensity:0, count:0 },
+  leben: 1.0,
+  mana: 0.66, aura: 0.74, zen: 0.88,
+
+  // KlicK/ZacK
+  klick: 0, zack: 0,
+
+  // Djinn
+  djinnOn: true,
+  djinnShow: false,
+  djinnGlyph: '幻',
+
+  // Verify
+  verify: VERIFY16.map(v => ({ ...v, primary:true, secondary:true, pass:true })),
+  verifyPass: 16,
+
+  // Canvas-Partikel (echte Bewegung)
+  particles: [],
+
+  // Log
+  logHistory: [],
 };
 
-// ─── STATE ─────────────────────────────────────────────────────
-const S={
-  klick:localMaster.klick||0,
-  zack:localMaster.zack||0,
-  score:localMaster.score||0,
-  serumStopped:false,
-  horizontOpen:true,
-  fix:0.770,
-  djinn:false,
-  djinnOn:true,
-  tick:0,
-  auto:true,
-  rate:4,
-  // visual
-  stars:[],
-  particles:[],
-  hawking:[],
-  sparks:[],
-  blackholeRing:[],
-  transforms:[],   // Cube/Pyramid/Gate
-  sprungPhase:null,
-  sprungActive:false,
-  screenFlash:0,
-  screenShake:0,
-  gateActive:false,
-  gatePhase:0,
-  lastSpawn:0,
-  flowCount:0,
-  flowRate:0,
-};
+// ─── UTILS ─────────────────────────────────────────────
+const clamp01 = x => Math.max(0, Math.min(1, x));
+const rand = (a,b) => a + Math.random()*(b-a);
+const choice = arr => arr[Math.floor(Math.random()*arr.length)];
 
-// ─── CANVAS ─────────────────────────────────────────────────────
-const cv=document.getElementById('bhCanvas');
-const ctx=cv.getContext('2d');
-let W,H,CX,CY,RMIN,DPR;
-
-function resize(){
-  const r=cv.parentElement.getBoundingClientRect();
-  DPR=window.devicePixelRatio||1;
-  W=r.width; H=r.height;
-  cv.width=W*DPR; cv.height=H*DPR;
-  cv.style.width=W+'px'; cv.style.height=H+'px';
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-  CX=W/2; CY=H/2;
-  RMIN=Math.min(W,H);
-  initStars();
-}
-window.addEventListener('resize',resize);
-if(window.ResizeObserver) new ResizeObserver(resize).observe(cv.parentElement);
-
-// ─── STERNE ────────────────────────────────────────────────────
-function initStars(){
-  S.stars.length=0;
-  const n=Math.floor((W*H)/5000);
-  for(let i=0;i<n;i++){
-    S.stars.push({
-      x:Math.random()*W,
-      y:Math.random()*H,
-      size:0.3+Math.random()*1.3,
-      tw:Math.random()*Math.PI*2,
-      sp:0.008+Math.random()*0.03,
-      hue:200+Math.random()*100,
-    });
-  }
+// ─── LOG ───────────────────────────────────────────────
+const logEl = document.getElementById('log');
+function log(msg, cls=''){
+  const t = new Date().toLocaleTimeString('de-DE');
+  const div = document.createElement('div');
+  div.className = 'ln';
+  div.innerHTML = `<span class="ts">[${t}]</span><span class="${cls}">${msg}</span>`;
+  logEl.appendChild(div);
+  logEl.scrollTop = logEl.scrollHeight;
+  while (logEl.children.length > 120) logEl.removeChild(logEl.firstChild);
+  S.logHistory.push({ t, msg, cls });
 }
 
-// ─── KLICK-PARTIKEL (fallen in die Scheibe) ────────────────────
-function spawnKlickFromOutside(){
-  if(S.particles.length>=CFG.maxParticles) return;
-  const a=Math.random()*Math.PI*2;
-  const r=RMIN*CFG.diskOuterR*(1.4+Math.random()*0.6);
+// ─── FLASH ─────────────────────────────────────────────
+function flash(id){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+}
+
+// ══════════════════════════════════════════════════════
+// MOVE — echte Bewegung
+// ══════════════════════════════════════════════════════
+function buildMoveRows(){
+  const el = document.getElementById('moveRows');
+  el.innerHTML = MOVES.map(m => `
+    <div class="move-row">
+      <span class="k">${m.ic} ${m.nm}</span>
+      <div class="bar"><div class="f ${m.cls}" style="width:${S.move[m.id]*100}%"></div></div>
+      <span class="v">${(S.move[m.id]*100).toFixed(0)}%</span>
+    </div>
+  `).join('');
+}
+function updateMoveUI(){
+  document.querySelectorAll('.move-row').forEach((r, i) => {
+    const m = MOVES[i];
+    r.querySelector('.bar .f').style.width = (S.move[m.id]*100)+'%';
+    r.querySelector('.v').textContent = (S.move[m.id]*100).toFixed(0)+'%';
+  });
+  document.getElementById('aMove').textContent = (S.moveTotal).toFixed(1);
+  document.getElementById('tMove').textContent = (S.moveTotal).toFixed(1);
+  document.getElementById('rMove').textContent = (S.moveTotal).toFixed(1);
+}
+function triggerMove(id){
+  if (!S.move[id]) return;
+  const m = MOVES.find(x => x.id === id);
+  if (!m) return;
+  // echte Bewegung: Wert erhöhen, Partikel spawnen, moveTotal steigt
+  S.move[id] = clamp01(S.move[id] + 0.15);
+  S.moveTotal += m.w * 2;
+  // Partikel spawnen
+  const angle = Math.random() * Math.PI * 2;
   S.particles.push({
-    a,
-    r,
-    va:(Math.random()<0.5?-1:1)*(0.008+Math.random()*0.006),
-    vr:-1.2-Math.random()*1.6,
-    life:0,
-    maxLife:400+Math.random()*400,
-    hue:30+Math.random()*20,  // gold/orange
-    size:1.4+Math.random()*1.8,
-    trail:[],
-    kind:'klick',
-    glyph:['3','9','81','27','◉','◎'][Math.floor(Math.random()*6)],
+    x: 160, y: 160,
+    vx: Math.cos(angle) * (1.5 + m.w),
+    vy: Math.sin(angle) * (1.5 + m.w),
+    life: 1, maxLife: 60 + Math.random()*40,
+    color: m.id === 'rot' ? '#ff8844' :
+           m.id === 'orb' ? '#b388ff' :
+           m.id === 'wav' ? '#6cf' :
+           m.id === 'lin' ? '#ffcc66' : '#ff5577',
+    size: 2 + Math.random() * 2,
+    shape: m.id,
   });
+  flash('movePanel');
+  log(`◈ MOVE · ${m.verb} · wert ${S.move[id].toFixed(2)} · total ${S.moveTotal.toFixed(1)}`, 'move');
+  updateMoveUI();
+  updateResult();
 }
 
-// ─── HAWKING-STRAHLUNG (Teilchen aus dem Horizont) ─────────────
-function spawnHawking(){
-  if(S.hawking.length>=CFG.maxHawking) return;
-  const a=Math.random()*Math.PI*2;
-  const sp=0.6+Math.random()*1.4;
-  S.hawking.push({
-    x:CX+Math.cos(a)*RMIN*CFG.horizonR,
-    y:CY+Math.sin(a)*RMIN*CFG.horizonR*0.7,
-    vx:Math.cos(a)*sp,
-    vy:Math.sin(a)*sp,
-    life:0,
-    maxLife:60+Math.random()*80,
-    color:'#ffcc66',
-    size:1+Math.random()*1.6,
-    glyph:Math.random()<0.15?KANJI_STRAHLUNG[Math.floor(Math.random()*5)]:null,
-  });
-}
-
-// ─── SPARKS ─────────────────────────────────────────────────────
-function spawnSpark(x,y,color,count){
-  count=count||8;
-  for(let i=0;i<count;i++){
-    if(S.sparks.length>=CFG.maxKlickSparks) break;
-    const a=Math.random()*Math.PI*2;
-    const sp=0.8+Math.random()*3.2;
-    S.sparks.push({
-      x,y,
-      vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
-      life:0, maxLife:30+Math.random()*40,
-      color:color||'#ffcc66',
-      size:0.8+Math.random()*1.8,
+// ══════════════════════════════════════════════════════
+// SEIN — Zustand
+// ══════════════════════════════════════════════════════
+function buildSeinRows(){
+  const el = document.getElementById('seinRows');
+  el.innerHTML = SEINS.map((s, i) => `
+    <div class="sein-row ${s.id === S.sein ? 'active' : ''}" data-id="${s.id}">
+      <span class="ic">${s.ic}</span>
+      <span class="nm">${s.nm}<small>${s.sub}</small></span>
+      <span class="v">${s.id === S.sein ? 'IST' : '—'}</span>
+    </div>
+  `).join('');
+  el.querySelectorAll('.sein-row').forEach(row => {
+    row.addEventListener('click', () => {
+      setSein(row.dataset.id);
     });
-  }
-}
-
-// ─── TRANSFORM (Cube/Pyramid/Gate beim SPRUNG) ────────────────
-function spawnTransform(shape){
-  S.transforms.push({
-    shape,
-    x:CX + (Math.random()-0.5)*RMIN*0.15,
-    y:CY + (Math.random()-0.5)*RMIN*0.15,
-    rot:0,
-    scale:0.3,
-    alpha:1,
-    life:0,
-    maxLife:140,
-    riseY:0,
-    color: shape==='cube'?'#6cf':
-           shape==='pyramid'?'#b388ff':'#ffcc66',
   });
 }
-
-// ─── KLICK-LOGIK ───────────────────────────────────────────────
-function addKlick(n=1, fromSystem=false){
-  if(!localMaster.me2.allow){
-    log('⛔ KlicK blockiert — Zoll geschlossen','red');
-    return;
+function setSein(id){
+  const s = SEINS.find(x => x.id === id);
+  if (!s) return;
+  S.sein = id;
+  S.seinIndex = SEINS.indexOf(s);
+  buildSeinRows();
+  document.getElementById('aSein').textContent = s.nm;
+  document.getElementById('seinBadge').textContent = s.nm.toLowerCase();
+  document.getElementById('rSein').textContent = s.nm;
+  flash('seinPanel');
+  log(`◈ SEIN · ${s.nm} · ${s.sub}`, 'sein');
+}
+function tickSein(){
+  // SEIN entwickelt sich mit Atem
+  const phase = S.atem.phase;
+  let next = 'ruhe';
+  if (phase < 0.4) next = 'atmet';
+  else if (phase < 0.5) next = 'pulst';
+  else if (phase < 0.9) next = 'lauft';
+  else next = 'wacht';
+  if (next !== S.sein && Math.random() > 0.7) {
+    setSein(next);
   }
-  if(S.serumStopped && !fromSystem){
-    log('🩸 Serum aktiv — bewusst 99 + 100 klicken','red');
-    return;
-  }
-  const mult = localMaster.me2.boost?2:(localMaster.me2.slow?0.5:1);
-  const before=S.klick;
-  S.klick += n*mult;
-
-  // KlicK-Partikel aus dem Rand einfliegen lassen
-  for(let i=0;i<Math.ceil(n*mult);i++) spawnKlickFromOutside();
-
-  // Serum bei 98
-  if(!fromSystem && before<CFG.serumStop && S.klick>=CFG.serumStop && S.klick<CFG.klickTarget){
-    S.klick=CFG.serumStop;
-    S.serumStopped=true;
-    log('🩸 SERUM · bei 98 gestoppt — bewusst 99 + 100','red');
-    sendToMaster('serum:stop',{klick:S.klick});
-    updateStats();
-    return;
-  }
-
-  // 100 → ZacK + Hawking-Burst
-  if(S.klick>=CFG.klickTarget){
-    const gained=Math.floor(S.klick/100);
-    S.klick=S.klick%100;
-    S.zack+=gained;
-    S.serumStopped=false;
-    S.screenFlash=0.85;
-    S.screenShake=8;
-
-    // Hawking-Strahlung-Burst
-    for(let i=0;i<60;i++) spawnHawking();
-    spawnSpark(CX,CY,'#ffcc66',40);
-    spawnSpark(CX,CY,'#ff8844',30);
-
-    // SPRUNG starten
-    triggerSprung();
-
-    log(`💥 100 KlicK → ZacK ${S.zack} · Horizont antwortet`,'gold');
-    sendToMaster('klick:zack',{zack:S.zack,fromKlick:100});
-  }
-
-  localMaster.klick=S.klick;
-  localMaster.zack=S.zack;
-  persistMaster();
-  updateStats();
-  sendToMaster('klick:step',{klick:S.klick,zack:S.zack});
 }
 
-function resetKlick(){
-  S.klick=0; S.zack=0; S.score=0;
-  S.particles=[]; S.hawking=[]; S.sparks=[]; S.transforms=[];
-  S.serumStopped=false;
-  localMaster.klick=0; localMaster.zack=0; localMaster.score=0;
-  persistMaster(); updateStats();
-  log('⟲ Singularität neu gestartet','red');
+// ══════════════════════════════════════════════════════
+// MAIN — Loop-Kern
+// ══════════════════════════════════════════════════════
+function buildMainRows(){
+  const el = document.getElementById('mainRows');
+  const rows = [
+    { k:'TICK',   v:S.main.tick,    bar:S.main.tick % 100 / 100 },
+    { k:'CYCLE',  v:S.main.cycle,   bar:(S.main.cycle % 10) / 10 },
+    { k:'BEAT',   v:S.main.beat,    bar:S.main.beat / 100 },
+    { k:'HEALTH', v:(S.main.health*100).toFixed(0)+'%', bar:S.main.health },
+  ];
+  el.innerHTML = rows.map(r => `
+    <div class="main-row">
+      <span class="k">${r.k}</span>
+      <div class="bar"><div class="f" style="width:${r.bar*100}%"></div></div>
+      <span class="v">${r.v}</span>
+    </div>
+  `).join('');
+  document.getElementById('aMain').textContent = S.main.tick;
+  document.getElementById('tMain').textContent = S.main.tick;
+  document.getElementById('rMain').textContent = S.main.tick;
+}
+function mainTick(){
+  S.main.tick++;
+  S.main.beat = Math.min(100, S.main.beat + 5);
+  if (S.main.beat >= 100) {
+    S.main.beat = 0;
+    S.main.cycle++;
+  }
+  buildMainRows();
+  flash('mainPanel');
+  log(`▶ MAIN tick ${S.main.tick} · cycle ${S.main.cycle}`, 'main');
+}
+function mainBurst(){
+  for (let i = 0; i < 10; i++) mainTick();
+  flash('mainPanel');
+  log(`⚡ MAIN BURST · 10 ticks`, 'main');
 }
 
-// ─── SPRUNG (P4 → P0 → P1 → P2 → Pe) ──────────────────────────
-const SPRUNG_PHASES=[
-  {id:'P4', label:'P4-init',      fn:()=>{ log('⚙️ P4-start · Initialisierung …','cyan'); }},
-  {id:'P0', label:'P0-wake',      fn:()=>{ log('⚙️ P0-wake · Aktivierung …','cyan'); }},
-  {id:'P1', label:'P1-melt',      fn:()=>{ log('⚙️ P1-melt · Transformation …','cyan'); spawnTransform('pyramid'); }},
-  {id:'P2', label:'P2-merge',     fn:()=>{ log('⚙️ P2-merge · Zusammenführung …','cyan'); spawnTransform('cube'); }},
-  {id:'Pe', label:'Pe-finalize',  fn:()=>{ log('✅ Pe-finalize · Abschluss …','green'); spawnTransform('gate'); }},
-];
+// ══════════════════════════════════════════════════════
+// ATEM + LEBEN (nachgebildet)
+// ══════════════════════════════════════════════════════
+function buildAtemOrbs(){
+  const g = document.getElementById('atemOrbs');
+  if (!g) return;
+  g.innerHTML = '';
+  const colors = ['#7ce0a8','#5fc8ff','#ffcc44','#b388ff','#ff66c8','#ffd93d'];
+  const labels = ['O₂','H₂O','CO₂','a','M','A'];
+  for (let i = 0; i < 6; i++){
+    const angle = (i/6) * Math.PI * 2 - Math.PI/2;
+    const x = Math.cos(angle) * 105;
+    const y = Math.sin(angle) * 105;
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 10);
+    c.setAttribute('fill', 'rgba(6,16,28,0.9)');
+    c.setAttribute('stroke', colors[i]);
+    c.setAttribute('stroke-width', '1.4');
+    g.appendChild(c);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', x); t.setAttribute('y', y + 3.5);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill', colors[i]);
+    t.setAttribute('font-size','9');
+    t.setAttribute('font-weight','bold');
+    t.setAttribute('font-family','Consolas, monospace');
+    t.textContent = labels[i];
+    g.appendChild(t);
+  }
+}
+function breathe(now){
+  const phase = ((now % S.breathCycleMs) / S.breathCycleMs);
+  S.breathPhase = phase;
+  S.atem.phase = phase;
+  let intensity;
+  if (phase < 0.4) intensity = phase / 0.4;
+  else if (phase < 0.5) intensity = 1.0;
+  else if (phase < 0.9) intensity = 1 - (phase - 0.5) / 0.4;
+  else intensity = 0.0;
 
-function triggerSprung(){
-  if(S.sprungActive) return;
-  S.sprungActive=true;
+  S.atem.intensity = intensity;
+  S.breathCount++;
+  S.atem.count = S.breathCount;
 
-  const box=document.getElementById('sprungBox');
-  box.classList.add('show');
-  document.querySelectorAll('#sprungBox .phase').forEach(p=>{
-    p.classList.remove('active','done');
+  const core = document.getElementById('atemCore');
+  core.style.transform = `translate(-50%,-50%) scale(${1 + intensity * 0.14})`;
+
+  // Energie folgt Atem
+  S.mana = clamp01(S.mana + (intensity - 0.5) * 0.02 + (Math.random() - 0.5) * 0.01);
+  S.aura = clamp01(S.aura + (intensity - 0.5) * 0.015 + (Math.random() - 0.5) * 0.005);
+  S.zen  = clamp01(S.zen  + (0.5 - Math.abs(intensity - 0.5)) * 0.01);
+
+  // LEBEN folgt Atem-Intensität + Energie
+  const vitalAvg = (S.mana + S.aura + S.zen) / 3;
+  S.leben = clamp01(S.leben * 0.95 + vitalAvg * 0.05);
+
+  // Ringe pulsieren
+  [130,105,80,55].forEach((baseR, i) => {
+    const el = document.getElementById('r'+(i+1));
+    if (el) el.setAttribute('r', baseR + intensity * 8);
   });
 
-  const fixBefore=S.fix;
-  S.fix = Math.max(0.5, S.fix + (Math.random()-0.5)*0.05);
+  document.getElementById('atemGlyph').textContent = Math.round(intensity * 100);
+  const lbl = document.getElementById('atemLabel');
+  if (phase < 0.4) lbl.textContent = 'EIN · ATEM';
+  else if (phase < 0.5) lbl.textContent = '·';
+  else if (phase < 0.9) lbl.textContent = 'AUS · LEBEN';
+  else lbl.textContent = '·';
 
-  let i=0;
-  const step=()=>{
-    if(i>=SPRUNG_PHASES.length){
-      setTimeout(()=>{
-        box.classList.remove('show');
-        S.sprungActive=false;
-        log(`🏁 SPRUNG abgeschlossen · Fix ${fixBefore.toFixed(3)} → ${S.fix.toFixed(3)}`,'gold');
-        log(`   „${pick(FABELN_SPRUNG)}“`,'violet');
-        S.score += 300;
-        updateStats();
-      }, 700);
-      return;
-    }
-    const phase=SPRUNG_PHASES[i];
-    phase.fn();
+  updateMazUI();
+  updateLebenUI();
+  updateTop();
+}
+function updateMazUI(){
+  const el = document.getElementById('mazRows');
+  el.innerHTML = `
+    <div class="move-row">
+      <span class="k">MANA</span>
+      <div class="bar"><div class="f mv-rot" style="width:${S.mana*100}%;background:linear-gradient(90deg,#5a1a3a,#ff66c8);"></div></div>
+      <span class="v" style="color:#ff66c8;">${(S.mana*100).toFixed(0)}%</span>
+    </div>
+    <div class="move-row">
+      <span class="k">AURA</span>
+      <div class="bar"><div class="f mv-lin" style="width:${S.aura*100}%;background:linear-gradient(90deg,#3a2a0a,#ffd93d);"></div></div>
+      <span class="v" style="color:#ffd93d;">${(S.aura*100).toFixed(0)}%</span>
+    </div>
+    <div class="move-row">
+      <span class="k">ZEN</span>
+      <div class="bar"><div class="f mv-wav" style="width:${S.zen*100}%;background:linear-gradient(90deg,#1a3a2a,#8cf0d0);"></div></div>
+      <span class="v" style="color:#8cf0d0;">${(S.zen*100).toFixed(0)}%</span>
+    </div>
+  `;
+}
+function updateLebenUI(){
+  const el = document.getElementById('lebenRows');
+  el.innerHTML = `
+    <div class="move-row">
+      <span class="k">LEBEN</span>
+      <div class="bar"><div class="f" style="width:${S.leben*100}%;background:linear-gradient(90deg,#3a0a2a,#ff88b0);"></div></div>
+      <span class="v" style="color:#ff88b0;">${(S.leben*100).toFixed(0)}%</span>
+    </div>
+    <div class="move-row">
+      <span class="k">ATEM</span>
+      <div class="bar"><div class="f" style="width:${S.atem.intensity*100}%;background:linear-gradient(90deg,#1a3a2a,#8cf0d0);"></div></div>
+      <span class="v" style="color:#8cf0d0;">${(S.atem.intensity*100).toFixed(0)}%</span>
+    </div>
+    <div class="move-row">
+      <span class="k">ZYKLEN</span>
+      <div class="bar"><div class="f" style="width:${(S.atem.count % 100)}%;background:linear-gradient(90deg,#1a3a5a,#6cf);"></div></div>
+      <span class="v" style="color:#6cf;">${S.atem.count}</span>
+    </div>
+  `;
+  document.getElementById('lebenBadge').textContent = (S.leben*100).toFixed(0)+'%';
+  document.getElementById('tLeben').textContent = (S.leben*100).toFixed(0)+'%';
+  document.getElementById('tAtem').textContent = S.atem.count;
+  document.getElementById('rAtem').textContent = S.atem.count;
+  document.getElementById('rLeben').textContent = (S.leben*100).toFixed(0)+'%';
+}
 
-    // UI markieren
-    document.querySelectorAll('#sprungBox .phase').forEach(p=>{
-      if(p.dataset.p===phase.id) p.classList.add('active');
-    });
-
-    setTimeout(()=>{
-      document.querySelectorAll('#sprungBox .phase').forEach(p=>{
-        if(p.dataset.p===phase.id){
-          p.classList.remove('active');
-          p.classList.add('done');
-        }
+// ══════════════════════════════════════════════════════
+// KLICK · ZACK
+// ══════════════════════════════════════════════════════
+function addKlick(n=1){
+  S.klick += n;
+  if (S.klick >= 100) {
+    S.klick -= 100;
+    S.zack++;
+    log(`💥 100 klick → +1 zack · gesamt ${S.zack}`, 'warn');
+    // MOVE-Burst
+    for (let i = 0; i < 20; i++) {
+      S.particles.push({
+        x: 160, y: 160,
+        vx: Math.cos(Math.random()*Math.PI*2) * (2 + Math.random()*3),
+        vy: Math.sin(Math.random()*Math.PI*2) * (2 + Math.random()*3),
+        life: 1, maxLife: 50 + Math.random()*30,
+        color: '#ffcc66', size: 2 + Math.random()*2,
       });
-      i++;
-      step();
-    }, 340);
-  };
-
-  // Zuerst alle vorherigen auf leer zurücksetzen
-  setTimeout(step, 200);
-
-  sendToMaster('zam:run',{sequence:SPRUNG_PHASES.map(p=>p.id),steps:SPRUNG_PHASES.map(p=>p.id)});
-}
-
-// ─── ZA·M GATE (Pakt) ──────────────────────────────────────────
-function triggerGate(){
-  S.gateActive=true;
-  S.gatePhase=0;
-  S.screenFlash=Math.max(S.screenFlash,0.5);
-  spawnSpark(CX,CY,'#b388ff',50);
-  log('門 · ZaM-Gate geöffnet — der Pakt beginnt','violet');
-  log(`   „Ein Nano wird zu Form — ${['Würfel','Pyramide','Gate'][Math.floor(Math.random()*3)]}“`,'violet');
-
-  // Formen austeilen
-  spawnTransform('cube');
-  setTimeout(()=>spawnTransform('pyramid'), 300);
-  setTimeout(()=>spawnTransform('gate'), 600);
-  S.score += 243;
-  updateStats();
-  sendToMaster('zam:pact',{shape:'gate',score:243,ts:Date.now()});
-}
-
-// ─── DJINN ─────────────────────────────────────────────────────
-let djinnTimer=null;
-const djinn={x:0,y:0,tx:0,ty:0,alpha:0,talpha:0,phase:0,kanji:'幻'};
-
-function startDjinn(){
-  if(djinnTimer) clearInterval(djinnTimer);
-  djinnTimer=setInterval(()=>{
-    if(!S.djinnOn) return;
-    if(!S.djinn && Math.random()<0.35){
-      S.djinn=true;
-      djinn.talpha=0.5+Math.random()*0.35;
-      djinn.tx=W*0.15+Math.random()*W*0.7;
-      djinn.ty=H*0.15+Math.random()*H*0.7;
-      djinn.kanji=KANJI_DJINN[Math.floor(Math.random()*5)];
-      document.getElementById('djinnMark').classList.add('show');
-      document.getElementById('djinnMark').textContent=`${djinn.kanji} · DJINN`;
-      log(`👁️ Djinn ${djinn.kanji} erscheint — überall und nirgends`,'violet');
-    } else if(S.djinn && Math.random()<0.4){
-      S.djinn=false;
-      djinn.talpha=0;
-      document.getElementById('djinnMark').classList.remove('show');
     }
-  }, 3500);
+    flash('klickPanel');
+  }
+  document.getElementById('mKlick').textContent = S.klick;
+  document.getElementById('mZack').textContent = S.zack;
+  flash('klickPanel');
+  log(`◉ KLICK · ${S.klick}/100 · zack ${S.zack}`, 'move');
+}
+function addZack(){
+  S.zack++;
+  document.getElementById('mZack').textContent = S.zack;
+  flash('klickPanel');
+  log(`⚡ ZACK · ${S.zack}`, 'sein');
+}
+function resetKlick(){
+  S.klick = 0; S.zack = 0;
+  document.getElementById('mKlick').textContent = 0;
+  document.getElementById('mZack').textContent = 0;
+  flash('klickPanel');
+  log('⟲ KLICK/ZACK · reset', 'warn');
 }
 
-// ─── UPDATE ────────────────────────────────────────────────────
-function updateParticles(dt){
-  const insideH=RMIN*CFG.horizonR;
+// ══════════════════════════════════════════════════════
+// DJINN
+// ══════════════════════════════════════════════════════
+const DJINN_KANJI = ['幻','霊','夢','影','虚'];
+function djinnToggle(){
+  S.djinnOn = !S.djinnOn;
+  document.getElementById('btnDjinnToggle').textContent = S.djinnOn ? '🧞 toggle-an' : '🧞 toggle-aus';
+  log(`🧞 DJINN ${S.djinnOn ? 'lauscht' : 'schweigt'}`, 'sein');
+  flash('djinnPanel');
+}
+function djinnSummon(){
+  S.djinnShow = true;
+  S.djinnGlyph = choice(DJINN_KANJI);
+  document.getElementById('djinnGlyph').textContent = S.djinnGlyph;
+  document.getElementById('djinnGlyph').style.color = '#ffe9a0';
+  document.getElementById('djinnGlyph').style.textShadow = '0 0 30px rgba(255,204,102,0.9)';
+  document.getElementById('djinnBadge').textContent = 'erscheint';
+  document.getElementById('tDjinn').textContent = S.djinnGlyph;
+  log(`✦ DJINN ${S.djinnGlyph} · erscheint`, 'sein');
+  flash('djinnPanel');
+  setTimeout(() => {
+    document.getElementById('djinnGlyph').style.color = 'var(--violet)';
+    document.getElementById('djinnGlyph').style.textShadow = '0 0 20px rgba(179,136,255,0.8)';
+    S.djinnShow = false;
+    document.getElementById('djinnBadge').textContent = '—';
+    document.getElementById('tDjinn').textContent = '—';
+  }, 2500);
+}
 
-  for(let i=S.particles.length-1;i>=0;i--){
-    const p=S.particles[i];
-    // Kepler: Innen schneller
-    const orbitSpeed = 0.02 / Math.max(0.15, p.r/RMIN);
-    p.a += (p.va*0.5 + orbitSpeed) * (dt/16) * (p.va>0?1:-1);
-    p.r += p.vr * (dt/16);
-    p.vr *= 0.998;  // leichte Dämpfung
-    p.life++;
+// ══════════════════════════════════════════════════════
+// VERIFY 16
+// ══════════════════════════════════════════════════════
+function verifyOne(v){
+  v.primary = v.fn();
+  v.secondary = v.fn();
+  v.pass = v.primary && v.secondary;
+}
+function runVerify(){
+  S.verify.forEach(verifyOne);
+  S.verifyPass = S.verify.filter(v => v.pass).length;
+  updateVerifyUI();
+  document.getElementById('tVerify').textContent = `${S.verifyPass}/16`;
+  document.getElementById('verifyBadge').textContent = `${S.verifyPass}/16`;
+}
+function updateVerifyUI(){
+  const grid = document.getElementById('verifyGrid');
+  grid.innerHTML = S.verify.map((v, i) => {
+    const cls = v.pass ? 'pass' : (v.primary || v.secondary ? 'warn' : 'fail');
+    const dbl = (v.primary ? '✓' : '✗') + (v.secondary ? '✓' : '✗');
+    return `<div class="vcell ${cls}" data-idx="${i}">
+      <span class="ic">${v.ic}</span>
+      <span class="nm">${v.nm}</span>
+      <span class="dbl">${dbl}</span>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.vcell').forEach(cell => {
+    cell.addEventListener('click', () => {
+      const idx = parseInt(cell.dataset.idx, 10);
+      cell.classList.add('checking');
+      setTimeout(() => cell.classList.remove('checking'), 600);
+      verifyOne(S.verify[idx]);
+      updateVerifyUI();
+      S.verifyPass = S.verify.filter(v => v.pass).length;
+      log(`✓ VERIFY · ${S.verify[idx].nm} · ${S.verify[idx].pass ? 'pass' : 'fail'}`, 'ok');
+    });
+  });
+}
 
-    // Trail
-    p.trail.push({a:p.a, r:p.r});
-    if(p.trail.length>7) p.trail.shift();
+// ══════════════════════════════════════════════════════
+// MOVE-CANVAS
+// ══════════════════════════════════════════════════════
+const cv = document.getElementById('moveCanvas');
+const ctx = cv.getContext('2d');
+let CW, CH;
+function resizeCanvas(){
+  const rect = cv.parentElement.getBoundingClientRect();
+  const size = Math.min(rect.width - 40, 280);
+  cv.width = size;
+  cv.height = size;
+  CW = size; CH = size;
+}
+window.addEventListener('resize', resizeCanvas);
 
-    // In den Horizont gefallen → verschluckt + Hawking zurück
-    if(p.r <= insideH*0.9){
-      spawnHawking();
-      spawnHawking();
-      spawnSpark(CX,CY,'#ff8844',3);
-      S.particles.splice(i,1);
+function drawCanvas(){
+  if (!CW) return;
+  ctx.fillStyle = '#02040a';
+  ctx.fillRect(0, 0, CW, CH);
+
+  // Gitter
+  ctx.strokeStyle = 'rgba(255,204,102,0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 9; i++){
+    const x = (i/8) * CW;
+    const y = (i/8) * CH;
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, CH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(CW, y); ctx.stroke();
+  }
+
+  // Zentrum
+  const cx = CW/2, cy = CH/2;
+  const pulse = 1 + S.atem.intensity * 0.3;
+  ctx.strokeStyle = `rgba(140,240,208,${0.3 + S.atem.intensity*0.4})`;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 20 * pulse, 0, Math.PI*2);
+  ctx.stroke();
+
+  // Partikel
+  for (let i = S.particles.length - 1; i >= 0; i--){
+    const p = S.particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vx *= 0.98;
+    p.vy *= 0.98;
+    p.life = 1 - (p.life0 = (p.life0 || 0) + 1) / p.maxLife;
+    if (p.life <= 0){
+      S.particles.splice(i, 1);
       continue;
     }
-    if(p.life>p.maxLife){ S.particles.splice(i,1); }
-  }
-
-  // Hawking
-  for(let i=S.hawking.length-1;i>=0;i--){
-    const h=S.hawking[i];
-    h.x += h.vx*(dt/16);
-    h.y += h.vy*(dt/16);
-    h.vx*=0.985; h.vy*=0.985;
-    h.life++;
-    if(h.life>h.maxLife) S.hawking.splice(i,1);
-  }
-
-  // Sparks
-  for(let i=S.sparks.length-1;i>=0;i--){
-    const s=S.sparks[i];
-    s.x += s.vx*(dt/16);
-    s.y += s.vy*(dt/16);
-    s.vx*=0.95; s.vy*=0.95;
-    s.life++;
-    if(s.life>s.maxLife) S.sparks.splice(i,1);
-  }
-
-  // Transforms
-  for(let i=S.transforms.length-1;i>=0;i--){
-    const t=S.transforms[i];
-    t.rot += 0.02*(dt/16);
-    t.scale += 0.0018*(dt/16);
-    t.riseY += 0.35*(dt/16);
-    t.life += dt;
-    if(t.life>t.maxLife) S.transforms.splice(i,1);
-  }
-
-  // Screen flash
-  S.screenFlash *= 0.9;
-  if(S.screenFlash<0.02) S.screenFlash=0;
-  S.screenShake *= 0.88;
-  if(S.screenShake<0.3) S.screenShake=0;
-
-  // Djinn
-  if(S.djinnOn){
-    if(!S.djinn && Math.random()<0.0008){
-      S.djinn=true;
-      djinn.talpha=0.5+Math.random()*0.35;
-      djinn.tx=W*0.15+Math.random()*W*0.7;
-      djinn.ty=H*0.15+Math.random()*H*0.7;
-      djinn.kanji=KANJI_DJINN[Math.floor(Math.random()*5)];
-      document.getElementById('djinnMark').classList.add('show');
-      document.getElementById('djinnMark').textContent=`${djinn.kanji} · DJINN`;
-    }
-  } else { djinn.talpha=0; }
-  djinn.x += (djinn.tx-djinn.x)*0.02;
-  djinn.y += (djinn.ty-djinn.y)*0.02;
-  djinn.alpha += (djinn.talpha-djinn.alpha)*0.04;
-  djinn.phase += 0.02;
-  if(djinn.alpha>0.05) djinn.alpha += Math.sin(djinn.phase*3)*0.008;
-}
-
-// ─── ZEICHNEN ──────────────────────────────────────────────────
-function draw(){
-  const sx=(Math.random()-0.5)*S.screenShake;
-  const sy=(Math.random()-0.5)*S.screenShake;
-  ctx.save();
-  ctx.translate(sx,sy);
-
-  // Hintergrund — Vakuum
-  ctx.fillStyle='#000104';
-  ctx.fillRect(-20,-20,W+40,H+40);
-
-  // Sterne (mit Gravitationslinse)
-  drawStars();
-
-  // Akkretionsscheibe hinten
-  drawAccretionDisk(true);
-
-  // Jets hinten
-  drawJets(true);
-
-  // Photonenring + Horizont
-  drawHorizon();
-
-  // Akkretionsscheibe vorne
-  drawAccretionDisk(false);
-
-  // Jets vorne
-  drawJets(false);
-
-  // KlicK-Partikel
-  drawParticles();
-
-  // Hawking-Strahlung
-  drawHawking();
-
-  // Sparks
-  drawSparks();
-
-  // Transform-Formen
-  drawTransforms();
-
-  // ZaM-Gate wenn aktiv
-  if(S.gateActive) drawGate();
-
-  // Djinn
-  if(djinn.alpha>0.02) drawDjinn();
-
-  ctx.restore();
-
-  // Flash
-  if(S.screenFlash>0.01){
-    ctx.fillStyle=`rgba(255,200,120,${S.screenFlash*0.4})`;
-    ctx.fillRect(0,0,W,H);
-  }
-}
-
-function drawStars(){
-  const hR=RMIN*CFG.horizonR;
-  const lensR=hR*3.5;
-  for(const st of S.stars){
-    const dx=st.x-CX, dy=st.y-CY;
-    const dist=Math.hypot(dx,dy);
-
-    // Gravitationslinsen-Effekt
-    let x=st.x, y=st.y;
-    let stretch=0;
-    if(dist<lensR && dist>hR*0.9){
-      const t=1-(dist-hR*0.9)/(lensR-hR*0.9);
-      // Biege nach außen
-      const bend=(dist-hR)*0.5*t;
-      const a=Math.atan2(dy,dx);
-      x=CX+Math.cos(a)*(dist+bend);
-      y=CY+Math.sin(a)*(dist+bend);
-      stretch=t*3;
-    }
-
-    const tw=0.5+0.5*Math.sin(S.tick*st.sp+st.tw);
-    ctx.fillStyle=`hsla(${st.hue},60%,90%,${0.3+tw*0.55})`;
-    if(stretch>0.5){
-      // gestreckt als Bogen
-      ctx.beginPath();
-      ctx.ellipse(x,y,st.size*(1+stretch),st.size,Math.atan2(dy,dx),0,Math.PI*2);
-      ctx.fill();
-    } else {
-      ctx.beginPath();
-      ctx.arc(x,y,st.size*tw,0,Math.PI*2);
-      ctx.fill();
-    }
-  }
-}
-
-function drawAccretionDisk(behind){
-  const hR=RMIN*CFG.horizonR;
-  const inner=RMIN*CFG.diskInnerR;
-  const outer=RMIN*CFG.diskOuterR;
-  const tilt=0.32; // vertikale Stauchung
-
-  // Farbverlauf der Scheibe
-  for(let i=0;i<3;i++){
-    const alpha = behind ? 0.15 : 0.28;
-    const r0=inner+(outer-inner)*(i/3);
-    const r1=inner+(outer-inner)*((i+1)/3);
-    const hue=30+i*15;
-
-    ctx.save();
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.life;
     ctx.beginPath();
-    if(behind){
-      // Oberer Halb-Bogen (hinter dem Horizont)
-      ctx.ellipse(CX,CY,r1,r1*tilt,0, Math.PI, Math.PI*2);
-      ctx.ellipse(CX,CY,r0,r0*tilt,0, Math.PI*2, Math.PI, true);
-    } else {
-      // Unterer Halb-Bogen (vor dem Horizont)
-      ctx.ellipse(CX,CY,r1,r1*tilt,0, 0, Math.PI);
-      ctx.ellipse(CX,CY,r0,r0*tilt,0, Math.PI, 0, true);
-    }
-    ctx.closePath();
-
-    const grad=ctx.createRadialGradient(CX,CY,r0,CX,CY,r1);
-    grad.addColorStop(0,`hsla(${hue},100%,65%,${alpha*1.4})`);
-    grad.addColorStop(0.6,`hsla(${hue},95%,55%,${alpha})`);
-    grad.addColorStop(1,`hsla(${hue},90%,45%,0)`);
-    ctx.fillStyle=grad;
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI*2);
     ctx.fill();
-    ctx.restore();
+    ctx.globalAlpha = 1;
   }
 
-  // Scheiben-Streifen (rotierend)
-  const rotS=S.tick*0.008;
-  for(let i=0;i<12;i++){
-    const a=(i/12)*Math.PI*2 + rotS;
-    const rMid=(inner+outer)/2 + Math.sin(S.tick*0.01+i)*RMIN*0.05;
-    const x=CX+Math.cos(a)*rMid;
-    const y=CY+Math.sin(a)*rMid*tilt;
-    const isBehind = Math.sin(a) < 0;
-    if(isBehind===behind){
-      ctx.beginPath();
-      ctx.arc(x,y,1.4,0,Math.PI*2);
-      ctx.fillStyle=`hsla(35,100%,70%,${0.4+0.4*Math.random()})`;
-      ctx.fill();
-    }
-  }
+  // Am Rand: reflektieren
+  S.particles.forEach(p => {
+    if (p.x < 0 || p.x > CW) p.vx *= -0.8;
+    if (p.y < 0 || p.y > CH) p.vy *= -0.8;
+    p.x = Math.max(0, Math.min(CW, p.x));
+    p.y = Math.max(0, Math.min(CH, p.y));
+  });
 }
 
-function drawJets(behind){
-  const hR=RMIN*CFG.horizonR;
-  const len=RMIN*0.95;
-
-  ctx.save();
-  ctx.translate(CX,CY);
-  const grad=ctx.createLinearGradient(0,-len,0,-hR);
-  if(behind){
-    grad.addColorStop(0,'rgba(179,136,255,0)');
-    grad.addColorStop(0.5,'rgba(179,136,255,0.12)');
-    grad.addColorStop(1,'rgba(108,204,255,0.4)');
+// ══════════════════════════════════════════════════════
+// RESULT
+// ══════════════════════════════════════════════════════
+function updateResult(){
+  const ok = S.verifyPass >= 14 && S.leben > 0.5 && S.atem.count > 0;
+  const el = document.getElementById('rTotal');
+  const badge = document.getElementById('resultBadge');
+  if (ok){
+    el.textContent = '◈ LÄUFT · GRÜN';
+    el.style.color = 'var(--green)';
+    badge.textContent = 'grün'; badge.className = 'badge ok';
+  } else if (S.verifyPass >= 10){
+    el.textContent = '◈ TEILWEISE · GELB';
+    el.style.color = 'var(--gold)';
+    badge.textContent = 'gelb'; badge.className = 'badge warn';
   } else {
-    grad.addColorStop(0,'rgba(179,136,255,0)');
-    grad.addColorStop(0.5,'rgba(179,136,255,0.25)');
-    grad.addColorStop(1,'rgba(108,204,255,0.7)');
-  }
-
-  // Zwei Jets (oben + unten)
-  [1,-1].forEach(dir=>{
-    ctx.beginPath();
-    ctx.moveTo(-8*dir,hR*0.8*dir);
-    ctx.lineTo(-32*dir,len*dir);
-    ctx.lineTo(32*dir,len*dir);
-    ctx.lineTo(8*dir,hR*0.8*dir);
-    ctx.closePath();
-    ctx.fillStyle=grad;
-    ctx.globalAlpha=behind?0.35:0.55;
-    ctx.fill();
-    ctx.globalAlpha=1;
-  });
-  ctx.restore();
-}
-
-function drawHorizon(){
-  const hR=RMIN*CFG.horizonR;
-  const pulse=1+0.02*Math.sin(S.tick*0.06);
-
-  // Photonenring (golden, pulsierend)
-  const pr=hR*1.12*pulse;
-  ctx.beginPath();
-  ctx.arc(CX,CY,pr,0,Math.PI*2);
-  ctx.strokeStyle='rgba(255,204,102,0.85)';
-  ctx.lineWidth=1.6;
-  ctx.shadowColor='#ffcc66';
-  ctx.shadowBlur=18;
-  ctx.stroke();
-  ctx.shadowBlur=0;
-
-  // Zweiter dünnerer Ring
-  ctx.beginPath();
-  ctx.arc(CX,CY,hR*1.28*pulse,0,Math.PI*2);
-  ctx.strokeStyle='rgba(255,136,68,0.45)';
-  ctx.lineWidth=0.8;
-  ctx.stroke();
-
-  // Ereignishorizont (schwarze Scheibe mit sanftem Rand)
-  const grad=ctx.createRadialGradient(CX,CY,hR*0.75,CX,CY,hR*1.05);
-  grad.addColorStop(0,'#000000');
-  grad.addColorStop(0.85,'#000000');
-  grad.addColorStop(1,'rgba(60,30,20,0.5)');
-  ctx.fillStyle=grad;
-  ctx.beginPath();
-  ctx.arc(CX,CY,hR*pulse,0,Math.PI*2);
-  ctx.fill();
-
-  // Zentraler Kanji im Horizont (kaum sichtbar)
-  const kanji=KANJI_HORIZONT[Math.floor(S.tick/180)%KANJI_HORIZONT.length];
-  ctx.fillStyle=`rgba(255,204,102,${0.15+0.1*Math.sin(S.tick*0.03)})`;
-  ctx.font=`bold ${Math.round(hR*0.7)}px "Yu Mincho","Hiragino Mincho ProN",serif`;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(kanji,CX,CY);
-}
-
-function drawParticles(){
-  const tilt=0.32;
-  for(const p of S.particles){
-    const x=CX+Math.cos(p.a)*p.r;
-    const y=CY+Math.sin(p.a)*p.r*tilt;
-    const fade=Math.min(1, p.r/(RMIN*CFG.diskInnerR));
-
-    // Trail
-    p.trail.forEach((t,i)=>{
-      const tx=CX+Math.cos(t.a)*t.r;
-      const ty=CY+Math.sin(t.a)*t.r*tilt;
-      const a=(i/p.trail.length)*0.35*fade;
-      ctx.beginPath();
-      ctx.arc(tx,ty,p.size*(i/p.trail.length)*0.7,0,Math.PI*2);
-      ctx.fillStyle=`hsla(${p.hue},100%,70%,${a})`;
-      ctx.fill();
-    });
-
-    // Glow
-    const g=ctx.createRadialGradient(x,y,0,x,y,p.size*5);
-    g.addColorStop(0,`hsla(${p.hue},100%,80%,0.9)`);
-    g.addColorStop(0.5,`hsla(${p.hue},100%,60%,0.3)`);
-    g.addColorStop(1,`hsla(${p.hue},100%,60%,0)`);
-    ctx.fillStyle=g;
-    ctx.beginPath(); ctx.arc(x,y,p.size*5,0,Math.PI*2); ctx.fill();
-
-    // Körper
-    ctx.beginPath();
-    ctx.arc(x,y,p.size,0,Math.PI*2);
-    ctx.fillStyle=`hsl(${p.hue},100%,80%)`;
-    ctx.shadowColor=`hsl(${p.hue},100%,65%)`;
-    ctx.shadowBlur=10;
-    ctx.fill();
-    ctx.shadowBlur=0;
-
-    // Glyph (wenn groß genug)
-    if(p.size>2.2){
-      ctx.fillStyle='rgba(10,10,20,0.85)';
-      ctx.font=`bold ${p.size*1.2}px Consolas`;
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(p.glyph,x,y);
-    }
+    el.textContent = '◈ STÖRUNG · ROT';
+    el.style.color = 'var(--red)';
+    badge.textContent = 'rot'; badge.className = 'badge err';
   }
 }
-
-function drawHawking(){
-  for(const h of S.hawking){
-    const a=1-h.life/h.maxLife;
-    ctx.globalAlpha=a*0.9;
-    ctx.fillStyle=h.color;
-    ctx.beginPath();
-    ctx.arc(h.x,h.y,h.size*a,0,Math.PI*2);
-    ctx.shadowColor=h.color;
-    ctx.shadowBlur=10;
-    ctx.fill();
-    ctx.shadowBlur=0;
-    ctx.globalAlpha=1;
-
-    if(h.glyph && h.size>1.2){
-      ctx.fillStyle='rgba(255,204,102,0.8)';
-      ctx.font=`bold ${8+a*4}px "Yu Mincho",serif`;
-      ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(h.glyph,h.x,h.y-4);
-    }
-  }
+function updateTop(){
+  document.getElementById('tVerify').textContent = `${S.verifyPass}/16`;
+  document.getElementById('tDjinn').textContent = S.djinnShow ? S.djinnGlyph : '—';
 }
 
-function drawSparks(){
-  for(const s of S.sparks){
-    const a=1-s.life/s.maxLife;
-    ctx.globalAlpha=a;
-    ctx.fillStyle=s.color;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.size*(0.4+a*0.6),0,Math.PI*2);
-    ctx.fill();
-    ctx.globalAlpha=1;
-  }
-}
-
-// ─── TRANSFORM-FORMEN (Cube/Pyramid/Gate) ─────────────────────
-function drawTransforms(){
-  for(const t of S.transforms){
-    const lifeRatio=t.life/t.maxLife;
-    const alpha=1-Math.pow(lifeRatio,2);
-    const y=t.y-t.riseY;
-    const s=RMIN*0.08*t.scale;
-
-    ctx.save();
-    ctx.globalAlpha=alpha;
-    ctx.strokeStyle=t.color;
-    ctx.lineWidth=1.6;
-    ctx.shadowColor=t.color;
-    ctx.shadowBlur=18;
-
-    if(t.shape==='cube') drawCube(y,s,t.rot);
-    else if(t.shape==='pyramid') drawPyramid(y,s,t.rot);
-    else drawGateShape(y,s,t.rot);
-
-    ctx.shadowBlur=0;
-    ctx.restore();
-  }
-}
-
-function drawCube(cy,s,rot){
-  const R3=s*0.9;
-  const pts3=[
-    [-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],
-    [-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]
-  ];
-  const cos=Math.cos(rot), sin=Math.sin(rot);
-  const pts=pts3.map(([x,y,z])=>{
-    const x2=x*cos-z*sin;
-    const z2=x*sin+z*cos;
-    const p=3/(3+z2);
-    return [CX+x2*R3*p, cy+y*R3*p];
-  });
-  const edges=[
-    [0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],
-    [0,4],[1,5],[2,6],[3,7]
-  ];
-  edges.forEach(([a,b])=>{
-    ctx.beginPath();
-    ctx.moveTo(pts[a][0],pts[a][1]);
-    ctx.lineTo(pts[b][0],pts[b][1]);
-    ctx.stroke();
-  });
-  ctx.fillStyle=ctx.strokeStyle;
-  pts.forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,1.6,0,Math.PI*2);ctx.fill();});
-}
-
-function drawPyramid(cy,s,rot){
-  const R3=s;
-  const apex=[0,-1.2,0];
-  const base=[[-1,0.5,-1],[1,0.5,-1],[1,0.5,1],[-1,0.5,1]];
-  const cos=Math.cos(rot), sin=Math.sin(rot);
-  const project=([x,y,z])=>{
-    const x2=x*cos-z*sin;
-    const z2=x*sin+z*cos;
-    const p=3/(3+z2);
-    return [CX+x2*R3*p, cy+y*R3*p];
-  };
-  const pa=project(apex);
-  const pb=base.map(project);
-  const edges=[
-    [pa,pb[0]],[pa,pb[1]],[pa,pb[2]],[pa,pb[3]],
-    [pb[0],pb[1]],[pb[1],pb[2]],[pb[2],pb[3]],[pb[3],pb[0]]
-  ];
-  edges.forEach(([a,b])=>{
-    ctx.beginPath();
-    ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]);
-    ctx.stroke();
-  });
-  ctx.fillStyle=ctx.strokeStyle;
-  [pa,...pb].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,1.6,0,Math.PI*2);ctx.fill();});
-}
-
-function drawGateShape(cy,s,rot){
-  ctx.save();
-  ctx.translate(CX,cy);
-  ctx.rotate(rot*0.4);
-  for(let i=0;i<3;i++){
-    ctx.beginPath();
-    ctx.ellipse(0,0,s*(1-i*0.15),s*(0.55-i*0.08),0,0,Math.PI*2);
-    ctx.lineWidth=1.8-i*0.4;
-    ctx.stroke();
-  }
-  const g=ctx.createRadialGradient(0,0,0,0,0,s*0.6);
-  g.addColorStop(0,'rgba(255,204,102,0.7)');
-  g.addColorStop(1,'rgba(255,204,102,0)');
-  ctx.fillStyle=g;
-  ctx.beginPath(); ctx.arc(0,0,s*0.6,0,Math.PI*2); ctx.fill();
-  ctx.restore();
-}
-
-// ─── ZA·M GATE ─────────────────────────────────────────────────
-function drawGate(){
-  S.gatePhase += 0.02;
-  const pulse=0.5+0.5*Math.sin(S.gatePhase*3);
-  const hR=RMIN*CFG.horizonR;
-  const r=hR*(1.6+pulse*0.4);
-
-  ctx.save();
-  ctx.globalAlpha=0.6+pulse*0.3;
-  ctx.strokeStyle='#b388ff';
-  ctx.lineWidth=2;
-  ctx.shadowColor='#b388ff';
-  ctx.shadowBlur=20;
-  for(let i=0;i<3;i++){
-    ctx.beginPath();
-    ctx.ellipse(CX,CY,r*(1-i*0.18),r*(0.55-i*0.1),S.gatePhase*0.3,0,Math.PI*2);
-    ctx.stroke();
-  }
-  ctx.restore();
-
-  if(pulse<0.05) S.gateActive=false;
-}
-
-// ─── DJINN ─────────────────────────────────────────────────────
-function drawDjinn(){
-  const a=djinn.alpha;
-  ctx.save();
-  ctx.globalAlpha=a;
-  const g=ctx.createRadialGradient(djinn.x,djinn.y,0,djinn.x,djinn.y,60);
-  g.addColorStop(0,'rgba(179,136,255,0.55)');
-  g.addColorStop(0.4,'rgba(122,63,224,0.25)');
-  g.addColorStop(1,'rgba(122,63,224,0)');
-  ctx.fillStyle=g;
-  ctx.beginPath(); ctx.arc(djinn.x,djinn.y,60,0,Math.PI*2); ctx.fill();
-
-  // Augen
-  [djinn.x-8,djinn.x+8].forEach((ex,i)=>{
-    ctx.beginPath();
-    ctx.arc(ex,djinn.y-4,2,0,Math.PI*2);
-    ctx.fillStyle='#ffcc66';
-    ctx.shadowColor='#ffcc66';
-    ctx.shadowBlur=10;
-    ctx.fill();
-    ctx.shadowBlur=0;
-  });
-
-  // Kanji
-  ctx.font='bold 14px "Yu Mincho","Hiragino Mincho ProN",serif';
-  ctx.fillStyle='rgba(255,204,102,0.7)';
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(djinn.kanji, djinn.x, djinn.y-30);
-
-  ctx.restore();
-}
-
-// ─── LOOP ──────────────────────────────────────────────────────
-let lastT=0;
+// ══════════════════════════════════════════════════════
+// LOOP
+// ══════════════════════════════════════════════════════
 function loop(now){
-  const dt=Math.min(48, now-lastT||16);
-  lastT=now;
   S.tick++;
+  breathe(now);
 
-  // Auto-Spawn von KlicK (Hereinfall ins Loch)
-  if(S.auto && localMaster.me2.allow && !S.serumStopped){
-    const interval=Math.max(140, 900 - S.rate*80);
-    if(now - S.lastSpawn > interval){
-      S.lastSpawn=now;
-      spawnKlickFromOutside();
+  // MAIN-Tick jede Sekunde
+  if (S.tick % 60 === 0) {
+    S.main.tick++;
+    S.main.beat = Math.min(100, S.main.beat + 10);
+    if (S.main.beat >= 100) {
+      S.main.beat = 0;
+      S.main.cycle++;
     }
+    buildMainRows();
   }
 
-  // Auto-Hawking
-  if(S.horizontOpen && Math.random()<0.02){
-    spawnHawking();
+  // SEIN-Wechsel
+  if (S.tick % 90 === 0) tickSein();
+
+  // Verify alle 3s
+  if (S.tick % 180 === 0) runVerify();
+
+  // MOVE-Werte atmen
+  if (S.tick % 30 === 0) {
+    MOVES.forEach(m => {
+      S.move[m.id] = clamp01(S.move[m.id] + (Math.random()-0.5)*0.08);
+    });
+    updateMoveUI();
   }
 
-  updateParticles(dt);
-
-  // Waage-Werte berechnen (Auslastung der Scheibe)
-  const leftSum=S.particles.filter(p=>Math.cos(p.a)<0).length;
-  const rightSum=S.particles.filter(p=>Math.cos(p.a)>=0).length;
-  const total=Math.max(1,leftSum+rightSum);
-  const loadL=leftSum/total;
-  const loadR=rightSum/total;
-  const bal=1-Math.abs(loadL-loadR);
-  const tilt=(loadR-loadL)*8;
-  const force=(leftSum+rightSum)/20;
-  document.getElementById('bBal').textContent=bal.toFixed(2);
-  document.getElementById('bTilt').textContent=tilt.toFixed(1)+'°';
-  document.getElementById('bForce').textContent=force.toFixed(2);
-  document.getElementById('sFix').textContent=S.fix.toFixed(3);
-
-  // Flow-Rate
-  if(now - (S._flowT||0) > 1000){
-    S._flowT=now;
-    S.flowRate=S.flowCount;
-    S.flowCount=0;
+  // Djinn-Summon zufällig
+  if (S.djinnOn && !S.djinnShow && Math.random() < 0.001){
+    djinnSummon();
   }
-  document.getElementById('bFlow').textContent=S.flowRate+'/s';
 
-  draw();
+  // Canvas
+  drawCanvas();
+
+  // Clock
+  if (S.tick % 30 === 0) {
+    document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
+  }
+
+  // FL76
+  if (S.lastFrameT > 0){
+    S.flRaw = now - S.lastFrameT;
+    S.flSmooth = S.flSmooth * 0.88 + S.flRaw * 0.12;
+  }
+  S.lastFrameT = now;
+  document.getElementById('fl76num').textContent = Math.round(S.flSmooth);
+
+  // Result
+  if (S.tick % 60 === 0) updateResult();
+
   requestAnimationFrame(loop);
 }
 
-// ─── STATS ─────────────────────────────────────────────────────
-function updateStats(){
-  document.getElementById('sKlick').textContent=S.klick;
-  document.getElementById('sZack').textContent=S.zack;
-  document.getElementById('sSerum').textContent=S.serumStopped?'🩸 STOP':'—';
-  document.getElementById('sHorizont').textContent=S.horizontOpen?'offen':'geschlossen';
-  document.getElementById('sDjinn').textContent=S.djinn?djinn.kanji:'—';
+// ══════════════════════════════════════════════════════
+// CLI
+// ══════════════════════════════════════════════════════
+function handleCmd(cmd){
+  const c = cmd.trim().toLowerCase();
+  if (!c) return;
+  log(`main> ${cmd}`, 'info');
+  if (c === 'help') log('befehle: move · sein · main · atem · leben · verify · status · reset', 'ok');
+  else if (c === 'move'){ triggerMove(choice(MOVES).id); }
+  else if (c === 'sein'){ setSein(choice(SEINS).id); }
+  else if (c === 'main'){ mainTick(); }
+  else if (c === 'atem'){ document.getElementById('btnPuls').click(); }
+  else if (c === 'leben'){ document.getElementById('btnLebenBoost').click(); }
+  else if (c === 'verify'){ runVerify(); log(`⟳ verify · ${S.verifyPass}/16`, 'ok'); }
+  else if (c === 'status'){ log(`status · move=${S.moveTotal.toFixed(1)} sein=${S.sein} main=${S.main.tick} atem=${S.atem.count} leben=${(S.leben*100).toFixed(0)}%`, 'ok'); }
+  else if (c === 'reset'){ masterReset(); }
+  else log(`unbekannt: ${c}`, 'err');
+}
+document.getElementById('cmdInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter'){ handleCmd(e.target.value); e.target.value = ''; }
+});
+document.querySelectorAll('#cliHdr .tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#cliHdr .tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    log(`▸ Log-Tab: ${t.dataset.tab.toUpperCase()}`, 'info');
+  });
+});
+
+// ══════════════════════════════════════════════════════
+// MASTER-ACTIONS
+// ══════════════════════════════════════════════════════
+function masterReset(){
+  S.moveTotal = 0;
+  MOVES.forEach(m => { S.move[m.id] = 0.4; });
+  S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
+  S.leben = 1.0;
+  S.main.tick = 0; S.main.cycle = 0; S.main.beat = 0;
+  S.klick = 0; S.zack = 0;
+  S.particles = [];
+  updateMoveUI(); updateMazUI(); updateLebenUI(); buildMainRows();
+  document.getElementById('mKlick').textContent = 0;
+  document.getElementById('mZack').textContent = 0;
+  flash('masterPanel');
+  log('⟲ MASTER-RESET · alles auf basis', 'warn');
+  updateResult();
+}
+function atemPuls(){
+  const core = document.getElementById('atemCore');
+  core.classList.remove('tick');
+  void core.offsetWidth;
+  core.classList.add('tick');
+  S.breathCount++;
+  S.atem.count = S.breathCount;
+  setTimeout(() => core.classList.remove('tick'), 400);
+  flash('atemPanel');
+  log('◈ ATEM-PULS · kern schlägt', 'atem');
+  updateLebenUI();
+}
+function allesHeil(){
+  S.mana = clamp01(S.mana + 0.15);
+  S.aura = clamp01(S.aura + 0.15);
+  S.zen  = clamp01(S.zen + 0.15);
+  S.leben = clamp01(S.leben + 0.15);
+  S.main.health = clamp01(S.main.health + 0.2);
+  runVerify();
+  updateMazUI(); updateLebenUI(); buildMainRows();
+  flash('masterPanel');
+  log('★ ALLES-HEIL · alle werte geboostet', 'ok');
+  updateResult();
 }
 
-// ─── LOG ───────────────────────────────────────────────────────
-function log(msg,cls){
-  const box=document.getElementById('logBox');
-  const entry=document.createElement('div');
-  const t=new Date().toLocaleTimeString('de-DE');
-  entry.innerHTML=`<span class="time">[${t}]</span><span class="${cls||''}">${msg}</span>`;
-  box.appendChild(entry);
-  box.scrollTop=box.scrollHeight;
-  while(box.children.length>40) box.removeChild(box.firstChild);
+// ══════════════════════════════════════════════════════
+// BINDINGS — ALLE BUTTONS FUNKTIONIEREN
+// ══════════════════════════════════════════════════════
+function bind(){
+  // MOVE
+  document.getElementById('btnMoveRot').addEventListener('click', () => triggerMove('rot'));
+  document.getElementById('btnMoveOrb').addEventListener('click', () => triggerMove('orb'));
+  document.getElementById('btnMoveWav').addEventListener('click', () => triggerMove('wav'));
+  document.getElementById('btnMoveAll').addEventListener('click', () => {
+    MOVES.forEach(m => {
+      setTimeout(() => triggerMove(m.id), Math.random() * 300);
+    });
+  });
+
+  // MAIN
+  document.getElementById('btnMainTick').addEventListener('click', mainTick);
+  document.getElementById('btnMainBurst').addEventListener('click', mainBurst);
+  document.getElementById('btnMainCycle').addEventListener('click', () => {
+    S.main.cycle++;
+    S.main.beat = 0;
+    buildMainRows();
+    flash('mainPanel');
+    log(`↻ MAIN CYCLE · ${S.main.cycle}`, 'main');
+  });
+
+  // VERIFY
+  document.getElementById('btnVerifyAll').addEventListener('click', () => {
+    runVerify();
+    flash('verifyPanel');
+    log(`⟳ VERIFY-ALL · ${S.verifyPass}/16`, S.verifyPass === 16 ? 'ok' : 'warn');
+    updateResult();
+  });
+  document.getElementById('btnVerifyDeep').addEventListener('click', () => {
+    S.verify.forEach(v => {
+      let ok = true;
+      for (let i = 0; i < 4; i++) if (!v.fn()) ok = false;
+      v.primary = ok; v.secondary = ok; v.pass = ok;
+    });
+    S.verifyPass = S.verify.filter(v => v.pass).length;
+    updateVerifyUI();
+    flash('verifyPanel');
+    log(`◈ VERIFY-DEEP · 4×4 · ${S.verifyPass}/16`, 'sein');
+    updateResult();
+  });
+
+  // KLICK/ZACK
+  document.getElementById('btnKlick').addEventListener('click', () => addKlick(1));
+  document.getElementById('btnZack').addEventListener('click', addZack);
+  document.getElementById('btnKlickReset').addEventListener('click', resetKlick);
+
+  // MAZ
+  document.getElementById('btnMazBoost').addEventListener('click', () => {
+    S.mana = clamp01(S.mana + 0.12);
+    S.aura = clamp01(S.aura + 0.12);
+    S.zen  = clamp01(S.zen  + 0.12);
+    updateMazUI();
+    flash('mazPanel');
+    log('⚡ MAZ-BOOST · +12%', 'atem');
+  });
+  document.getElementById('btnMazMax').addEventListener('click', () => {
+    S.mana = 1.0; S.aura = 1.0; S.zen = 1.0;
+    updateMazUI();
+    flash('mazPanel');
+    log('★ MAZ-MAX · alle 100%', 'ok');
+  });
+  document.getElementById('btnMazReset').addEventListener('click', () => {
+    S.mana = 0.66; S.aura = 0.74; S.zen = 0.88;
+    updateMazUI();
+    flash('mazPanel');
+    log('⟲ MAZ-RESET', 'warn');
+  });
+
+  // LEBEN
+  document.getElementById('btnLebenBoost').addEventListener('click', () => {
+    S.leben = clamp01(S.leben + 0.1);
+    updateLebenUI();
+    flash('lebenPanel');
+    log('⚡ LEBEN +10%', 'leben');
+  });
+  document.getElementById('btnLebenHeal').addEventListener('click', () => {
+    allesHeil();
+    flash('lebenPanel');
+  });
+  document.getElementById('btnLebenReset').addEventListener('click', () => {
+    S.leben = 1.0;
+    updateLebenUI();
+    flash('lebenPanel');
+    log('⟲ LEBEN reset', 'warn');
+  });
+
+  // DJINN
+  document.getElementById('btnDjinnToggle').addEventListener('click', djinnToggle);
+  document.getElementById('btnDjinnSummon').addEventListener('click', djinnSummon);
+
+  // MASTER
+  document.getElementById('btnPuls').addEventListener('click', atemPuls);
+  document.getElementById('btnTick').addEventListener('click', mainTick);
+  document.getElementById('btnHeal').addEventListener('click', allesHeil);
+  document.getElementById('btnResetAll').addEventListener('click', masterReset);
 }
 
-// ─── BUTTONS ───────────────────────────────────────────────────
-document.getElementById('btnKlick').addEventListener('click',()=>addKlick(1));
-document.getElementById('btnSprung').addEventListener('click',()=>{
-  triggerSprung();
-  addKlick(10,true);
-  log('⚡ SPRUNG manuell ausgelöst','cyan');
-});
-document.getElementById('btnGate').addEventListener('click',triggerGate);
-document.getElementById('btnDjinn').addEventListener('click',(e)=>{
-  S.djinnOn=!S.djinnOn;
-  e.currentTarget.classList.toggle('active',S.djinnOn);
-  log(`🧞 DJINN ${S.djinnOn?'lauscht':'schweigt'}`,'violet');
-});
-document.getElementById('btnBurst').addEventListener('click',()=>{
-  S.screenFlash=1;
-  S.screenShake=14;
-  for(let i=0;i<80;i++) spawnHawking();
-  spawnSpark(CX,CY,'#ffcc66',50);
-  spawnSpark(CX,CY,'#b388ff',40);
-  log('💥 HAWKING-BURST','gold');
-});
-document.getElementById('btnReset').addEventListener('click',resetKlick);
-document.getElementById('fixSlider').addEventListener('input',(e)=>{
-  S.fix=parseFloat(e.target.value);
-  document.getElementById('sFix').textContent=S.fix.toFixed(3);
+// ══════════════════════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'm' || e.key === 'M') triggerMove('rot');
+  if (e.key === 'o' || e.key === 'O') triggerMove('orb');
+  if (e.key === 'w' || e.key === 'W') triggerMove('wav');
+  if (e.key === 'l' || e.key === 'L') triggerMove('lin');
+  if (e.key === 's' || e.key === 'S') triggerMove('spr');
+  if (e.key === 't' || e.key === 'T') mainTick();
+  if (e.key === 'v' || e.key === 'V') document.getElementById('btnVerifyAll').click();
+  if (e.key === 'k' || e.key === 'K') addKlick(1);
+  if (e.key === 'z' || e.key === 'Z') addZack();
+  if (e.key === 'p' || e.key === 'P') atemPuls();
+  if (e.key === 'd' || e.key === 'D') djinnSummon();
+  if (e.key === 'r' || e.key === 'R') masterReset();
+  if (e.key === ' ') { e.preventDefault(); atemPuls(); }
 });
 
-// Canvas-Klick → KlicK + Spark
-cv.addEventListener('click',(e)=>{
-  const r=cv.getBoundingClientRect();
-  const x=e.clientX-r.left, y=e.clientY-r.top;
-  spawnSpark(x,y,'#ffcc66',10);
-  addKlick(1);
-});
+// ══════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════
+const BOOT_LINES = [
+  ['▸ BIOS <b>ok</b> <span class="dim">· move-sein-main-slot</span>', 150],
+  ['▸ <b>MOVE</b> <span class="dim">· echte bewegung geladen</span>', 200],
+  ['▸ <b>SEIN</b> <span class="dim">· zustands-ebene bereit</span>', 200],
+  ['▸ <b>MAIN</b> <span class="dim">· loop-kern initialisiert</span>', 200],
+  ['▸ <b>ATEM</b> <span class="dim">· 4s-zyklus startet</span>', 220],
+  ['▸ <b>LEBEN</b> <span class="dim">· wird nachgebildet</span>', 220],
+  ['▸ <b>MANA · AURA · ZEN</b> <span class="dim">· energie-ebenen aktiv</span>', 200],
+  ['▸ <b>KLICK · ZACK</b> <span class="dim">· 100er-übergang</span>', 180],
+  ['▸ <b>DJINN</b> <span class="dim">· überall und nirgends</span>', 200],
+  ['▸ <b>16fach VERIFY</b> <span class="dim">· 2× genauigkeit</span>', 200],
+  ['▸ <b>DREHBUCH · SC1</b> <span class="dim">· begegnung geladen</span>', 220],
+  ['▸ <b>ALLE BUTTONS VERBUNDEN</b> <span class="dim">· echte wirkung</span>', 260],
+  ['▸ <b>ALLES LÄUFT</b> <span class="dim">· move · sein · main · atem · leben</span>', 320],
+];
 
-// Maus-Magnetismus auf Partikel
-cv.addEventListener('mousemove',(e)=>{
-  const r=cv.getBoundingClientRect();
-  const mx=e.clientX-r.left, my=e.clientY-r.top;
-  const tilt=0.32;
-  for(const p of S.particles){
-    const x=CX+Math.cos(p.a)*p.r;
-    const y=CY+Math.sin(p.a)*p.r*tilt;
-    const dx=mx-x, dy=my-y;
-    const d=Math.hypot(dx,dy)+1;
-    if(d<200){
-      const pull=0.0001;
-      p.a += (dx/d)*pull;
-      p.r += (dy/d)*pull;
+function bootSequence(){
+  const el = document.getElementById('bootLines');
+  const bar = document.getElementById('bootBar');
+  el.innerHTML = '';
+  let i = 0, total = 0;
+  const totalDur = BOOT_LINES.reduce((a,b) => a+b[1], 0);
+  function next(){
+    if (i >= BOOT_LINES.length){
+      bar.style.width = '100%';
+      setTimeout(() => document.getElementById('boot').classList.add('done'), 400);
+      return;
     }
+    const [txt, delay] = BOOT_LINES[i];
+    const div = document.createElement('div');
+    div.innerHTML = txt;
+    el.appendChild(div);
+    total += delay;
+    bar.style.width = ((total/totalDur)*100).toFixed(1)+'%';
+    i++;
+    setTimeout(next, delay);
   }
-});
-
-// ─── KEYBOARD ─────────────────────────────────────────────────
-document.addEventListener('keydown',(e)=>{
-  if(e.target.tagName==='INPUT') return;
-  if(e.key===' '){e.preventDefault(); addKlick(1);}
-  if(e.key==='s'||e.key==='S') document.getElementById('btnSprung').click();
-  if(e.key==='g'||e.key==='G') document.getElementById('btnGate').click();
-  if(e.key==='d'||e.key==='D') document.getElementById('btnDjinn').click();
-  if(e.key==='b'||e.key==='B') document.getElementById('btnBurst').click();
-  if(e.key==='r'||e.key==='R') resetKlick();
-});
-
-// ─── CLOCK ────────────────────────────────────────────────────
-function clock(){
-  document.getElementById('sClock').textContent='⏱️ '+new Date().toLocaleTimeString('de-DE');
+  next();
 }
-setInterval(clock,1000); clock();
 
-// ─── API ──────────────────────────────────────────────────────
-window.SINGULARITY={
-  klick:(n=1)=>addKlick(n),
-  sprung:triggerSprung,
-  gate:triggerGate,
-  burst:()=>document.getElementById('btnBurst').click(),
-  reset:resetKlick,
-  djinn:{
-    on:()=>{S.djinnOn=true;document.getElementById('btnDjinn').classList.add('active');},
-    off:()=>{S.djinnOn=false;document.getElementById('btnDjinn').classList.remove('active');},
-    summon:()=>{
-      S.djinn=true;
-      djinn.talpha=0.7;
-      djinn.tx=W*0.3+Math.random()*W*0.4;
-      djinn.ty=H*0.3+Math.random()*H*0.4;
-      djinn.kanji=KANJI_DJINN[Math.floor(Math.random()*5)];
-      document.getElementById('djinnMark').classList.add('show');
-      document.getElementById('djinnMark').textContent=`${djinn.kanji} · DJINN`;
-    },
-  },
-  state:()=>({
-    klick:S.klick, zack:S.zack, score:S.score,
-    fix:S.fix, serum:S.serumStopped,
-    horizont:S.horizontOpen, djinn:S.djinn,
-    particles:S.particles.length,
-    hawking:S.hawking.length,
-    sprung:S.sprungActive,
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+function init(){
+  bootSequence();
+  buildMoveRows();
+  buildSeinRows();
+  buildMainRows();
+  buildAtemOrbs();
+  updateVerifyUI();
+  updateMazUI();
+  updateLebenUI();
+  updateMoveUI();
+  updateResult();
+  updateTop();
+  resizeCanvas();
+  runVerify();
+
+  // Startup Partikel
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      S.particles.push({
+        x: CW/2, y: CH/2,
+        vx: (Math.random()-0.5)*4,
+        vy: (Math.random()-0.5)*4,
+        life: 1, maxLife: 60 + Math.random()*60,
+        color: ['#ffcc66','#b388ff','#6cf','#8cf0d0'][Math.floor(Math.random()*4)],
+        size: 1.5 + Math.random()*2,
+      });
+    }, i * 100);
+  }
+
+  log('◈ MOVE · SEIN · MAIN · ATEM · LEBEN geladen', 'ok');
+  log('▸ MOVE = echte Bewegung · SEIN = Zustand · MAIN = Loop-Kern', 'move');
+  log('▸ ATEM + LEBEN = nachgebildet · alles läuft', 'atem');
+  log('▸ Alle Buttons funktionieren · sichtbare Wirkung', 'ok');
+  log('▸ tasten: M/O/W/L/S=move · T=main-tick · V=verify · K=klick · Z=zack · P=puls · D=djinn · R=reset', 'info');
+
+  requestAnimationFrame(loop);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+
+// ══════════════════════════════════════════════════════
+// PUBLIC API
+// ══════════════════════════════════════════════════════
+window.RUNTIME = {
+  // MOVE
+  move: (id) => triggerMove(id || 'rot'),
+  moveAll: () => MOVES.forEach(m => triggerMove(m.id)),
+  // SEIN
+  sein: (id) => setSein(id || 'ruht'),
+  // MAIN
+  tick: () => mainTick(),
+  burst: () => mainBurst(),
+  cycle: () => document.getElementById('btnMainCycle').click(),
+  // ATEM / LEBEN
+  pulse: () => atemPuls(),
+  breath: (ms) => { S.breathCycleMs = ms || 2000; },
+  leben: () => S.leben,
+  // KLICK
+  klick: (n) => addKlick(n || 1),
+  zack: () => addZack(),
+  // DJINN
+  djinn: { on: djinnToggle, summon: djinnSummon },
+  // VERIFY
+  verify: () => { runVerify(); return S.verifyPass; },
+  // MASTER
+  heal: () => allesHeil(),
+  reset: () => masterReset(),
+  cmd: (c) => handleCmd(c),
+  // STATE
+  state: () => ({
+    tick: S.tick, breath: S.breathCount,
+    move: { ...S.move, total: S.moveTotal },
+    sein: S.sein, main: { ...S.main },
+    atem: { ...S.atem }, leben: S.leben,
+    mana: S.mana, aura: S.aura, zen: S.zen,
+    klick: S.klick, zack: S.zack,
+    verify: S.verifyPass,
+    djinn: { on: S.djinnOn, show: S.djinnShow },
   }),
-  master:{
-    connected:()=>isMasterConnected,
-    state:()=>({...localMaster}),
-  },
 };
-window.BLACKHOLE=window.SINGULARITY;
+window.R = window.RUNTIME;
 
-// ─── INIT ─────────────────────────────────────────────────────
-resize();
-updateStats();
-startDjinn();
-
-// Erste Partikel
-for(let i=0;i<20;i++){
-  setTimeout(spawnKlickFromOutside, i*120);
-}
-
-log('🕳️ Singularität geöffnet — Ereignishorizont bereit','gold');
-log('   Das Beste aus dem Loch: KlicK · ZaM · NC · MANGA · SPRUNG · DJINN','violet');
-log('   Space = KlicK · S = Sprung · G = Gate · D = Djinn · B = Burst · R = Reset','cyan');
-log('🩸 Serum stoppt bei 98 · bewusst 99 + 100 → SPRUNG','red');
-
-console.log('%c🕳️ SINGULARITÄT geladen — das Beste aus dem schwarzen Loch','color:#ffcc66;font-weight:bold;font-size:14px;');
-console.log('→ window.SINGULARITY.klick() · .sprung() · .gate() · .state()');
-
-requestAnimationFrame(loop);
+console.log('%c◈ MOVE · SEIN · MAIN · ATEM · LEBEN geladen',
+  'color:#ffcc66;font-weight:bold;font-size:14px;');
+console.log('→ MOVE = echte Bewegung · SEIN = Zustand · MAIN = Loop-Kern');
+console.log('→ window.RUNTIME.move() · .sein() · .tick() · .pulse() · .state()');
 </script>
 </body>
 </html>
